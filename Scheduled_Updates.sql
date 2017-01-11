@@ -1,9 +1,8 @@
-
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_patient_demographics$$
-CREATE PROCEDURE sp_populate_etl_patient_demographics()
+DROP PROCEDURE IF EXISTS sp_update_etl_patient_demographics$$
+CREATE PROCEDURE sp_update_etl_patient_demographics()
 BEGIN
--- initial set up of etl_patient_demographics table
+-- update etl_patient_demographics table
 insert into kenyaemr_etl.etl_patient_demographics(
 patient_id,
 given_name,
@@ -37,16 +36,21 @@ p.dead,
 p.voided,
 p.death_date
 from person p 
-join patient pa on pa.patient_id=p.person_id
 inner join person_name pn on pn.person_id = p.person_id and pn.voided=0
+where pn.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or pn.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or pn.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or p.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or p.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or p.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
 GROUP BY p.person_id
 ) p
-ON DUPLICATE KEY UPDATE given_name = p.given_name, middle_name=p.middle_name, family_name=p.family_name;
+ON DUPLICATE KEY UPDATE given_name = p.given_name, middle_name=p.middle_name, family_name=p.family_name, DOB=p.birthdate, dead=p.dead, voided=p.voided, death_date=p.death_date;
 
 
 -- update etl_patient_demographics with patient attributes: birthplace, citizenship, mother_name, phone number and kin's details
 update kenyaemr_etl.etl_patient_demographics d 
-left outer join 
+inner join 
 (
 select 
 pa.person_id,  
@@ -81,7 +85,9 @@ and pat.uuid in (
 	'b8d0b331-1d2d-4a9a-b741-1816f498bdb6' -- email address
 
 	)
-where pa.voided=0
+where pa.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or pa.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or pa.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
 group by pa.person_id
 ) att on att.person_id = d.patient_id
 set d.phone_number=att.phone_number, 
@@ -94,42 +100,15 @@ set d.phone_number=att.phone_number,
 	d.email_address=att.email_address;
 
 
-/*update kenyaemr_etl.etl_patient_demographics d 
-left outer join 
-(select 
-	pi.patient_id,
-	max(if(pit.uuid='05ee9cf4-7242-4a17-b4d4-00f707265c8a', pi.identifier, null)) as UPN,
-	max(if(pit.uuid='b4d66522-11fc-45c7-83e3-39a1af21ae0d', pi.identifier, null)) as PCN,
-	max(if(pit.uuid='49af6cdc-7968-4abb-bf46-de10d7f4859f', pi.identifier, null)) as national_id_no
-	from patient_identifier pi
-	inner join 
-	(
-	select 
-	name, 
-	patient_identifier_type_id, 
-	uuid 
-	from patient_identifier_type
-	) pit on pit.patient_identifier_type_id = pi.identifier_type
-		and pit.uuid in (
-	'05ee9cf4-7242-4a17-b4d4-00f707265c8a', -- upn
-	'b4d66522-11fc-45c7-83e3-39a1af21ae0d', -- pcn
-	'49af6cdc-7968-4abb-bf46-de10d7f4859f' -- national-id
-		)
-group by pi.patient_id
-) pit on pit.patient_id = d.patient_id
-set d.unique_patient_no=pit.UPN, 
-	d.national_id_no=pit.national_id_no,
-	d.patient_clinic_number=pit.PCN
-;*/
-
 END$$
 DELIMITER ;
 
+
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_hiv_enrollment$$
-CREATE PROCEDURE sp_populate_etl_hiv_enrollment()
+DROP PROCEDURE IF EXISTS sp_update_etl_hiv_enrollment$$
+CREATE PROCEDURE sp_update_etl_hiv_enrollment()
 BEGIN
--- populate patient_hiv_enrollment table
+-- update patient_hiv_enrollment table
 -- uuid: de78a6be-bfc5-4634-adc3-5f1a280455cc
 
 insert into kenyaemr_etl.etl_hiv_enrollment (
@@ -159,7 +138,7 @@ select
 e.patient_id,
 e.uuid,
 e.visit_id,
-e.encounter_datetime as visit_date,
+e.encounter_datetime,
 e.encounter_id,
 e.creator,
 e.date_created,
@@ -185,18 +164,25 @@ inner join
 join patient p on p.patient_id=e.patient_id and p.voided=0
 left outer join obs o on o.encounter_id=e.encounter_id 
 	and o.concept_id in (160555,160540,160534,160535,161551,159599,160554,160632,160533,160638,160640,160642,160641)
-where e.voided=0
+where e.voided=0 and e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
 group by e.patient_id, e.encounter_id
-order by e.patient_id;
+order by e.patient_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_provider=VALUES(encounter_provider),date_first_enrolled_in_care=VALUES(date_first_enrolled_in_care),entry_point=VALUES(entry_point),transfer_in_date=VALUES(transfer_in_date),
+facility_transferred_from=VALUES(facility_transferred_from),district_transferred_from=VALUES(district_transferred_from),date_started_art_at_transferring_facility=VALUES(date_started_art_at_transferring_facility),date_confirmed_hiv_positive=VALUES(date_confirmed_hiv_positive),facility_confirmed_hiv_positive=VALUES(facility_confirmed_hiv_positive),
+arv_status=VALUES(arv_status),name_of_treatment_supporter=VALUES(name_of_treatment_supporter),relationship_of_treatment_supporter=VALUES(relationship_of_treatment_supporter),treatment_supporter_telephone=VALUES(treatment_supporter_telephone),treatment_supporter_address=VALUES(treatment_supporter_address),voided=VALUES(voided) 
+;
 
 END$$
 DELIMITER ;
 
-
--- ------------- populate etl_hiv_followup--------------------------------
+-- ------------- update etl_hiv_followup--------------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_hiv_followup$$
-CREATE PROCEDURE sp_populate_etl_hiv_followup()
+DROP PROCEDURE IF EXISTS sp_update_etl_hiv_followup$$
+CREATE PROCEDURE sp_update_etl_hiv_followup()
 BEGIN
 
 INSERT INTO kenyaemr_etl.etl_patient_hiv_followup(
@@ -295,151 +281,29 @@ inner join
 ) et on et.encounter_type_id=e.encounter_type
 left outer join obs o on o.encounter_id=e.encounter_id 
 	and o.concept_id in (1246,161643,5089,5085,5086,5090,5088,5087,5242,5092,1343,5356,5272,161033,161655,5596,1427,5624,1053,160653,374,160575,1659,161654,161652,162229,162230,1658,160582,160632,159423,161557,159777,161558,160581,5096)
-where e.voided=0
-group by e.patient_id, e.encounter_id, visit_date
+where e.voided=0 and e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.patient_id, visit_date
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_provider=VALUES(encounter_provider),visit_scheduled=VALUES(visit_scheduled),
+person_present=VALUES(person_present),weight=VALUES(weight),systolic_pressure=VALUES(systolic_pressure),diastolic_pressure=VALUES(diastolic_pressure),height=VALUES(height),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),respiratory_rate=VALUES(respiratory_rate),
+oxygen_saturation=VALUES(oxygen_saturation),muac=VALUES(muac),who_stage=VALUES(who_stage),pregnancy_status=VALUES(pregnancy_status),pregnancy_outcome=VALUES(pregnancy_outcome),anc_number=VALUES(anc_number),expected_delivery_date=VALUES(expected_delivery_date),
+last_menstrual_period=VALUES(last_menstrual_period),gravida=VALUES(gravida),parity=VALUES(parity),family_planning_status=VALUES(family_planning_status),family_planning_method=VALUES(family_planning_method),reason_not_using_family_planning=VALUES(reason_not_using_family_planning),
+tb_status=VALUES(tb_status),tb_treatment_no=VALUES(tb_treatment_no),ctx_adherence=VALUES(ctx_adherence),ctx_dispensed=VALUES(ctx_dispensed),inh_dispensed=VALUES(inh_dispensed),arv_adherence=VALUES(arv_adherence),poor_arv_adherence_reason=VALUES(poor_arv_adherence_reason),
+poor_arv_adherence_reason_other=VALUES(poor_arv_adherence_reason_other),pwp_disclosure=VALUES(pwp_disclosure),pwp_partner_tested=VALUES(pwp_partner_tested),condom_provided=VALUES(condom_provided),screened_for_sti=VALUES(screened_for_sti),at_risk_population=VALUES(at_risk_population),
+next_appointment_date=VALUES(next_appointment_date),voided=VALUES(voided)
 ;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_laboratory_extract  uuid:  --------------------------------
-DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_laboratory_extract$$
-CREATE PROCEDURE sp_populate_etl_laboratory_extract()
-BEGIN
-
-insert into kenyaemr_etl.etl_laboratory_extract(
-uuid,
-encounter_id,
-patient_id,
-visit_date,
-visit_id,
-lab_test,
-test_result,
--- date_test_requested,
--- date_test_result_received,
--- test_requested_by,
-date_created,
-created_by 
-)
-select 
-o.uuid,
-e.encounter_id,
-e.patient_id,
-e.encounter_datetime as visit_date,
-e.visit_id,
-o.concept_id,
-(CASE when o.concept_id in(5497,730,654,790,856,21) then o.value_numeric
-	when o.concept_id in(299,1030,302,32) then o.value_coded
-	END) AS test_result,
--- date requested,
--- date result received
--- test requested by
-e.date_created,
-e.creator
-from encounter e 
-inner join obs o on e.encounter_id=o.encounter_id and o.voided=0
-and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32) -- (5497-N,730-N,299-C,654-N,790-N,856-N,1030-C,21-N,302-C,32-C)
-inner join 
-(
-	select encounter_type_id, uuid, name from encounter_type where uuid ='17a381d1-7e29-406a-b782-aa903b963c28'
-) et on et.encounter_type_id=e.encounter_type
-; 
-
-/*-- >>>>>>>>>>>>>>> -----------------------------------  Wagners input ------------------------------------------------------------
-insert into kenyaemr_etl.etl_laboratory_extract(
-encounter_id,
-patient_id,
-visit_date,
-visit_id,
-lab_test,
-test_result,
--- date_test_requested,
--- date_test_result_received,
--- test_requested_by,
-date_created,
-created_by 
-)
-select 
-e.encounter_id,
-e.patient_id,
-e.encounter_datetime as visit_date,
-e.visit_id,
-o.concept_id,
-(CASE when o.concept_id in(5497,730,654,790,856,21) then o.value_numeric
-when o.concept_id in(299,1030,302,32) then o.value_coded
-END) AS test_result,
--- date requested,
--- date result received
--- test requested by
-e.date_created,
-e.creator
-from encounter e, obs o, encounter_type et 
-where e.encounter_id=o.encounter_id and o.voided=0
-and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32) and et.encounter_type_id=e.encounter_type
-group by e.encounter_id;
-
--- --------<<<<<<<<<<<<<<<<<<<< ------------------------------------------------------------------------------------------------------
-*/
-END$$
-DELIMITER ;
-
--- ------------- populate etl_pharmacy_extract table--------------------------------
-DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_pharmacy_extract$$
-CREATE PROCEDURE sp_populate_etl_pharmacy_extract()
-BEGIN
-insert into kenyaemr_etl.etl_pharmacy_extract(
-patient_id,
-uuid,
-visit_date,
-visit_id,
-encounter_id,
-date_created,
-encounter_name,
-drug,
-is_arv,
--- drug_name,
-frequency,
-duration,
-unit,
-voided,
-date_voided,
-dispensing_provider
-)
-select 
-	o.person_id,
-	max(if(o.concept_id=1282, o.uuid, null)),
-	date(o.obs_datetime) as enc_date,
-	e.visit_id,
-	o.encounter_id,
-	e.date_created,
-	et.name as enc_name,
-	max(if(o.concept_id = 1282 and o.value_coded is not null,o.value_coded, null)) as drug_dispensed,
-	max(if(o.concept_id = 1282 and cs.concept_set=1085, 1, 0)) as arv_drug, -- arv:1085
-	-- max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
-	max(if(o.concept_id = 1443, o.value_numeric, null)) as dose,
-	max(if(o.concept_id = 159368, o.value_numeric, null)) as duration,
-	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as unit,
-	o.voided,
-	o.date_voided,
-	e.creator
-from obs o
-left outer join encounter e on e.encounter_id = o.encounter_id and e.voided=0
-left outer join encounter_type et on et.encounter_type_id = e.encounter_type
-left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='SHORT' -- FULLY_SPECIFIED'
-left outer join concept_set cs on o.value_coded = cs.concept_id 
-where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444) and e.encounter_type not in (9,13) and e.voided=0
-group by o.obs_group_id, o.person_id, encounter_id
-having drug_dispensed is not null;
-
-END$$
-DELIMITER ;
 
 -- ------------ create table etl_patient_treatment_event----------------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_program_discontinuation$$
-CREATE PROCEDURE sp_populate_etl_program_discontinuation()
+DROP PROCEDURE IF EXISTS sp_update_etl_program_discontinuation$$
+CREATE PROCEDURE sp_update_etl_program_discontinuation()
 BEGIN
 insert into kenyaemr_etl.etl_patient_program_discontinuation(
 patient_id,
@@ -479,18 +343,24 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('2bdada65-4c72-4a48-8730-859890e25cee','d3e3d723-7458-4b4e-8998-408e8a551a84','5feee3f1-aa16-4513-8bd0-5d9b27ef1208','7c426cfc-3b47-4481-b55f-89860c21c7de','01894f88-dc73-42d4-97a3-0929118403fb')
 ) et on et.encounter_type_id=e.encounter_type
-where e.voided=0
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),discontinuation_reason=VALUES(discontinuation_reason),
+date_died=VALUES(date_died),transfer_facility=VALUES(transfer_facility),transfer_date=VALUES(transfer_date)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_mch_enrollment-------------------------
+-- ------------- update etl_mch_enrollment------------------------- TO BE CHECKED AGAIN
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_mch_enrollment$$
-CREATE PROCEDURE sp_populate_etl_mch_enrollment()
+DROP PROCEDURE IF EXISTS sp_update_etl_mch_enrollment$$
+CREATE PROCEDURE sp_update_etl_mch_enrollment()
 BEGIN
-
 insert into kenyaemr_etl.etl_mch_enrollment(
 patient_id,
 uuid,
@@ -572,15 +442,25 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('3ee036d8-7c13-4393-b5d6-036f2fe45126')
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),anc_number=VALUES(anc_number),gravida=VALUES(gravida),parity=VALUES(parity),parity_abortion=VALUES(parity_abortion),lmp=VALUES(lmp),lmp_estimated=VALUES(lmp_estimated),
+edd_ultrasound=VALUES(edd_ultrasound),blood_group=VALUES(blood_group),serology=VALUES(serology),tb_screening=VALUES(tb_screening),bs_for_mps=VALUES(bs_for_mps),hiv_status=VALUES(hiv_status),hiv_test_date=VALUES(hiv_status),partner_hiv_status=VALUES(partner_hiv_status),partner_hiv_test_date=VALUES(partner_hiv_test_date),
+urine_microscopy=VALUES(urine_microscopy),urinary_albumin=VALUES(urinary_albumin),glucose_measurement=VALUES(glucose_measurement),urine_ph=VALUES(urine_ph),urine_gravity=VALUES(urine_gravity),urine_nitrite_test=VALUES(urine_nitrite_test),urine_leukocyte_esterace_test=VALUES(urine_leukocyte_esterace_test),urinary_ketone=VALUES(urinary_ketone),
+urine_bile_salt_test=VALUES(urine_bile_salt_test),urine_bile_pigment_test=VALUES(urine_bile_pigment_test),urine_colour=VALUES(urine_colour),urine_turbidity=VALUES(urine_turbidity),urine_dipstick_for_blood=VALUES(urine_dipstick_for_blood),discontinuation_reason=VALUES(discontinuation_reason)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_mch_antenatal_visit-------------------------
+-- ------------- update etl_mch_antenatal_visit-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_mch_antenatal_visit$$
-CREATE PROCEDURE sp_populate_etl_mch_antenatal_visit()
+DROP PROCEDURE IF EXISTS sp_update_etl_mch_antenatal_visit$$
+CREATE PROCEDURE sp_update_etl_mch_antenatal_visit()
 BEGIN
 
 insert into kenyaemr_etl.etl_mch_antenatal_visit(
@@ -672,15 +552,25 @@ inner join
 	select encounter_type, uuid,name from form where 
 	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843')
 ) f on f.encounter_type=e.encounter_type
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),provider=VALUES(provider),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),systolic_bp=VALUES(systolic_bp),diastolic_bp=VALUES(diastolic_bp),respiratory_rate=VALUES(respiratory_rate),oxygen_saturation=VALUES(oxygen_saturation),
+weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),pallor=VALUES(pallor),maturity=VALUES(maturity),fundal_height=VALUES(fundal_height),fetal_presentation=VALUES(fetal_presentation),lie=VALUES(lie),fetal_heart_rate=VALUES(fetal_heart_rate),fetal_movement=VALUES(fetal_movement),who_stage=VALUES(who_stage),cd4=VALUES(cd4),arv_status=VALUES(arv_status),
+urine_microscopy=VALUES(urine_microscopy),urinary_albumin=VALUES(urinary_albumin),glucose_measurement=VALUES(glucose_measurement),urine_ph=VALUES(urine_ph),urine_gravity=VALUES(urine_gravity),urine_nitrite_test=VALUES(urine_nitrite_test),urine_leukocyte_esterace_test=VALUES(urine_leukocyte_esterace_test),urinary_ketone=VALUES(urinary_ketone),urine_bile_salt_test=VALUES(urine_bile_salt_test),
+urine_bile_pigment_test=VALUES(urine_bile_pigment_test),urine_colour=VALUES(urine_colour),urine_turbidity=VALUES(urine_turbidity),urine_dipstick_for_blood=VALUES(urine_dipstick_for_blood)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_mch_postnatal_visit-------------------------
+-- ------------- update etl_mch_postnatal_visit-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_mch_postnatal_visit$$
-CREATE PROCEDURE sp_populate_etl_mch_postnatal_visit()
+DROP PROCEDURE IF EXISTS sp_update_etl_mch_postnatal_visit$$
+CREATE PROCEDURE sp_update_etl_mch_postnatal_visit()
 BEGIN
 
 insert into kenyaemr_etl.etl_mch_postnatal_visit(
@@ -766,15 +656,25 @@ inner join
 	select encounter_type, uuid,name from form where 
 	uuid in('72aa78e0-ee4b-47c3-9073-26f3b9ecc4a7')
 ) f on f.encounter_type=e.encounter_type
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),provider=VALUES(provider),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),systolic_bp=VALUES(systolic_bp),diastolic_bp=VALUES(diastolic_bp),respiratory_rate=VALUES(respiratory_rate),
+oxygen_saturation=VALUES(oxygen_saturation),weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),arv_status=VALUES(arv_status),general_condition=VALUES(general_condition),breast=VALUES(breast),cs_scar=VALUES(cs_scar),gravid_uterus=VALUES(gravid_uterus),episiotomy=VALUES(episiotomy),
+lochia=VALUES(lochia),mother_hiv_status=VALUES(mother_hiv_status),condition_of_baby=VALUES(condition_of_baby),baby_feeding_method=VALUES(baby_feeding_method),umblical_cord=VALUES(umblical_cord),baby_immunization_started=VALUES(baby_immunization_started),family_planning_counseling=VALUES(family_planning_counseling),uterus_examination=VALUES(uterus_examination),
+uterus_cervix_examination=VALUES(uterus_cervix_examination),vaginal_examination=VALUES(vaginal_examination),parametrial_examination=VALUES(parametrial_examination),external_genitalia_examination=VALUES(external_genitalia_examination),ovarian_examination=VALUES(ovarian_examination),pelvic_lymph_node_exam=VALUES(pelvic_lymph_node_exam)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_tb_enrollment-------------------------
+-- ------------- update etl_tb_enrollment-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_tb_enrollment$$
-CREATE PROCEDURE sp_populate_etl_tb_enrollment()
+DROP PROCEDURE IF EXISTS sp_update_etl_tb_enrollment$$
+CREATE PROCEDURE sp_update_etl_tb_enrollment()
 BEGIN
 
 insert into kenyaemr_etl.etl_tb_enrollment(
@@ -855,15 +755,25 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('9d8498a4-372d-4dc4-a809-513a2434621e')
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),date_treatment_started=VALUES(date_treatment_started),district=VALUES(district),referred_by=VALUES(referred_by),referral_date=VALUES(referral_date),
+date_transferred_in=VALUES(date_transferred_in),facility_transferred_from=VALUES(facility_transferred_from),district_transferred_from=VALUES(district_transferred_from),date_first_enrolled_in_tb_care=VALUES(date_first_enrolled_in_tb_care),weight=VALUES(weight),height=VALUES(height),treatment_supporter=VALUES(treatment_supporter),relation_to_patient=VALUES(relation_to_patient),
+treatment_supporter_address=VALUES(treatment_supporter_address),treatment_supporter_phone_contact=VALUES(treatment_supporter_phone_contact),disease_classification=VALUES(disease_classification),patient_classification=VALUES(patient_classification),pulmonary_smear_result=VALUES(pulmonary_smear_result),has_extra_pulmonary_pleurial_effusion=VALUES(has_extra_pulmonary_pleurial_effusion),
+has_extra_pulmonary_milliary=VALUES(has_extra_pulmonary_milliary),has_extra_pulmonary_lymph_node=VALUES(has_extra_pulmonary_lymph_node),has_extra_pulmonary_menengitis=VALUES(has_extra_pulmonary_menengitis),has_extra_pulmonary_skeleton=VALUES(has_extra_pulmonary_skeleton),has_extra_pulmonary_abdominal=VALUES(has_extra_pulmonary_abdominal)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_tb_follow_up_visit-------------------------
+-- ------------- update etl_tb_follow_up_visit-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_tb_follow_up_visit$$
-CREATE PROCEDURE sp_populate_etl_tb_follow_up_visit()
+DROP PROCEDURE IF EXISTS sp_update_etl_tb_follow_up_visit$$
+CREATE PROCEDURE sp_update_etl_tb_follow_up_visit()
 BEGIN
 
 insert into kenyaemr_etl.etl_tb_follow_up_visit(
@@ -925,15 +835,23 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('fbf0bfce-e9f4-45bb-935a-59195d8a0e35')
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),spatum_test=VALUES(spatum_test),spatum_result=VALUES(spatum_result),result_serial_number=VALUES(result_serial_number),quantity=VALUES(quantity) ,date_test_done=VALUES(date_test_done),bacterial_colonie_growth=VALUES(bacterial_colonie_growth),
+number_of_colonies=VALUES(number_of_colonies),resistant_s=VALUES(resistant_s),resistant_r=VALUES(resistant_r),resistant_inh=VALUES(resistant_inh),resistant_e=VALUES(resistant_e),sensitive_s=VALUES(sensitive_s),sensitive_r=VALUES(sensitive_r),sensitive_inh=VALUES(sensitive_inh),sensitive_e=VALUES(sensitive_e),test_date=VALUES(test_date),hiv_status=VALUES(hiv_status),next_appointment_date=VALUES(next_appointment_date)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_tb_screening-------------------------
+-- ------------- update etl_tb_screening-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_tb_screening$$
-CREATE PROCEDURE sp_populate_etl_tb_screening()
+DROP PROCEDURE IF EXISTS sp_update_etl_tb_screening$$
+CREATE PROCEDURE sp_update_etl_tb_screening()
 BEGIN
 
 insert into kenyaemr_etl.etl_tb_screening(
@@ -979,15 +897,23 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be')
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),cough_for_2wks_or_more=VALUES(cough_for_2wks_or_more),confirmed_tb_contact=VALUES(confirmed_tb_contact),chronic_cough=VALUES(chronic_cough),fever_for_2wks_or_more=VALUES(fever_for_2wks_or_more),
+noticeable_weight_loss=VALUES(noticeable_weight_loss),chest_pain=VALUES(chest_pain),night_sweat_for_2wks_or_more=VALUES(night_sweat_for_2wks_or_more),resulting_tb_status=VALUES(resulting_tb_status) ,tb_treatment_start_date=VALUES(tb_treatment_start_date),notes=VALUES(notes)
+;
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_hei_enrollment-------------------------
+-- ------------- update etl_hei_enrollment-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_hei_enrolment$$
-CREATE PROCEDURE sp_populate_etl_hei_enrolment()
+DROP PROCEDURE IF EXISTS sp_update_etl_hei_enrolment$$
+CREATE PROCEDURE sp_update_etl_hei_enrolment()
 BEGIN
 
 insert into kenyaemr_etl.etl_hei_enrollment(
@@ -1077,15 +1003,25 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('415f5136-ca4a-49a8-8db3-f994187c3af6')
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id ;  
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),child_exposed=VALUES(child_exposed),spd_number=VALUES(spd_number),birth_weight=VALUES(birth_weight),gestation_at_birth=VALUES(gestation_at_birth),date_first_seen=VALUES(date_first_seen),
+birth_notification_number=VALUES(birth_notification_number),birth_certificate_number=VALUES(birth_certificate_number),need_for_special_care=VALUES(need_for_special_care),reason_for_special_care=VALUES(reason_for_special_care),referral_source=VALUES(referral_source),transfer_in=VALUES(transfer_in),transfer_in_date=VALUES(transfer_in_date),facility_transferred_from=VALUES(facility_transferred_from),
+district_transferred_from=VALUES(district_transferred_from),date_first_enrolled_in_hei_care=VALUES(date_first_enrolled_in_hei_care),mother_breastfeeding=VALUES(mother_breastfeeding),TB_contact_history_in_household=VALUES(TB_contact_history_in_household),mother_alive=VALUES(mother_alive),mother_on_pmtct_drugs=VALUES(mother_on_pmtct_drugs),
+mother_on_drug=VALUES(mother_on_drug),mother_on_art_at_infant_enrollment=VALUES(mother_on_art_at_infant_enrollment),mother_drug_regimen=VALUES(mother_drug_regimen),parent_ccc_number=VALUES(parent_ccc_number),mode_of_delivery=VALUES(mode_of_delivery),place_of_delivery=VALUES(place_of_delivery)
+;  
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_hei_follow_up_visit-------------------------
+-- ------------- update etl_hei_follow_up_visit-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_hei_follow_up$$
-CREATE PROCEDURE sp_populate_etl_hei_follow_up()
+DROP PROCEDURE IF EXISTS sp_update_etl_hei_follow_up$$
+CREATE PROCEDURE sp_update_etl_hei_follow_up()
 BEGIN
 
 insert into kenyaemr_etl.etl_hei_follow_up_visit(
@@ -1179,15 +1115,25 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('bcc6da85-72f2-4291-b206-789b8186a021')
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id ; 
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id 
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),weight=VALUES(weight),height=VALUES(height),infant_feeding=VALUES(infant_feeding),tb_assessment_outcome=VALUES(tb_assessment_outcome),social_smile_milestone=VALUES(social_smile_milestone),head_control_milestone=VALUES(head_control_milestone),
+response_to_sound_milestone=VALUES(response_to_sound_milestone),hand_extension_milestone=VALUES(hand_extension_milestone),sitting_milestone=VALUES(sitting_milestone),walking_milestone=VALUES(walking_milestone),standing_milestone=VALUES(standing_milestone),talking_milestone=VALUES(talking_milestone),review_of_systems_developmental=VALUES(review_of_systems_developmental),
+dna_pcr_result=VALUES(dna_pcr_result),first_antibody_result=VALUES(first_antibody_result),final_antibody_result=VALUES(final_antibody_result),
+tetracycline_ointment_given=VALUES(tetracycline_ointment_given),pupil_examination=VALUES(pupil_examination),sight_examination=VALUES(sight_examination),squint=VALUES(squint),deworming_drug=VALUES(deworming_drug),dosage=VALUES(dosage),unit=VALUES(unit),next_appointment_date=VALUES(next_appointment_date)
+; 
 
 END$$
 DELIMITER ;
 
--- ------------- populate etl_mchs_delivery-------------------------
+-- ------------- update etl_mchs_delivery-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_mch_delivery$$
-CREATE PROCEDURE sp_populate_etl_mch_delivery()
+DROP PROCEDURE IF EXISTS sp_update_etl_mch_delivery$$
+CREATE PROCEDURE sp_update_etl_mch_delivery()
 BEGIN
 
 insert into kenyaemr_etl.etl_mchs_delivery(
@@ -1245,15 +1191,26 @@ inner join
 	select encounter_type, uuid,name from form where 
 	uuid in('496c7cc3-0eea-4e84-a04c-2292949e2f7f')
 ) f on f.encounter_type=e.encounter_type
-group by e.encounter_id ;
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),data_entry_date=VALUES(data_entry_date),duration_of_pregnancy=VALUES(duration_of_pregnancy),mode_of_delivery=VALUES(mode_of_delivery),date_of_delivery=VALUES(date_of_delivery),blood_loss=VALUES(blood_loss),condition_of_mother=VALUES(condition_of_mother),
+apgar_score_1min=VALUES(apgar_score_1min),apgar_score_5min=VALUES(apgar_score_5min),apgar_score_10min=VALUES(apgar_score_10min),resuscitation_done=VALUES(resuscitation_done),place_of_delivery=VALUES(place_of_delivery),delivery_assistant=VALUES(delivery_assistant),counseling_on_infant_feeding=VALUES(counseling_on_infant_feeding) ,counseling_on_exclusive_breastfeeding=VALUES(counseling_on_exclusive_breastfeeding),
+counseling_on_infant_feeding_for_hiv_infected=VALUES(counseling_on_infant_feeding_for_hiv_infected),mother_decision=VALUES(mother_decision)
+;
 
 END$$
 DELIMITER ;
 
--- ------------------------------------------- drug event ---------------------------
+
+-- ------------------------------ update drug event -------------------------------------
+
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_drug_event$$
-CREATE PROCEDURE sp_drug_event()
+DROP PROCEDURE IF EXISTS sp_update_drug_event$$
+CREATE PROCEDURE sp_update_drug_event()
 BEGIN
 
 INSERT INTO kenyaemr_etl.etl_drug_event(
@@ -1267,8 +1224,7 @@ discontinued,
 regimen_discontinued,
 date_discontinued,
 reason_discontinued,
-reason_discontinued_other,
-voided
+reason_discontinued_other
 )
 SELECT 
 o.uuid,
@@ -1352,8 +1308,7 @@ d.discontinued,
 d.drugs,
 d.discontinued_date,
 d.discontinued_reason,
-d.discontinued_reason_non_coded,
-o.voided 
+d.discontinued_reason_non_coded 
 from orders o
 left outer join concept_name cn on o.concept_id = cn.concept_id and cn.locale='en' and cn.concept_name_type='FULLY_SPECIFIED' 
 left outer join concept_set cs on o.concept_id = cs.concept_id 
@@ -1374,48 +1329,172 @@ where o.voided=0 and cs.concept_set = 1085 and o.discontinued=1
 group by o.discontinued_date
 
 ) d on d.patient_id = o.patient_id and d.start_date=o.start_date
-where o.voided=0 and cs.concept_set = 1085
+where cs.concept_set = 1085 and (
+	o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+	or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+	)
 group by o.patient_id, o.start_date
+ON DUPLICATE KEY UPDATE date_started=VALUES(date_started), regimen=VALUES(regimen), discontinued=VALUES(discontinued), regimen_discontinued=VALUES(regimen_discontinued),
+date_discontinued=VALUES(date_discontinued), reason_discontinued=VALUES(reason_discontinued), reason_discontinued_other=VALUES(reason_discontinued_other)
 ;
 
 END$$
 DELIMITER ;
 
--- -------------------------------------------
+-- ------------- update etl_pharmacy_extract table--------------------------------
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_update_etl_pharmacy_extract$$
+CREATE PROCEDURE sp_update_etl_pharmacy_extract()
+BEGIN
+insert into kenyaemr_etl.etl_pharmacy_extract(
+patient_id,
+uuid,
+visit_date,
+visit_id,
+encounter_id,
+date_created,
+encounter_name,
+drug,
+is_arv,
+-- drug_name,
+frequency,
+duration,
+unit,
+voided,
+date_voided,
+dispensing_provider
+)
+select 
+	o.person_id,
+	max(if(o.concept_id=1282, o.uuid, null)),
+	date(o.obs_datetime) as enc_date,
+	e.visit_id,
+	o.encounter_id,
+	e.date_created,
+	et.name as enc_name,
+	max(if(o.concept_id = 1282 and o.value_coded is not null,o.value_coded, null)) as drug_dispensed,
+	max(if(o.concept_id = 1282 and cs.concept_set=1085, 1, 0)) as arv_drug, -- arv:1085
+	-- max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
+	max(if(o.concept_id = 1443, o.value_numeric, null)) as dose,
+	max(if(o.concept_id = 159368, o.value_numeric, null)) as duration,
+	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as unit,
+	o.voided,
+	o.date_voided,
+	e.creator
+from obs o
+left outer join encounter e on e.encounter_id = o.encounter_id and e.voided=0
+left outer join encounter_type et on et.encounter_type_id = e.encounter_type
+left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='SHORT' -- FULLY_SPECIFIED'
+left outer join concept_set cs on o.value_coded = cs.concept_id 
+where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444) and e.encounter_type not in (9,13) and 
+(
+	o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+	or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+	)
+group by o.obs_group_id, o.person_id, encounter_id
+having drug_dispensed is not null
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), encounter_name=VALUES(encounter_name), is_arv=VALUES(is_arv), frequency=VALUES(frequency),
+duration=VALUES(duration), unit=VALUES(unit), voided=VALUES(voided), date_voided=VALUES(date_voided)
+;
+
+END$$
+
+DELIMITER ;
+
+-- ------------------------------------- laboratory updates ---------------------------
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_first_time_setup$$
-CREATE PROCEDURE sp_first_time_setup()
+DROP PROCEDURE IF EXISTS sp_update_etl_laboratory_extract$$
+CREATE PROCEDURE sp_update_etl_laboratory_extract()
 BEGIN
-DECLARE populate_script_id INT(11);
 
-INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('initial_population_of_tables', NOW());
-SET populate_script_id = LAST_INSERT_ID();
-
-CALL sp_populate_etl_patient_demographics();
-CALL sp_populate_etl_hiv_enrollment();
-CALL sp_populate_etl_hiv_followup();
-CALL sp_populate_etl_laboratory_extract();
-CALL sp_populate_etl_pharmacy_extract();
-CALL sp_populate_etl_program_discontinuation();
-CALL sp_populate_etl_mch_enrollment();
-CALL sp_populate_etl_mch_antenatal_visit();
-CALL sp_populate_etl_mch_postnatal_visit();
-CALL sp_populate_etl_tb_enrollment();
-CALL sp_populate_etl_tb_follow_up_visit();
-CALL sp_populate_etl_tb_screening();
-CALL sp_populate_etl_hei_enrolment();
-CALL sp_populate_etl_hei_follow_up();
-CALL sp_populate_etl_mch_delivery();
-CALL sp_drug_event();
-
-UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
+insert into kenyaemr_etl.etl_laboratory_extract(
+uuid,
+encounter_id,
+patient_id,
+visit_date,
+visit_id,
+lab_test,
+test_result,
+date_created,
+created_by 
+)
+select 
+o.uuid,
+e.encounter_id,
+e.patient_id,
+e.encounter_datetime as visit_date,
+e.visit_id,
+o.concept_id,
+(CASE when o.concept_id in(5497,730,654,790,856,21) then o.value_numeric
+	when o.concept_id in(299,1030,302,32) then o.value_coded
+	END) AS test_result,
+e.date_created,
+e.creator
+from encounter e 
+inner join obs o on e.encounter_id=o.encounter_id and o.voided=0
+and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32) -- (5497-N,730-N,299-C,654-N,790-N,856-N,1030-C,21-N,302-C,32-C)
+inner join 
+(
+	select encounter_type_id, uuid, name from encounter_type where uuid ='17a381d1-7e29-406a-b782-aa903b963c28'
+) et on et.encounter_type_id=e.encounter_type
+where e.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_changed > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or e.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_created > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+or o.date_voided > (select max(stop_time) from kenyaemr_etl.etl_script_status)
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), lab_test=VALUES(lab_test), test_result=VALUES(test_result)
+; 
 
 END$$
 DELIMITER ;
 
-CALL create_etl_tables();
-CALL sp_first_time_setup();
+
+-- ----------------------------  scheduled updates ---------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_scheduled_updates$$
+CREATE PROCEDURE sp_scheduled_updates()
+BEGIN
+DECLARE update_script_id INT(11);
+
+INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('scheduled_updates', NOW());
+SET update_script_id = LAST_INSERT_ID();
+
+CALL sp_update_etl_patient_demographics();
+CALL sp_update_etl_hiv_enrollment();
+CALL sp_update_etl_hiv_followup();
+CALL sp_update_etl_program_discontinuation();
+CALL sp_update_etl_mch_enrollment();
+CALL sp_update_etl_mch_antenatal_visit();
+CALL sp_update_etl_mch_postnatal_visit();
+CALL sp_update_etl_tb_enrollment();
+CALL sp_update_etl_tb_follow_up_visit();
+CALL sp_update_etl_tb_screening();
+CALL sp_update_etl_hei_enrolment();
+CALL sp_update_etl_hei_follow_up();
+CALL sp_update_etl_mch_delivery();
+CALL sp_update_drug_event();
+CALL sp_update_etl_pharmacy_extract();
+CALL sp_update_etl_laboratory_extract();
+
+UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= update_script_id;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+DROP EVENT IF EXISTS event_update_kenyaemr_etl_tables$$
+CREATE EVENT event_update_kenyaemr_etl_tables
+	ON SCHEDULE EVERY 5 MINUTE STARTS CURRENT_TIMESTAMP
+	DO
+		CALL sp_scheduled_updates();
+	$$
+DELIMITER ;
+
+
+
+
 
 
 
