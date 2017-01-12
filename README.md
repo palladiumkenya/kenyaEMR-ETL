@@ -67,14 +67,13 @@ Software Requirements:
 - Mysql server client such as MySQLWorkbench
 - Text editor i.e notepad, gedit etc. 
 
-Steps:
-
+Steps:  
 1. Locate DDL, DML and Scheduled_Updates SQL scripts.  
-2. Open DDL, DML and Scheduled_Updates scripts using your favorite text editor  
-3. Open your mysql client program (_we will use workbench)_
-4. Connect to openmrs database. In mysql client program, type statement without quotes ```use openmrs;``` and execute it.  
-5. Open a new tab in workbench and paste the content of DDL script. Execute and wait to complete.  
-6. Open another tab in workbench and paste the content of DML script. Execute and wait to complete. This may take varied time depending of the size of the database. 
+2. Open DDL, DML and Scheduled_Updates scripts using your favorite text editor  
+3. Open your mysql client program (_we will use workbench)_  
+4. Connect to openmrs database. In mysql client program, type statement without quotes ```use openmrs;``` and execute it.  
+5. Open a new tab in workbench and paste the content of DDL script. Execute and wait to complete.  
+6. Open another tab in workbench and paste the content of DML script. Execute and wait to complete. This may take varied time depending of the size of the database.  
 
 **Incremental Updates**  
 This is aimed at updating ETL tables with new records or updates of records in EAV data model. Incremental Updates are handled by the Scheduled_Updates SQL script. 
@@ -83,12 +82,11 @@ The process uses MySQL event and a set of stored procedures to extract, transfor
 
 **Setup and Configuration**
 
-Steps:
-
-1.   Locate Scheduled_Updates SQL script.  
-2.   Open Scheduled_Updates script using your favorite text editor  
-3.   Open your mysql client program (_we will use workbench)_  
-4.   Open another tab in workbench and paste the content of the Scheduled_Updates script. Execute and wait to complete. This should take a few seconds to complete.
+Steps:  
+1. Locate Scheduled_Updates SQL script.  
+2. Open Scheduled_Updates script using your favorite text editor  
+3. Open your mysql client program (_we will use workbench)_  
+4. Open another tab in workbench and paste the content of the Scheduled_Updates script. Execute and wait to complete. This should take a few seconds to complete.
 
 To turn on mysql events scheduler, open a new tab in workbench and execute:
 
@@ -103,19 +101,18 @@ Event scheduler is on if the results of ```show processlist;``` command on workb
 ```
 **Data integrity and Exception handling**
 
-All scripts are configured to run within a transaction. This means that if an error occurs during execution, there will be a total rollback and execution of the script will stop. The error will be logged in _etl_script_status _table for troubleshooting.
+All scripts are configured to run within a transaction. This means that if an error occurs during execution, there will be a total rollback and execution of the script will stop. The error will be logged in *etl_script_status* table for troubleshooting.
 
 ![Execution of ETL event and various stored procedures](img/ETL-diagram.png)
 
 **Audit Trail**
 
-Execution details of the ETL scripts will be logged in the _etl_script_status_ table which has the following structure:
-
-- Script Name  
+Execution details of the ETL scripts will be logged in the _etl_script_status_ table which has the following structure:  
+- Script name  
 - Start time  
 - End time  
-- Execution status – Success/Fail  
-- Error
+- Execution Status (Success/Fail)  
+- Error  
 
 **Database Backup Plan**
 
