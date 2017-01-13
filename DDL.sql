@@ -4,6 +4,7 @@ CREATE PROCEDURE create_etl_tables()
 BEGIN
 DECLARE script_id INT(11);
 -- create/recreate database kenyaemr_etl
+SELECT "Recreating kenyaemr_etl database";
 drop database if exists kenyaemr_etl;
 create database kenyaemr_etl;
 
@@ -23,6 +24,8 @@ INDEX(start_time)
 -- Log start time
 INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('initial_creation_of_tables', NOW());
 SET script_id = LAST_INSERT_ID();
+
+SELECT "Droping existing etl tables";
 
 DROP TABLE if exists kenyaemr_etl.etl_hiv_enrollment;
 DROP TABLE IF EXISTS kenyaemr_etl.etl_patient_hiv_followup;
@@ -44,6 +47,7 @@ DROP TABLE IF EXISTS kenyaemr_etl.etl_missed_appointments;
 DROP TABLE if exists kenyaemr_etl.etl_patient_demographics;
 DROP TABLE IF EXISTS kenyaemr_etl.etl_drug_event;
 
+SELECT "Recreating etl tables";
 -- create table etl_patient_demographics
 create table kenyaemr_etl.etl_patient_demographics (
 patient_id INT(11) not null primary key,
@@ -71,6 +75,8 @@ index(unique_patient_no),
 index(DOB)
 
 );
+
+SELECT "Successfully created etl_patient_demographics table";
 -- create table etl_hiv_enrollment
 
 
@@ -113,6 +119,7 @@ index(date_first_enrolled_in_care)
 
 );
 
+SELECT "Successfully created etl_hiv_enrollment table";
 -- create table etl_hiv_followup
 
 CREATE TABLE kenyaemr_etl.etl_patient_hiv_followup (
@@ -186,7 +193,7 @@ INDEX(at_risk_population)
 
 );
 
-
+SELECT "Successfully created etl_patient_hiv_followup table";
 -- ------- create table etl_laboratory_extract-----------------------------------------
 
 CREATE TABLE kenyaemr_etl.etl_laboratory_extract (
@@ -212,7 +219,7 @@ INDEX(lab_test),
 INDEX(test_result)
 
 );
-
+SELECT "Successfully created etl_laboratory_extract table";
 -- ------------ create table etl_pharmacy_extract-----------------------
 
 
@@ -249,7 +256,7 @@ INDEX(drug),
 INDEX(is_arv)
 
 );
-
+SELECT "Successfully created etl_pharmacy_extract table";
 -- ------------ create table etl_patient_treatment_discontinuation-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_patient_program_discontinuation(
@@ -274,7 +281,7 @@ INDEX(discontinuation_reason),
 INDEX(date_died),
 INDEX(transfer_date)
 );
-
+SELECT "Successfully created etl_patient_program_discontinuation table";
 -- ------------ create table etl_mch_enrollment-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mch_enrollment (
@@ -324,7 +331,7 @@ INDEX(hiv_status),
 INDEX(hiv_test_date),
 INDEX(partner_hiv_status)
 );
-
+SELECT "Successfully created etl_mch_enrollment table";
 -- ------------ create table etl_mch_antenatal_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mch_antenatal_visit (
@@ -377,7 +384,7 @@ INDEX(who_stage),
 INDEX(cd4),
 INDEX(arv_status)
 );
-
+SELECT "Successfully created etl_mch_antenatal_visit table";
 -- ------------ create table etl_mch_postnatal_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mch_postnatal_visit (
@@ -428,7 +435,7 @@ INDEX(mother_hiv_status),
 INDEX(arv_status)
 );
 
-
+SELECT "Successfully created etl_mch_postnatal_visit table";
 -- ------------ create table etl_tb_enrollment-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_tb_enrollment (
@@ -478,7 +485,7 @@ INDEX(patient_classification),
 INDEX(pulmonary_smear_result),
 INDEX(date_first_enrolled_in_tb_care)
 );
-
+SELECT "Successfully created etl_tb_enrollment table";
 -- ------------ create table etl_tb_follow_up_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_tb_follow_up_visit (
@@ -514,7 +521,7 @@ INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(hiv_status)
 );
-
+SELECT "Successfully created etl_tb_follow_up_visit table";
 -- ------------ create table etl_tb_screening-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_tb_screening (
@@ -548,7 +555,7 @@ INDEX(chest_pain),
 INDEX(night_sweat_for_2wks_or_more),
 INDEX(resulting_tb_status)
 );
-
+SELECT "Successfully created etl_tb_screening table";
 -- ------------ create table etl_hei_enrollment-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_hei_enrollment (
@@ -603,7 +610,7 @@ INDEX(reason_for_special_care),
 INDEX(referral_source),
 INDEX(transfer_in)
 );
-
+SELECT "Successfully created etl_hei_enrollment table";
 -- ------------ create table etl_hei_follow_up_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_hei_follow_up_visit (
@@ -655,7 +662,7 @@ INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(infant_feeding)
 );
-
+SELECT "Successfully created etl_hei_follow_up_visit table";
 -- ------------ create table etl_mchs_delivery-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mchs_delivery (
@@ -688,7 +695,7 @@ INDEX(visit_date),
 INDEX(encounter_id),
 INDEX(patient_id)
 );
-
+SELECT "Successfully created etl_mchs_delivery table";
 -- ------------ create table etl_patients_booked_today-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_patients_booked_today(
@@ -736,7 +743,7 @@ INDEX(patient_id),
 INDEX(date_started),
 INDEX(date_discontinued)
 );
-
+SELECT "Successfully created etl_drug_event table";
 -- Update stop time for script
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= script_id;

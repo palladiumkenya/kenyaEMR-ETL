@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS sp_populate_etl_patient_demographics$$
 CREATE PROCEDURE sp_populate_etl_patient_demographics()
 BEGIN
 -- initial set up of etl_patient_demographics table
+SELECT "Processing patient demographics data ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_patient_demographics(
 patient_id,
 given_name,
@@ -121,7 +122,7 @@ set d.unique_patient_no=pit.UPN,
 	d.national_id_no=pit.national_id_no,
 	d.patient_clinic_number=pit.PCN
 ;*/
-
+SELECT "Completed processing patient demographics data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -131,7 +132,7 @@ CREATE PROCEDURE sp_populate_etl_hiv_enrollment()
 BEGIN
 -- populate patient_hiv_enrollment table
 -- uuid: de78a6be-bfc5-4634-adc3-5f1a280455cc
-
+SELECT "Processing HIV Enrollment data ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_hiv_enrollment (
 patient_id,
 uuid,
@@ -188,7 +189,7 @@ left outer join obs o on o.encounter_id=e.encounter_id
 where e.voided=0
 group by e.patient_id, e.encounter_id
 order by e.patient_id;
-
+SELECT "Completed processing HIV Enrollment data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -198,7 +199,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_hiv_followup$$
 CREATE PROCEDURE sp_populate_etl_hiv_followup()
 BEGIN
-
+SELECT "Processing HIV Followup data ", CONCAT("Time: ", NOW());
 INSERT INTO kenyaemr_etl.etl_patient_hiv_followup(
 patient_id,
 visit_id,
@@ -298,7 +299,7 @@ left outer join obs o on o.encounter_id=e.encounter_id
 where e.voided=0
 group by e.patient_id, e.encounter_id, visit_date
 ;
-
+SELECT "Completed processing HIV Followup data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -307,7 +308,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_laboratory_extract$$
 CREATE PROCEDURE sp_populate_etl_laboratory_extract()
 BEGIN
-
+SELECT "Processing Laboratory data ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_laboratory_extract(
 uuid,
 encounter_id,
@@ -381,6 +382,7 @@ group by e.encounter_id;
 
 -- --------<<<<<<<<<<<<<<<<<<<< ------------------------------------------------------------------------------------------------------
 */
+SELECT "Completed processing Laboratory data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -389,6 +391,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_pharmacy_extract$$
 CREATE PROCEDURE sp_populate_etl_pharmacy_extract()
 BEGIN
+SELECT "Processing Pharmacy data ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_pharmacy_extract(
 patient_id,
 uuid,
@@ -432,7 +435,7 @@ left outer join concept_set cs on o.value_coded = cs.concept_id
 where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444) and e.encounter_type not in (9,13) and e.voided=0
 group by o.obs_group_id, o.person_id, encounter_id
 having drug_dispensed is not null;
-
+SELECT "Completed processing Pharmacy data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -441,6 +444,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_program_discontinuation$$
 CREATE PROCEDURE sp_populate_etl_program_discontinuation()
 BEGIN
+SELECT "Processing Program (HIV, TB, MCH ...) discontinuations ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_patient_program_discontinuation(
 patient_id,
 uuid,
@@ -481,7 +485,7 @@ inner join
 ) et on et.encounter_type_id=e.encounter_type
 where e.voided=0
 group by e.encounter_id;
-
+SELECT "Completed processing discontinuation data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -490,7 +494,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_mch_enrollment$$
 CREATE PROCEDURE sp_populate_etl_mch_enrollment()
 BEGIN
-
+SELECT "Processing MCH Enrollments ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_mch_enrollment(
 patient_id,
 uuid,
@@ -573,7 +577,7 @@ inner join
 	uuid in('3ee036d8-7c13-4393-b5d6-036f2fe45126')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id;
-
+SELECT "Completed processing MCH Enrollments ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -582,7 +586,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_mch_antenatal_visit$$
 CREATE PROCEDURE sp_populate_etl_mch_antenatal_visit()
 BEGIN
-
+SELECT "Processing MCH antenatal visits ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_mch_antenatal_visit(
 patient_id,
 uuid,
@@ -673,7 +677,7 @@ inner join
 	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843')
 ) f on f.encounter_type=e.encounter_type
 group by e.encounter_id;
-
+SELECT "Completed processing MCH antenatal visits ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -682,7 +686,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_mch_postnatal_visit$$
 CREATE PROCEDURE sp_populate_etl_mch_postnatal_visit()
 BEGIN
-
+SELECT "Processing MCH postnatal visits ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_mch_postnatal_visit(
 patient_id,
 uuid,
@@ -767,7 +771,7 @@ inner join
 	uuid in('72aa78e0-ee4b-47c3-9073-26f3b9ecc4a7')
 ) f on f.encounter_type=e.encounter_type
 group by e.encounter_id;
-
+SELECT "Completed processing MCH postnatal visits ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -776,7 +780,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_tb_enrollment$$
 CREATE PROCEDURE sp_populate_etl_tb_enrollment()
 BEGIN
-
+SELECT "Processing TB Enrollments ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_tb_enrollment(
 patient_id,
 uuid,
@@ -856,7 +860,7 @@ inner join
 	uuid in('9d8498a4-372d-4dc4-a809-513a2434621e')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id;
-
+SELECT "Completed processing TB Enrollments ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -865,7 +869,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_tb_follow_up_visit$$
 CREATE PROCEDURE sp_populate_etl_tb_follow_up_visit()
 BEGIN
-
+SELECT "Processing TB Followup visits ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_tb_follow_up_visit(
 patient_id,
 uuid,
@@ -926,7 +930,7 @@ inner join
 	uuid in('fbf0bfce-e9f4-45bb-935a-59195d8a0e35')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id;
-
+SELECT "Completed processing TB Followup visits ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -935,7 +939,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_tb_screening$$
 CREATE PROCEDURE sp_populate_etl_tb_screening()
 BEGIN
-
+SELECT "Processing TB Screening data ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_tb_screening(
 patient_id,
 uuid,
@@ -980,7 +984,7 @@ inner join
 	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id;
-
+SELECT "Completed processing TB Screening data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -989,7 +993,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_hei_enrolment$$
 CREATE PROCEDURE sp_populate_etl_hei_enrolment()
 BEGIN
-
+SELECT "Processing HEI Enrollments", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_hei_enrollment(
 patient_id,
 uuid,
@@ -1078,7 +1082,7 @@ inner join
 	uuid in('415f5136-ca4a-49a8-8db3-f994187c3af6')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id ;  
-
+SELECT "Completed processing HEI Enrollments", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -1087,7 +1091,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_hei_follow_up$$
 CREATE PROCEDURE sp_populate_etl_hei_follow_up()
 BEGIN
-
+SELECT "Processing HEI Followup visits", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_hei_follow_up_visit(
 patient_id,
 uuid,
@@ -1180,7 +1184,7 @@ inner join
 	uuid in('bcc6da85-72f2-4291-b206-789b8186a021')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id ; 
-
+SELECT "Completed processing HEI Followup visits", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -1189,7 +1193,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_mch_delivery$$
 CREATE PROCEDURE sp_populate_etl_mch_delivery()
 BEGIN
-
+SELECT "Processing MCH Delivery visits", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_mchs_delivery(
 patient_id,
 uuid,
@@ -1246,7 +1250,7 @@ inner join
 	uuid in('496c7cc3-0eea-4e84-a04c-2292949e2f7f')
 ) f on f.encounter_type=e.encounter_type
 group by e.encounter_id ;
-
+SELECT "Completed processing MCH Delivery visits", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -1255,7 +1259,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_drug_event$$
 CREATE PROCEDURE sp_drug_event()
 BEGIN
-
+SELECT "Processing Drug Event Data", CONCAT("Time: ", NOW());
 INSERT INTO kenyaemr_etl.etl_drug_event(
 uuid,
 patient_id,
@@ -1377,7 +1381,7 @@ group by o.discontinued_date
 where o.voided=0 and cs.concept_set = 1085
 group by o.patient_id, o.start_date
 ;
-
+SELECT "Completed processing Drug Event Data", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
@@ -1388,7 +1392,7 @@ DROP PROCEDURE IF EXISTS sp_first_time_setup$$
 CREATE PROCEDURE sp_first_time_setup()
 BEGIN
 DECLARE populate_script_id INT(11);
-
+SELECT "Beginning first time setup", CONCAT("Time: ", NOW());
 INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('initial_population_of_tables', NOW());
 SET populate_script_id = LAST_INSERT_ID();
 
@@ -1411,6 +1415,7 @@ CALL sp_drug_event();
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
 
+SELECT "Completed first time setup", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
 
