@@ -95,34 +95,38 @@ set d.phone_number=att.phone_number,
 	d.email_address=att.email_address;
 
 
-/*update kenyaemr_etl.etl_patient_demographics d 
-left outer join 
-(select 
-	pi.patient_id,
-	max(if(pit.uuid='05ee9cf4-7242-4a17-b4d4-00f707265c8a', pi.identifier, null)) as UPN,
-	max(if(pit.uuid='b4d66522-11fc-45c7-83e3-39a1af21ae0d', pi.identifier, null)) as PCN,
-	max(if(pit.uuid='49af6cdc-7968-4abb-bf46-de10d7f4859f', pi.identifier, null)) as national_id_no
-	from patient_identifier pi
-	inner join 
-	(
-	select 
-	name, 
-	patient_identifier_type_id, 
-	uuid 
-	from patient_identifier_type
-	) pit on pit.patient_identifier_type_id = pi.identifier_type
-		and pit.uuid in (
-	'05ee9cf4-7242-4a17-b4d4-00f707265c8a', -- upn
-	'b4d66522-11fc-45c7-83e3-39a1af21ae0d', -- pcn
-	'49af6cdc-7968-4abb-bf46-de10d7f4859f' -- national-id
-		)
-group by pi.patient_id
-) pit on pit.patient_id = d.patient_id
-set d.unique_patient_no=pit.UPN, 
-	d.national_id_no=pit.national_id_no,
-	d.patient_clinic_number=pit.PCN
-;*/
-SELECT "Completed processing patient demographics data ", CONCAT("Time: ", NOW());
+update kenyaemr_etl.etl_patient_demographics d
+join (select pi.patient_id,
+max(if(pit.uuid='05ee9cf4-7242-4a17-b4d4-00f707265c8a',pi.identifier,null)) as upn,
+max(if(pit.uuid='d8ee3b8c-a8fc-4d6b-af6a-9423be5f8906',pi.identifier,null)) district_reg_number,
+max(if(pit.uuid='c4e3caca-2dcc-4dc4-a8d9-513b6e63af91',pi.identifier,null)) Tb_treatment_number,
+max(if(pit.uuid='b4d66522-11fc-45c7-83e3-39a1af21ae0d',pi.identifier,null)) Patient_clinic_number,
+max(if(pit.uuid='49af6cdc-7968-4abb-bf46-de10d7f4859f',pi.identifier,null)) National_id,
+max(if(pit.uuid='0691f522-dd67-4eeb-92c8-af5083baf338',pi.identifier,null)) Hei_id
+from patient_identifier pi
+join patient_identifier_type pit on pi.identifier_type=pit.patient_identifier_type_id
+where voided=0
+group by pi.patient_id) pid on pid.patient_id=d.patient_id
+set d.unique_patient_no=pid.UPN, 
+	d.national_id_no=pid.National_id,
+	d.patient_clinic_number=pid.Patient_clinic_number,
+    d.hei_no=pid.Hei_id,
+    d.Tb_no=pid.Tb_treatment_number,
+    d.district_reg_no=pid.district_reg_number
+;
+
+update kenyaemr_etl.etl_patient_demographics d
+join (select o.person_id as patient_id,
+max(if(o.concept_id in(1054),cn.name,null))  as marital_status,
+max(if(o.concept_id in(1712),cn.name,null))  as education_level
+from obs o
+join concept_name cn on cn.concept_id=o.value_coded and cn.concept_name_type='FULLY_SPECIFIED'
+and cn.locale='en'
+where o.concept_id in (1054,1712) and o.voided=0
+group by person_id) pstatus on pstatus.patient_id=d.patient_id
+set d.marital_status=pstatus.marital_status,
+d.education_level=pstatus.education_level;
+
 END$$
 DELIMITER ;
 
@@ -138,6 +142,7 @@ patient_id,
 uuid,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 encounter_provider,
 date_created,
@@ -161,6 +166,7 @@ e.patient_id,
 e.uuid,
 e.visit_id,
 e.encounter_datetime as visit_date,
+e.location_id,
 e.encounter_id,
 e.creator,
 e.date_created,
@@ -204,6 +210,7 @@ INSERT INTO kenyaemr_etl.etl_patient_hiv_followup(
 patient_id,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 encounter_provider,
 date_created,
@@ -249,6 +256,7 @@ select
 e.patient_id,
 e.visit_id,
 date(e.encounter_datetime) as visit_date,
+e.location_id,
 e.encounter_id as encounter_id,
 e.creator,
 e.date_created as date_created,
@@ -313,6 +321,7 @@ insert into kenyaemr_etl.etl_laboratory_extract(
 uuid,
 encounter_id,
 patient_id,
+location_id,
 visit_date,
 visit_id,
 lab_test,
@@ -327,6 +336,7 @@ select
 o.uuid,
 e.encounter_id,
 e.patient_id,
+e.location_id,
 e.encounter_datetime as visit_date,
 e.visit_id,
 o.concept_id,
@@ -432,7 +442,7 @@ left outer join encounter e on e.encounter_id = o.encounter_id and e.voided=0
 left outer join encounter_type et on et.encounter_type_id = e.encounter_type
 left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='SHORT' -- FULLY_SPECIFIED'
 left outer join concept_set cs on o.value_coded = cs.concept_id 
-where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444) and e.encounter_type not in (9,13) and e.voided=0
+where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444)  and e.voided=0
 group by o.obs_group_id, o.person_id, encounter_id
 having drug_dispensed is not null;
 SELECT "Completed processing Pharmacy data ", CONCAT("Time: ", NOW());
@@ -500,6 +510,7 @@ patient_id,
 uuid,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 anc_number,
 gravida,
@@ -537,6 +548,7 @@ e.patient_id,
 e.uuid,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 max(if(o.concept_id=161655,o.value_numeric,null)) as anc_number,
 max(if(o.concept_id=5624,o.value_numeric,null)) as gravida,
@@ -592,6 +604,7 @@ patient_id,
 uuid,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 provider,
 temperature,
@@ -633,6 +646,7 @@ e.patient_id,
 e.uuid,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 e.creator,
 max(if(o.concept_id=5088,o.value_numeric,null)) as temperature,
@@ -692,6 +706,7 @@ patient_id,
 uuid,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 provider,
 temperature,
@@ -730,6 +745,7 @@ e.patient_id,
 e.uuid,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 e.creator,
 max(if(o.concept_id=5088,o.value_numeric,null)) as temperature,
@@ -787,6 +803,7 @@ uuid,
 provider,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 date_treatment_started,
 district,
@@ -822,6 +839,7 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 max(if(o.concept_id=1113,o.value_datetime,null)) as date_treatment_started,
 max(if(o.concept_id=161564,o.value_text,null)) as district,
@@ -876,6 +894,7 @@ uuid,
 provider,
 visit_id ,
 visit_date ,
+location_id,
 encounter_id,
 spatum_test,
 spatum_result,
@@ -902,6 +921,7 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 max(if(o.concept_id=159961,o.value_coded,null)) as spatum_test,
 max(if(o.concept_id=307,o.value_coded,null)) as spatum_result,
@@ -947,6 +967,7 @@ provider,
 visit_id,
 visit_date,
 encounter_id,
+location_id,
 cough_for_2wks_or_more,
 confirmed_tb_contact,
 chronic_cough,
@@ -964,6 +985,7 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 max(if(o.concept_id=1728 and o.value_coded=159799,o.value_coded,null)) as cough_for_2wks_or_more,
 max(if(o.concept_id=1728 and o.value_coded=124068,o.value_coded,null)) as confirmed_tb_contact,
@@ -1000,6 +1022,7 @@ uuid,
 provider,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 child_exposed,
 -- hei_id_number,
@@ -1040,6 +1063,7 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 max(if(o.concept_id=5303,o.value_coded,null)) as child_exposed,
 -- max(if(o.concept_id=5087,o.value_numeric,null)) as hei_id_number,
@@ -1098,6 +1122,7 @@ uuid,
 provider,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 weight,
 height,
@@ -1113,7 +1138,7 @@ standing_milestone,
 talking_milestone,
 review_of_systems_developmental,
 -- dna_pcr_sample_date,
--- dna_pcr_contextual_status,
+dna_pcr_contextual_status,
 dna_pcr_result,
 -- dna_pcr_dbs_sample_code,
 -- dna_pcr_results_date,
@@ -1140,6 +1165,7 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 max(if(o.concept_id=5089,o.value_numeric,null)) as weight,
 max(if(o.concept_id=5090,o.value_numeric,null)) as height,
@@ -1155,7 +1181,7 @@ max(if(o.concept_id=162069 and o.value_coded=162062,o.value_coded,null)) as stan
 max(if(o.concept_id=162069 and o.value_coded=162060,o.value_coded,null)) as talking_milestone,
 max(if(o.concept_id=1189,o.value_coded,null)) as review_of_systems_developmental,
 -- max(if(o.concept_id=159951,o.value_datetime,null)) as dna_pcr_sample_date,
--- max(if(o.concept_id=162084,o.value_coded,null)) as dna_pcr_contextual_status,
+max(if(o.concept_id=162084,o.value_coded,null)) as dna_pcr_contextual_status,
 max(if(o.concept_id=844,o.value_coded,null)) as dna_pcr_result,
 -- max(if(o.concept_id=162086,o.value_text,null)) as dna_pcr_dbs_sample_code,
 -- max(if(o.concept_id=160082,o.value_datetime,null)) as dna_pcr_results_date,
@@ -1181,7 +1207,7 @@ and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
-	uuid in('bcc6da85-72f2-4291-b206-789b8186a021')
+	uuid in('bcc6da85-72f2-4291-b206-789b8186a021','c6d09e05-1f25-4164-8860-9f32c5a02df0')
 ) et on et.encounter_type_id=e.encounter_type
 group by e.encounter_id ; 
 SELECT "Completed processing HEI Followup visits", CONCAT("Time: ", NOW());
@@ -1200,6 +1226,7 @@ uuid,
 provider,
 visit_id,
 visit_date,
+location_id,
 encounter_id,
 data_entry_date,
 duration_of_pregnancy,
@@ -1224,6 +1251,7 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
+e.location_id,
 e.encounter_id,
 e.date_created,
 max(if(o.concept_id=1789,o.value_numeric,null)) as duration_of_pregnancy,
