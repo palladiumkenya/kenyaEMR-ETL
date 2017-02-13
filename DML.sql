@@ -285,7 +285,7 @@ max(if(o.concept_id=160575,o.value_coded,null)) as reason_not_using_family_plann
 max(if(o.concept_id=1659,o.value_coded,null)) as tb_status,
 max(if(o.concept_id=161654,o.value_text,null)) as tb_treatment_no,
 max(if(o.concept_id=161652,o.value_coded,null)) as ctx_adherence,
-max(if(o.concept_id=162229,o.value_coded,null)) as ctx_dispensed,
+max(if(o.concept_id=162229 or (o.concept_id=1282 and o.value_coded in (105281,74250)),o.value_coded,null)) as ctx_dispensed,
 max(if(o.concept_id=162230,o.value_coded,null)) as inh_dispensed,
 max(if(o.concept_id=1658,o.value_coded,null)) as arv_adherence,
 max(if(o.concept_id=160582,o.value_coded,null)) as poor_arv_adherence_reason,
@@ -303,7 +303,7 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where uuid in('a0034eee-1940-4e35-847f-97537a35d05e','d1059fb9-a079-4feb-a749-eedd709ae542', '465a92f2-baf8-42e9-9612-53064be868e8')
 ) et on et.encounter_type_id=e.encounter_type
 left outer join obs o on o.encounter_id=e.encounter_id 
-	and o.concept_id in (1246,161643,5089,5085,5086,5090,5088,5087,5242,5092,1343,5356,5272,161033,161655,5596,1427,5624,1053,160653,374,160575,1659,161654,161652,162229,162230,1658,160582,160632,159423,161557,159777,161558,160581,5096)
+	and o.concept_id in (1282,1246,161643,5089,5085,5086,5090,5088,5087,5242,5092,1343,5356,5272,161033,161655,5596,1427,5624,1053,160653,374,160575,1659,161654,161652,162229,162230,1658,160582,160632,159423,161557,159777,161558,160581,5096)
 where e.voided=0
 group by e.patient_id, e.encounter_id, visit_date
 ;
