@@ -18,7 +18,7 @@ echo script_directory: ${script_dir}
 # MySQL settings
 mysql_user="root"
 mysql_password="root"
-mysql_base_database="matoso"
+mysql_base_database="openmrs"
 
 
 

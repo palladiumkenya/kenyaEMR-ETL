@@ -39,7 +39,7 @@ p.voided,
 p.death_date
 from person p 
 join patient pa on pa.patient_id=p.person_id
-inner join person_name pn on pn.person_id = p.person_id and pn.voided=0
+left join person_name pn on pn.person_id = p.person_id and pn.voided=0
 GROUP BY p.person_id
 ) p
 ON DUPLICATE KEY UPDATE given_name = p.given_name, middle_name=p.middle_name, family_name=p.family_name;
