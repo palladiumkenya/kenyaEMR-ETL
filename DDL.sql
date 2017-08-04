@@ -242,12 +242,15 @@ encounter_id INT(11),
 encounter_name VARCHAR(100),
 drug INT(11),
 is_arv INT(11),
+is_ctx INT(11),
+is_dapsone INT(11),
 drug_name VARCHAR(100),
 dose INT(11),
 unit INT(11),
 frequency INT(11),
 duration INT(11),
-duration_units INT(11) ,
+duration_units VARCHAR(20) ,
+duration_in_days INT(11),
 prescription_provider VARCHAR(50),
 dispensing_provider VARCHAR(50),
 regimen VARCHAR(50),
@@ -763,6 +766,8 @@ INDEX(date_started),
 INDEX(date_discontinued)
 );
 SELECT "Successfully created etl_drug_event table";
+
+
 -- Update stop time for script
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= script_id;

@@ -411,11 +411,13 @@ encounter_id,
 date_created,
 encounter_name,
 drug,
-is_arv,
 -- drug_name,
+is_arv,
+is_ctx,
+is_dapsone,
 frequency,
 duration,
-unit,
+duration_units,
 voided,
 date_voided,
 dispensing_provider
@@ -430,10 +432,12 @@ select
 	et.name as enc_name,
 	max(if(o.concept_id = 1282 and o.value_coded is not null,o.value_coded, null)) as drug_dispensed,
 	max(if(o.concept_id = 1282 and cs.concept_set=1085, 1, 0)) as arv_drug, -- arv:1085
+	max(if(o.concept_id = 1282 and o.value_coded = 105281,1, 0)) as is_ctx,
+	max(if(o.concept_id = 1282 and o.value_coded = 74250,1, 0)) as is_dapsone,
 	-- max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
 	max(if(o.concept_id = 1443, o.value_numeric, null)) as dose,
 	max(if(o.concept_id = 159368, o.value_numeric, null)) as duration,
-	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as unit,
+	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as duration_units,
 	o.voided,
 	o.date_voided,
 	e.creator
@@ -445,6 +449,11 @@ left outer join concept_set cs on o.value_coded = cs.concept_id
 where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444)  and e.voided=0
 group by o.obs_group_id, o.person_id, encounter_id
 having drug_dispensed is not null;
+
+update kenyaemr_etl.etl_pharmacy_extract
+	set duration_in_days = if(duration_units= 'Days', duration,if(duration_units='Weeks',duration * 7,if(duration_units='Months',duration * 31,null)))
+	where (duration is not null or duration <> "") and (duration_units is not null or duration_units <> "");
+
 SELECT "Completed processing Pharmacy data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
@@ -1402,7 +1411,7 @@ discontinued_reason_non_coded
 from orders o
 left outer join concept_name cn on o.concept_id = cn.concept_id and cn.locale='en' and cn.concept_name_type='FULLY_SPECIFIED' 
 left outer join concept_set cs on o.concept_id = cs.concept_id 
-where o.voided=0 and cs.concept_set = 1085 and o.discontinued=1
+where o.voided=0 and cs.concept_set = 1085 -- and o.discontinued=1 -- start and stopped dates should instead be used
 group by o.discontinued_date
 
 ) d on d.patient_id = o.patient_id and d.start_date=o.start_date
