@@ -341,7 +341,7 @@ e.encounter_datetime as visit_date,
 e.visit_id,
 o.concept_id,
 (CASE when o.concept_id in(5497,730,654,790,856,21) then o.value_numeric
-	when o.concept_id in(299,1030,302,32) then o.value_coded
+	when o.concept_id in(299,1030,302,32, 1305) then o.value_coded
 	END) AS test_result,
 -- date requested,
 -- date result received
@@ -350,10 +350,10 @@ e.date_created,
 e.creator
 from encounter e 
 inner join obs o on e.encounter_id=o.encounter_id and o.voided=0
-and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32) -- (5497-N,730-N,299-C,654-N,790-N,856-N,1030-C,21-N,302-C,32-C)
+and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32, 1305) -- (5497-N,730-N,299-C,654-N,790-N,856-N,1030-C,21-N,302-C,32-C)
 inner join 
 (
-	select encounter_type_id, uuid, name from encounter_type where uuid ='17a381d1-7e29-406a-b782-aa903b963c28'
+	select encounter_type_id, uuid, name from encounter_type where uuid in('17a381d1-7e29-406a-b782-aa903b963c28', 'a0034eee-1940-4e35-847f-97537a35d05e')
 ) et on et.encounter_type_id=e.encounter_type
 ; 
 
