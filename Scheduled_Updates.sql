@@ -1436,7 +1436,7 @@ discontinued_reason_non_coded
 from orders o
 left outer join concept_name cn on o.concept_id = cn.concept_id and cn.locale='en' and cn.concept_name_type='FULLY_SPECIFIED' 
 left outer join concept_set cs on o.concept_id = cs.concept_id 
-where o.voided=0 and cs.concept_set = 1085 and o.discontinued=1
+where o.voided=0 and cs.concept_set = 1085
 group by o.discontinued_date
 
 ) d on d.patient_id = o.patient_id and d.start_date=o.start_date
@@ -1470,16 +1470,18 @@ encounter_id,
 date_created,
 encounter_name,
 drug,
-is_arv,
 -- drug_name,
+is_arv,
+is_ctx,
+is_dapsone,
 frequency,
 duration,
-unit,
+duration_units,
 voided,
 date_voided,
 dispensing_provider
 )
-select 
+select
 	o.person_id,
 	max(if(o.concept_id=1282, o.uuid, null)),
 	date(o.obs_datetime) as enc_date,
@@ -1489,10 +1491,12 @@ select
 	et.name as enc_name,
 	max(if(o.concept_id = 1282 and o.value_coded is not null,o.value_coded, null)) as drug_dispensed,
 	max(if(o.concept_id = 1282 and cs.concept_set=1085, 1, 0)) as arv_drug, -- arv:1085
+	max(if(o.concept_id = 1282 and o.value_coded = 105281,1, 0)) as is_ctx,
+	max(if(o.concept_id = 1282 and o.value_coded = 74250,1, 0)) as is_dapsone,
 	-- max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
 	max(if(o.concept_id = 1443, o.value_numeric, null)) as dose,
 	max(if(o.concept_id = 159368, o.value_numeric, null)) as duration,
-	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as unit,
+	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as duration_units,
 	o.voided,
 	o.date_voided,
 	e.creator
@@ -1500,17 +1504,21 @@ from obs o
 left outer join encounter e on e.encounter_id = o.encounter_id and e.voided=0
 left outer join encounter_type et on et.encounter_type_id = e.encounter_type
 left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='SHORT' -- FULLY_SPECIFIED'
-left outer join concept_set cs on o.value_coded = cs.concept_id 
-where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444) and e.voided=0 and
+left outer join concept_set cs on o.value_coded = cs.concept_id
+where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444)  and e.voided=0 and
 (
 	o.date_created > last_update_time
 	or o.date_voided > last_update_time
 	)
 group by o.obs_group_id, o.person_id, encounter_id
 having drug_dispensed is not null
-ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), encounter_name=VALUES(encounter_name), is_arv=VALUES(is_arv), frequency=VALUES(frequency),
-duration=VALUES(duration), unit=VALUES(unit), voided=VALUES(voided), date_voided=VALUES(date_voided)
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), encounter_name=VALUES(encounter_name), is_arv=VALUES(is_arv), is_ctx=VALUES(is_ctx), is_dapsone=VALUES(is_dapsone), frequency=VALUES(frequency),
+duration=VALUES(duration), duration_units=VALUES(duration_units), voided=VALUES(voided), date_voided=VALUES(date_voided)
 ;
+
+update kenyaemr_etl.etl_pharmacy_extract
+	set duration_in_days = if(duration_units= 'Days', duration,if(duration_units='Weeks',duration * 7,if(duration_units='Months',duration * 31,null)))
+	where (duration is not null or duration <> "") and (duration_units is not null or duration_units <> "");
 
 END$$
 
@@ -1547,16 +1555,16 @@ e.encounter_datetime as visit_date,
 e.visit_id,
 o.concept_id,
 (CASE when o.concept_id in(5497,730,654,790,856,21) then o.value_numeric
-	when o.concept_id in(299,1030,302,32) then o.value_coded
+	when o.concept_id in(299,1030,302,32, 1305) then o.value_coded
 	END) AS test_result,
 e.date_created,
 e.creator
 from encounter e 
 inner join obs o on e.encounter_id=o.encounter_id and o.voided=0
-and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32) -- (5497-N,730-N,299-C,654-N,790-N,856-N,1030-C,21-N,302-C,32-C)
+and o.concept_id in (5497,730,299,654,790,856,1030,21,302,32, 1305)
 inner join 
 (
-	select encounter_type_id, uuid, name from encounter_type where uuid ='17a381d1-7e29-406a-b782-aa903b963c28'
+	select encounter_type_id, uuid, name from encounter_type where uuid in('17a381d1-7e29-406a-b782-aa903b963c28', 'a0034eee-1940-4e35-847f-97537a35d05e')
 ) et on et.encounter_type_id=e.encounter_type
 where e.date_created > last_update_time
 or e.date_changed > last_update_time
