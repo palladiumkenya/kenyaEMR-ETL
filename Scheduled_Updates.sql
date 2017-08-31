@@ -1577,7 +1577,201 @@ ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), lab_test=VALUES(lab_test)
 END$$
 DELIMITER ;
 
+-- ---------------------------- Update HTS encounters ---------------------
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_update_hts_test$$
+CREATE PROCEDURE sp_update_hts_test()
+BEGIN
+
+DECLARE last_update_time DATETIME;
+SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
+INSERT INTO kenyaemr_etl.etl_hts_test (
+patient_id,
+visit_id,
+encounter_id,
+encounter_uuid,
+encounter_location,
+creator,
+date_created,
+visit_date,
+test_type,
+population_type,
+key_population_type,
+ever_tested_for_hiv,
+months_since_last_test,
+patient_disabled,
+disability_type,
+patient_consented,
+client_tested_as,
+test_strategy,
+test_1_kit_name,
+test_1_kit_lot_no,
+test_1_kit_expiry,
+test_1_result,
+test_2_kit_name,
+test_2_kit_lot_no,
+test_2_kit_expiry,
+test_2_result,
+final_test_result,
+patient_given_result,
+couple_discordant,
+tb_screening,
+patient_had_hiv_self_test ,
+provider_name,
+remarks,
+voided
+)
+select
+e.patient_id,
+e.visit_id,
+e.encounter_id,
+e.uuid,
+ef.uuid,
+e.location_id,
+e.creator,
+e.date_created,
+e.encounter_datetime as visit_date,
+max(if(o.concept_id=162084 and o.value_coded=162080 and ef.uuid != "b08471f6-0892-4bf7-ab2b-bf79797b8ea4","Initial","confirmation")) as test_type ,
+max(if(o.concept_id=164930,(case o.value_coded when 164928 then "General Population" when 164929 then "Key Population" else "" end),null)) as population_type,
+max(if(o.concept_id=160581,(case o.value_coded when 105 then "People who inject drugs" when 160578 then "Men who have sex with men" when 160579 then "Female sex worker" else "" end),null)) as key_population_type,
+max(if(o.concept_id=164401,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as ever_tested_for_hiv,
+null as months_since_last_test,
+max(if(o.concept_id=164951,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as patient_disabled,
+max(if(o.concept_id=162558,(case o.value_coded when 120291 then "Deaf" when 147215 then "Blind" when 151342 then "Mentally Challenged" when 164538 then "Physically Challenged" when 5622 then "Other" else "" end),null)) as disability_type,
+max(if(o.concept_id=1710,(case o.value_boolean when 1 then "Yes" when 0 then "No" else "" end),null)) as patient_consented,
+max(if(o.concept_id=164959,(case o.value_coded when 164957 then "Individual" when 164958 then "Couple" else "" end),null)) as client_tested_as,
+max(if(o.concept_id=164956,(
+  case o.value_coded
+  when 164163 then "Provider Initiated Testing(PITC)"
+  when 164953 then "Non Provider Initiated Testing"
+  when 164954 then "Integrated VCT Center"
+  when 164955 then "Stand Alone VCT Center"
+  when 159938 then "Home Based Testing"
+  when 159939 then "Mobile Outreach HTS"
+  when 5622 then "Other"
+  else ""
+  end ),null)) as test_strategy,
+max(if(t.test_1_result is not null, t.kit_name, "")) as test_1_kit_name,
+max(if(t.test_1_result is not null, t.lot_no, "")) as test_1_kit_lot_no,
+max(if(t.test_1_result is not null, t.expiry_date, "")) as test_1_kit_expiry,
+max(if(t.test_1_result is not null, t.test_1_result, "")) as test_1_result,
+max(if(t.test_2_result is not null, t.kit_name, "")) as test_2_kit_name,
+max(if(t.test_2_result is not null, t.lot_no, "")) as test_2_kit_lot_no,
+max(if(t.test_2_result is not null, t.expiry_date, "")) as test_2_kit_expiry,
+max(if(t.test_2_result is not null, t.test_2_result, "")) as test_2_result,
+max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1138 then "Inconclusive" else "" end),null)) as final_test_result,
+max(if(o.concept_id=164848,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as patient_given_result,
+max(if(o.concept_id=6096,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as couple_discordant,
+max(if(o.concept_id=1659,(case o.value_coded when 1660 then "No TB signs" when 142177 then "Presumed TB" when 1662 then "TB Confirmed" when 160737 then "Not done" when 1111 then "On TB Treatment"  else "" end),null)) as tb_screening,
+max(if(o.concept_id=164952,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as patient_had_hiv_self_test,
+max(if(o.concept_id=163042,o.value_text,null)) as remarks,
+e.voided
+from encounter e
+inner join
+(
+  select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
+) ef on ef.form_id=e.form_id
+inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (162084, 164930, 160581, 164401, 164951, 162558, 1710, 164959, 164956,
+                                                                                 159427, 164848, 6096, 1659, 164952, 163042)
+inner join (
+ select
+   o.person_id,
+   o.encounter_id,
+   o.obs_group_id,
+   max(if(o.concept_id=1040, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 163611 then "Invalid"  else "" end),null)) as test_1_result ,
+   max(if(o.concept_id=1326, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1175 then "N/A"  else "" end),null)) as test_2_result ,
+   max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "Uni-Gold" else "" end),null)) as kit_name ,
+   max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
+   max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
+ from obs o inner join encounter e on e.encounter_id = o.encounter_id
+   inner join
+   (
+     select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
+   ) ef on ef.form_id=e.form_id
+ where o.concept_id in (1040, 1326, 164962, 164964, 162502)
+ group by e.encounter_id, o.obs_group_id
+ order by e.encounter_id, o.obs_group_id
+) t on e.encounter_id = t.encounter_id
+where e.date_created > last_update_time
+or e.date_changed > last_update_time
+or e.date_voided > last_update_time
+or o.date_created > last_update_time
+or o.date_voided > last_update_time
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), test_type=VALUES(test_type), population_type=VALUES(population_type),
+key_population_type=VALUES(key_population_type), ever_tested_for_hiv=VALUES(ever_tested_for_hiv), patient_disabled=VALUES(patient_disabled),
+disability_type=VALUES(disability_type), patient_consented=VALUES(patient_consented), client_tested_as=VALUES(client_tested_as),
+test_strategy=VALUES(test_strategy), test_1_kit_name=VALUES(test_1_kit_name), test_1_kit_lot_no=VALUES(test_1_kit_lot_no),
+test_1_kit_expiry=VALUES(test_1_kit_expiry), test_1_result=VALUES(test_1_result), test_2_kit_name=VALUES(test_2_kit_name),
+test_2_kit_lot_no=VALUES(test_2_kit_lot_no), test_2_kit_expiry=VALUES(test_2_kit_expiry), test_2_result=VALUES(test_2_result),
+final_test_result=VALUES(final_test_result), patient_given_result=VALUES(patient_given_result), couple_discordant=VALUES(couple_discordant),
+tb_screening=VALUES(tb_screening), patient_had_hiv_self_test=VALUES(patient_had_hiv_self_test), provider_name=VALUES(provider_name), 
+remarks=VALUES(remarks), voided=VALUES(voided)
+;
+
+END$$
+DELIMITER ;
+
+-- ------------------------------------ POPULATE HTS LINKAGES AND REFERRALS -------------------------------
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_update_hts_linkage_and_referral$$
+CREATE PROCEDURE sp_update_hts_linkage_and_referral()
+BEGIN 
+
+DECLARE last_update_time DATETIME;
+SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
+INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
+  patient_id,
+  visit_id,
+  encounter_id,
+  encounter_uuid,
+  encounter_location,
+  creator,
+  date_created,
+  visit_date,
+  tracing_type,
+  tracing_status,
+  facility_linked_to,
+  ccc_number,
+  provider_handed_to,
+  voided
+)
+  select
+    e.patient_id,
+    e.visit_id,
+    e.encounter_id,
+    e.uuid,
+    e.location_id,
+    e.creator,
+    e.date_created,
+    e.encounter_datetime as visit_date,
+    max(if(o.concept_id=164966,(case o.value_coded when 1650 then "Phone" when 164965 then "Physical" else "" end),null)) as contact_type ,
+    max(if(o.concept_id=159811,(case o.value_coded when 1065 then "Contacted and linked" when 1066 then "Contacted but not linked" else "" end),null)) as contact_status,
+    max(if(o.concept_id=162724,o.value_text,null)) as facility_linked_to,
+    max(if(o.concept_id=162053,o.value_text,null)) as ccc_number,
+    max(if(o.concept_id=1473,o.value_text,null)) as provider_handed_to,
+    e.voided
+  from encounter e
+    inner join
+    (
+      select form_id, uuid, name from form where uuid = "050a7f12-5c52-4cad-8834-863695af335d"
+    ) ef on ef.form_id=e.form_id
+    inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
+    where e.date_created > last_update_time
+or e.date_changed > last_update_time
+or e.date_voided > last_update_time
+or o.date_created > last_update_time
+or o.date_voided > last_update_time
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), contact_type=VALUES(contact_type), contact_status=VALUES(contact_status),
+facility_linked_to=VALUES(facility_linked_to), ccc_number=VALUES(ccc_number), provider_handed_to=VALUES(provider_handed_to)
+;
+
+END$$
+DELIMITER ;
 -- ----------------------------  scheduled updates ---------------------
 
 DELIMITER $$
@@ -1605,6 +1799,8 @@ CALL sp_update_etl_mch_delivery();
 CALL sp_update_drug_event();
 CALL sp_update_etl_pharmacy_extract();
 CALL sp_update_etl_laboratory_extract();
+CALL sp_update_hts_test();
+CALL sp_update_hts_linkage_and_referral();
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= update_script_id;
 

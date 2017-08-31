@@ -46,6 +46,8 @@ DROP TABLE IF EXISTS kenyaemr_etl.etl_patients_booked_today;
 DROP TABLE IF EXISTS kenyaemr_etl.etl_missed_appointments;
 DROP TABLE if exists kenyaemr_etl.etl_patient_demographics;
 DROP TABLE IF EXISTS kenyaemr_etl.etl_drug_event;
+DROP TABLE IF EXISTS kenyaemr_etl.etl_hts_test;
+DROP TABLE IF EXISTS kenyaemr_etl.etl_hts_referral_and_linkage;
 
 SELECT "Recreating etl tables";
 -- create table etl_patient_demographics
@@ -767,6 +769,77 @@ INDEX(date_discontinued)
 );
 SELECT "Successfully created etl_drug_event table";
 
+-- -------------------------- CREATE hts_test table ---------------------------------
+
+create table kenyaemr_etl.etl_hts_test (
+patient_id INT(11) not null,
+visit_id INT(11) DEFAULT NULL,
+encounter_id INT(11) NOT NULL primary key,
+encounter_uuid CHAR(32) NOT NULL,
+encounter_location INT(11) NOT NULL,
+creator INT(11) NOT NULL,
+date_created DATE NOT NULL,
+visit_date DATE,
+test_type VARCHAR(50) DEFAULT NULL,
+population_type VARCHAR(50),
+key_population_type VARCHAR(50),
+ever_tested_for_hiv VARCHAR(10),
+months_since_last_test INT(11),
+patient_disabled VARCHAR(50),
+disability_type VARCHAR(50),
+patient_consented VARCHAR(50) DEFAULT NULL,
+client_tested_as VARCHAR(50),
+test_strategy VARCHAR(50),
+test_1_kit_name VARCHAR(50),
+test_1_kit_lot_no VARCHAR(50) DEFAULT NULL,
+test_1_kit_expiry DATE DEFAULT NULL,
+test_1_result VARCHAR(50) DEFAULT NULL,
+test_2_kit_name VARCHAR(50),
+test_2_kit_lot_no VARCHAR(50) DEFAULT NULL,
+test_2_kit_expiry DATE DEFAULT NULL,
+test_2_result VARCHAR(50) DEFAULT NULL,
+final_test_result VARCHAR(50) DEFAULT NULL,
+patient_given_result VARCHAR(50) DEFAULT NULL,
+couple_discordant VARCHAR(100) DEFAULT NULL,
+tb_screening VARCHAR(20) DEFAULT NULL,
+patient_had_hiv_self_test VARCHAR(50) DEFAULT NULL,
+provider_name VARCHAR(50) DEFAULT NULL,
+remarks VARCHAR(50) DEFAULT NULL,
+voided INT(11),
+index(patient_id),
+index(visit_id),
+index(tb_screening),
+index(visit_date),
+index(population_type),
+index(test_type),
+index(final_test_result),
+index(couple_discordant),
+index(test_1_kit_name),
+index(test_2_kit_name)
+);
+
+-- ------------- CREATE HTS LINKAGE AND REFERRALS ------------------------
+
+CREATE TABLE kenyaemr_etl.etl_hts_referral_and_linkage (
+patient_id INT(11) not null primary key,
+visit_id INT(11) DEFAULT NULL,
+encounter_id INT(11) NOT NULL,
+encounter_uuid CHAR(32) NOT NULL,
+encounter_location INT(11) NOT NULL,
+creator INT(11) NOT NULL,
+date_created DATE NOT NULL,
+visit_date DATE,
+tracing_type VARCHAR(50),
+tracing_status VARCHAR(10),
+ccc_number INT(11),
+facility_linked_to VARCHAR(50),
+provider_handed_to VARCHAR(50),
+voided INT(11),
+index(patient_id),
+index(visit_date),
+index(tracing_type),
+index(tracing_status)
+);
 
 -- Update stop time for script
 
