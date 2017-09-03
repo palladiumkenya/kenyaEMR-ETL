@@ -1462,7 +1462,6 @@ patient_given_result,
 couple_discordant,
 tb_screening,
 patient_had_hiv_self_test ,
-provider_name,
 remarks,
 voided
 )
@@ -1471,7 +1470,6 @@ e.patient_id,
 e.visit_id,
 e.encounter_id,
 e.uuid,
-ef.uuid,
 e.location_id,
 e.creator,
 e.date_created,
@@ -1573,10 +1571,10 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
     e.creator,
     e.date_created,
     e.encounter_datetime as visit_date,
-    max(if(o.concept_id=164966,(case o.value_coded when 1650 then "Phone" when 164965 then "Physical" else "" end),null)) as contact_type ,
-    max(if(o.concept_id=159811,(case o.value_coded when 1065 then "Contacted and linked" when 1066 then "Contacted but not linked" else "" end),null)) as contact_status,
+    max(if(o.concept_id=164966,(case o.value_coded when 1650 then "Phone" when 164965 then "Physical" else "" end),null)) as tracing_type ,
+    max(if(o.concept_id=159811,(case o.value_coded when 1065 then "Contacted and linked" when 1066 then "Contacted but not linked" else "" end),null)) as tracing_status,
     max(if(o.concept_id=162724,o.value_text,null)) as facility_linked_to,
-    max(if(o.concept_id=162053,o.value_text,null)) as ccc_number,
+    max(if(o.concept_id=162053,o.value_numeric,null)) as ccc_number,
     max(if(o.concept_id=1473,o.value_text,null)) as provider_handed_to,
     e.voided
   from encounter e
@@ -1584,7 +1582,7 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
     (
       select form_id, uuid, name from form where uuid = "050a7f12-5c52-4cad-8834-863695af335d"
     ) ef on ef.form_id=e.form_id
-    inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
+    left outer join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
   group by e.encounter_id;
 
 END$$

@@ -1619,7 +1619,6 @@ patient_given_result,
 couple_discordant,
 tb_screening,
 patient_had_hiv_self_test ,
-provider_name,
 remarks,
 voided
 )
@@ -1628,7 +1627,6 @@ e.patient_id,
 e.visit_id,
 e.encounter_id,
 e.uuid,
-ef.uuid,
 e.location_id,
 e.creator,
 e.date_created,
@@ -1676,24 +1674,24 @@ inner join
 inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (162084, 164930, 160581, 164401, 164951, 162558, 1710, 164959, 164956,
                                                                                  159427, 164848, 6096, 1659, 164952, 163042)
 inner join (
- select
-   o.person_id,
-   o.encounter_id,
-   o.obs_group_id,
-   max(if(o.concept_id=1040, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 163611 then "Invalid"  else "" end),null)) as test_1_result ,
-   max(if(o.concept_id=1326, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1175 then "N/A"  else "" end),null)) as test_2_result ,
-   max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "Uni-Gold" else "" end),null)) as kit_name ,
-   max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
-   max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
- from obs o inner join encounter e on e.encounter_id = o.encounter_id
-   inner join
-   (
-     select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
-   ) ef on ef.form_id=e.form_id
- where o.concept_id in (1040, 1326, 164962, 164964, 162502)
- group by e.encounter_id, o.obs_group_id
- order by e.encounter_id, o.obs_group_id
-) t on e.encounter_id = t.encounter_id
+             select
+               o.person_id,
+               o.encounter_id,
+               o.obs_group_id,
+               max(if(o.concept_id=1040, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 163611 then "Invalid"  else "" end),null)) as test_1_result ,
+               max(if(o.concept_id=1326, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1175 then "N/A"  else "" end),null)) as test_2_result ,
+               max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "Uni-Gold" else "" end),null)) as kit_name ,
+               max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
+               max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
+             from obs o inner join encounter e on e.encounter_id = o.encounter_id
+               inner join
+               (
+                 select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
+               ) ef on ef.form_id=e.form_id
+             where o.concept_id in (1040, 1326, 164962, 164964, 162502)
+             group by e.encounter_id, o.obs_group_id
+             order by e.encounter_id, o.obs_group_id
+           ) t on e.encounter_id = t.encounter_id
 where e.date_created > last_update_time
 or e.date_changed > last_update_time
 or e.date_voided > last_update_time
@@ -1707,7 +1705,7 @@ test_strategy=VALUES(test_strategy), test_1_kit_name=VALUES(test_1_kit_name), te
 test_1_kit_expiry=VALUES(test_1_kit_expiry), test_1_result=VALUES(test_1_result), test_2_kit_name=VALUES(test_2_kit_name),
 test_2_kit_lot_no=VALUES(test_2_kit_lot_no), test_2_kit_expiry=VALUES(test_2_kit_expiry), test_2_result=VALUES(test_2_result),
 final_test_result=VALUES(final_test_result), patient_given_result=VALUES(patient_given_result), couple_discordant=VALUES(couple_discordant),
-tb_screening=VALUES(tb_screening), patient_had_hiv_self_test=VALUES(patient_had_hiv_self_test), provider_name=VALUES(provider_name), 
+tb_screening=VALUES(tb_screening), patient_had_hiv_self_test=VALUES(patient_had_hiv_self_test),
 remarks=VALUES(remarks), voided=VALUES(voided)
 ;
 
@@ -1748,10 +1746,10 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
     e.creator,
     e.date_created,
     e.encounter_datetime as visit_date,
-    max(if(o.concept_id=164966,(case o.value_coded when 1650 then "Phone" when 164965 then "Physical" else "" end),null)) as contact_type ,
-    max(if(o.concept_id=159811,(case o.value_coded when 1065 then "Contacted and linked" when 1066 then "Contacted but not linked" else "" end),null)) as contact_status,
+    max(if(o.concept_id=164966,(case o.value_coded when 1650 then "Phone" when 164965 then "Physical" else "" end),null)) as tracing_type ,
+    max(if(o.concept_id=159811,(case o.value_coded when 1065 then "Contacted and linked" when 1066 then "Contacted but not linked" else "" end),null)) as tracing_status,
     max(if(o.concept_id=162724,o.value_text,null)) as facility_linked_to,
-    max(if(o.concept_id=162053,o.value_text,null)) as ccc_number,
+    max(if(o.concept_id=162053,o.value_numeric,null)) as ccc_number,
     max(if(o.concept_id=1473,o.value_text,null)) as provider_handed_to,
     e.voided
   from encounter e
@@ -1759,14 +1757,14 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
     (
       select form_id, uuid, name from form where uuid = "050a7f12-5c52-4cad-8834-863695af335d"
     ) ef on ef.form_id=e.form_id
-    inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
+    left outer join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
     where e.date_created > last_update_time
 or e.date_changed > last_update_time
 or e.date_voided > last_update_time
 or o.date_created > last_update_time
 or o.date_voided > last_update_time
 group by e.encounter_id
-ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), contact_type=VALUES(contact_type), contact_status=VALUES(contact_status),
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), tracing_type=VALUES(tracing_type), tracing_status=VALUES(tracing_status),
 facility_linked_to=VALUES(facility_linked_to), ccc_number=VALUES(ccc_number), provider_handed_to=VALUES(provider_handed_to)
 ;
 

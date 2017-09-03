@@ -803,7 +803,6 @@ patient_given_result VARCHAR(50) DEFAULT NULL,
 couple_discordant VARCHAR(100) DEFAULT NULL,
 tb_screening VARCHAR(20) DEFAULT NULL,
 patient_had_hiv_self_test VARCHAR(50) DEFAULT NULL,
-provider_name VARCHAR(50) DEFAULT NULL,
 remarks VARCHAR(50) DEFAULT NULL,
 voided INT(11),
 index(patient_id),
@@ -821,9 +820,9 @@ index(test_2_kit_name)
 -- ------------- CREATE HTS LINKAGE AND REFERRALS ------------------------
 
 CREATE TABLE kenyaemr_etl.etl_hts_referral_and_linkage (
-patient_id INT(11) not null primary key,
+patient_id INT(11) not null,
 visit_id INT(11) DEFAULT NULL,
-encounter_id INT(11) NOT NULL,
+encounter_id INT(11) NOT NULL primary key,
 encounter_uuid CHAR(32) NOT NULL,
 encounter_location INT(11) NOT NULL,
 creator INT(11) NOT NULL,
