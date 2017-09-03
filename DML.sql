@@ -1474,7 +1474,7 @@ e.location_id,
 e.creator,
 e.date_created,
 e.encounter_datetime as visit_date,
-max(if(o.concept_id=162084 and o.value_coded=162080 and ef.uuid != "b08471f6-0892-4bf7-ab2b-bf79797b8ea4","Initial","confirmation")) as test_type ,
+max(if(o.concept_id=162084 and o.value_coded=162080 and f.uuid != "b08471f6-0892-4bf7-ab2b-bf79797b8ea4","Initial","confirmation")) as test_type ,
 max(if(o.concept_id=164930,(case o.value_coded when 164928 then "General Population" when 164929 then "Key Population" else "" end),null)) as population_type,
 max(if(o.concept_id=160581,(case o.value_coded when 105 then "People who inject drugs" when 160578 then "Men who have sex with men" when 160579 then "Female sex worker" else "" end),null)) as key_population_type,
 max(if(o.concept_id=164401,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as ever_tested_for_hiv,
@@ -1510,10 +1510,7 @@ max(if(o.concept_id=164952,(case o.value_coded when 1065 then "Yes" when 1066 th
 max(if(o.concept_id=163042,o.value_text,null)) as remarks,
 e.voided
 from encounter e
-inner join
-(
-  select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
-) ef on ef.form_id=e.form_id
+inner join form f on f.form_id=e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
 inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (162084, 164930, 160581, 164401, 164951, 162558, 1710, 164959, 164956,
                                                                                  159427, 164848, 6096, 1659, 164952, 163042)
 inner join (
@@ -1526,11 +1523,9 @@ inner join (
                max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "Uni-Gold" else "" end),null)) as kit_name ,
                max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
                max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
-             from obs o inner join encounter e on e.encounter_id = o.encounter_id
-               inner join
-               (
-                 select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
-               ) ef on ef.form_id=e.form_id
+             from obs o 
+             inner join encounter e on e.encounter_id = o.encounter_id
+             inner join form f on f.form_id=e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")   
              where o.concept_id in (1040, 1326, 164962, 164964, 162502)
              group by e.encounter_id, o.obs_group_id
              order by e.encounter_id, o.obs_group_id
@@ -1578,12 +1573,48 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
     max(if(o.concept_id=1473,o.value_text,null)) as provider_handed_to,
     e.voided
   from encounter e
-    inner join
-    (
-      select form_id, uuid, name from form where uuid = "050a7f12-5c52-4cad-8834-863695af335d"
-    ) ef on ef.form_id=e.form_id
-    left outer join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
+  inner join form f on f.form_id = e.form_id and f.uuid = "050a7f12-5c52-4cad-8834-863695af335d"
+  left outer join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
   group by e.encounter_id;
+
+-- fetch locally enrolled clients who had went through HTS
+
+  INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
+  patient_id,
+  visit_id,
+  encounter_id,
+  encounter_uuid,
+  encounter_location,
+  creator,
+  date_created,
+  visit_date,
+  tracing_status,
+  facility_linked_to,
+  ccc_number,
+  voided
+)
+select
+    e.patient_id,
+    e.visit_id,
+    e.encounter_id,
+    e.uuid,
+    e.location_id,
+    e.creator,
+    e.date_created,
+    e.encounter_datetime as visit_date,
+    "Enrolled" as contact_status,
+    (select name from location
+        where location_id in (select property_value
+        from global_property
+        where property='kenyaemr.defaultLocation'))  as facility_linked_to,
+    pi.identifier as ccc_number,
+    e.voided
+ from encounter e 
+ inner join encounter_type et on e.encounter_type = et.encounter_type_id and et.uuid = "de78a6be-bfc5-4634-adc3-5f1a280455cc"
+ inner join form f on f.form_id = e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
+ left outer join patient_identifier pi on pi.patient_id = e.patient_id
+ left join patient_identifier_type pit on pi.identifier_type=pit.patient_identifier_type_id and pit.uuid = '05ee9cf4-7242-4a17-b4d4-00f707265c8a'
+;
 
 END$$
 DELIMITER ;
