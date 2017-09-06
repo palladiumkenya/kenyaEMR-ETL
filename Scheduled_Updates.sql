@@ -258,14 +258,38 @@ pulse_rate,
 respiratory_rate,
 oxygen_saturation,
 muac,
+nutritional_status,
+population_type,
+key_population_type,
 who_stage,
+presenting_complaints,
+clinical_notes,
+on_anti_tb_drugs,
+on_ipt,
+ever_on_ipt,
+spatum_smear_ordered,
+chest_xray_ordered,
+genexpert_ordered,
+spatum_smear_result,
+chest_xray_result,
+genexpert_result,
+referral,
+clinical_tb_diagnosis,
+contact_invitation,
+evaluated_for_ipt,
+has_known_allergies,
+has_chronic_illnesses_cormobidities,
+has_adverse_drug_reaction,
 pregnancy_status,
+wants_pregnancy,
 pregnancy_outcome,
 anc_number,
 expected_delivery_date,
 last_menstrual_period,
 gravida,
 parity,
+full_term_pregnancies,
+abortion_miscarriages,
 family_planning_status,
 family_planning_method,
 reason_not_using_family_planning,
@@ -273,6 +297,8 @@ tb_status,
 tb_treatment_no,
 ctx_adherence,
 ctx_dispensed,
+dapsone_adherence,
+dapsone_dispensed,
 inh_dispensed,
 arv_adherence,
 poor_arv_adherence_reason,
@@ -281,8 +307,13 @@ pwp_disclosure,
 pwp_partner_tested,
 condom_provided,
 screened_for_sti,
+cacx_screening, 
+sti_partner_notification,
 at_risk_population,
+system_review_finding,
 next_appointment_date,
+next_appointment_reason,
+differentiated_care,
 voided
 )
 select 
@@ -304,21 +335,47 @@ max(if(o.concept_id=5087,o.value_numeric,null)) as pulse_rate,
 max(if(o.concept_id=5242,o.value_numeric,null)) as respiratory_rate,
 max(if(o.concept_id=5092,o.value_numeric,null)) as oxygen_saturation,
 max(if(o.concept_id=1343,o.value_numeric,null)) as muac,
+max(if(o.concept_id=163300,o.value_coded,null)) as nutritional_status, 
+max(if(o.concept_id=164930,o.value_coded,null)) as population_type, 
+max(if(o.concept_id=160581,o.value_coded,null)) as key_population_type, 
 max(if(o.concept_id=5356,o.value_coded,null)) as who_stage ,
+max(if(o.concept_id=1154,o.value_coded,null)) as presenting_complaints ,
+max(if(o.concept_id=160430,o.value_text,null)) as clinical_notes ,
+max(if(o.concept_id=164948,o.value_coded,null)) as on_anti_tb_drugs ,
+max(if(o.concept_id=164949,o.value_coded,null)) as on_ipt ,
+max(if(o.concept_id=164950,o.value_coded,null)) as ever_on_ipt ,
+max(if(o.concept_id=1271 and o.value_coded = 307,1065,1066)) as spatum_smear_ordered ,
+max(if(o.concept_id=1271 and o.value_coded = 12 ,1065,1066)) as chest_xray_ordered ,
+max(if(o.concept_id=1271 and o.value_coded = 162202,1065,1066)) as genexpert_ordered ,
+max(if(o.concept_id=307,o.value_coded,null)) as spatum_smear_result ,
+max(if(o.concept_id=12,o.value_coded,null)) as chest_xray_result ,
+max(if(o.concept_id=162202,o.value_coded,null)) as genexpert_result ,
+max(if(o.concept_id=1272,o.value_coded,null)) as referral ,
+max(if(o.concept_id=163752,o.value_coded,null)) as clinical_tb_diagnosis ,
+max(if(o.concept_id=163414,o.value_coded,null)) as contact_invitation ,
+max(if(o.concept_id=162275,o.value_coded,null)) as evaluated_for_ipt ,
+max(if(o.concept_id=160557,o.value_coded,null)) as has_known_allergies ,
+max(if(o.concept_id=162747,o.value_coded,null)) as has_chronic_illnesses_cormobidities ,
+max(if(o.concept_id=121764,o.value_coded,null)) as has_adverse_drug_reaction ,
 max(if(o.concept_id=5272,o.value_coded,null)) as pregnancy_status,
+max(if(o.concept_id=164933,o.value_coded,null)) as wants_pregnancy,
 max(if(o.concept_id=161033,o.value_coded,null)) as pregnancy_outcome,
 max(if(o.concept_id=161655,o.value_numeric,null)) as anc_number,
 max(if(o.concept_id=5596,date(o.value_datetime),null)) as expected_delivery_date,
 max(if(o.concept_id=1427,date(o.value_datetime),null)) as last_menstrual_period,
 max(if(o.concept_id=5624,o.value_numeric,null)) as gravida,
 max(if(o.concept_id=1053,o.value_numeric,null)) as parity ,
+max(if(o.concept_id=160080,o.value_numeric,null)) as full_term_pregnancies,
+max(if(o.concept_id=1823,o.value_numeric,null)) as abortion_miscarriages ,
 max(if(o.concept_id=160653,o.value_coded,null)) as family_planning_status,
 max(if(o.concept_id=374,o.value_coded,null)) as family_planning_method,
 max(if(o.concept_id=160575,o.value_coded,null)) as reason_not_using_family_planning ,
 max(if(o.concept_id=1659,o.value_coded,null)) as tb_status,
 max(if(o.concept_id=161654,o.value_text,null)) as tb_treatment_no,
 max(if(o.concept_id=161652,o.value_coded,null)) as ctx_adherence,
-max(if(o.concept_id=162229,o.value_coded,null)) as ctx_dispensed,
+max(if(o.concept_id=162229 or (o.concept_id=1282 and o.value_coded = 105281),o.value_coded,null)) as ctx_dispensed,
+max(if(o.concept_id=164941,o.value_coded,null)) as dapsone_adherence,
+max(if(o.concept_id=164940 or (o.concept_id=1282 and o.value_coded = 74250),o.value_coded,null)) as dapsone_dispensed,
 max(if(o.concept_id=162230,o.value_coded,null)) as inh_dispensed,
 max(if(o.concept_id=1658,o.value_coded,null)) as arv_adherence,
 max(if(o.concept_id=160582,o.value_coded,null)) as poor_arv_adherence_reason,
@@ -327,8 +384,13 @@ max(if(o.concept_id=159423,o.value_coded,null)) as pwp_disclosure,
 max(if(o.concept_id=161557,o.value_coded,null)) as pwp_partner_tested,
 max(if(o.concept_id=159777,o.value_coded,null)) as condom_provided ,
 max(if(o.concept_id=161558,o.value_coded,null)) as screened_for_sti,
+max(if(o.concept_id=164934,o.value_coded,null)) as cacx_screening,
+max(if(o.concept_id=164935,o.value_coded,null)) as sti_partner_notification,
 max(if(o.concept_id=160581,o.value_coded,null)) as at_risk_population,
+max(if(o.concept_id=159615,o.value_coded,null)) as system_review_finding,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date,
+max(if(o.concept_id=160288,o.value_coded,null)) as next_appointment_reason,
+max(if(o.concept_id=164947,o.value_coded,null)) as differentiated_care,
 e.voided as voided
 from encounter e 
 inner join 
@@ -336,7 +398,8 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where uuid in('a0034eee-1940-4e35-847f-97537a35d05e','d1059fb9-a079-4feb-a749-eedd709ae542', '465a92f2-baf8-42e9-9612-53064be868e8')
 ) et on et.encounter_type_id=e.encounter_type
 left outer join obs o on o.encounter_id=e.encounter_id 
-	and o.concept_id in (1246,161643,5089,5085,5086,5090,5088,5087,5242,5092,1343,5356,5272,161033,161655,5596,1427,5624,1053,160653,374,160575,1659,161654,161652,162229,162230,1658,160582,160632,159423,161557,159777,161558,160581,5096)
+	and o.concept_id in (1282,1246,161643,5089,5085,5086,5090,5088,5087,5242,5092,1343,5356,5272,161033,161655,5596,1427,5624,1053,160653,374,160575,1659,161654,161652,162229,162230,1658,160582,160632,159423,161557,159777,161558,160581,5096,163300, 164930, 160581, 1154, 160430, 164948, 164949, 164950, 1271, 307, 12, 162202, 1272, 163752, 163414, 162275, 160557, 162747,
+121764, 164933, 160080, 1823, 164940, 164934, 164935, 159615, 160288, 164947)
 where e.voided=0 and e.date_created > last_update_time
 or e.date_changed > last_update_time
 or e.date_voided > last_update_time
@@ -345,11 +408,15 @@ or o.date_voided > last_update_time
 group by e.patient_id, visit_date
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_provider=VALUES(encounter_provider),visit_scheduled=VALUES(visit_scheduled),
 person_present=VALUES(person_present),weight=VALUES(weight),systolic_pressure=VALUES(systolic_pressure),diastolic_pressure=VALUES(diastolic_pressure),height=VALUES(height),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),respiratory_rate=VALUES(respiratory_rate),
-oxygen_saturation=VALUES(oxygen_saturation),muac=VALUES(muac),who_stage=VALUES(who_stage),pregnancy_status=VALUES(pregnancy_status),pregnancy_outcome=VALUES(pregnancy_outcome),anc_number=VALUES(anc_number),expected_delivery_date=VALUES(expected_delivery_date),
-last_menstrual_period=VALUES(last_menstrual_period),gravida=VALUES(gravida),parity=VALUES(parity),family_planning_status=VALUES(family_planning_status),family_planning_method=VALUES(family_planning_method),reason_not_using_family_planning=VALUES(reason_not_using_family_planning),
-tb_status=VALUES(tb_status),tb_treatment_no=VALUES(tb_treatment_no),ctx_adherence=VALUES(ctx_adherence),ctx_dispensed=VALUES(ctx_dispensed),inh_dispensed=VALUES(inh_dispensed),arv_adherence=VALUES(arv_adherence),poor_arv_adherence_reason=VALUES(poor_arv_adherence_reason),
-poor_arv_adherence_reason_other=VALUES(poor_arv_adherence_reason_other),pwp_disclosure=VALUES(pwp_disclosure),pwp_partner_tested=VALUES(pwp_partner_tested),condom_provided=VALUES(condom_provided),screened_for_sti=VALUES(screened_for_sti),at_risk_population=VALUES(at_risk_population),
-next_appointment_date=VALUES(next_appointment_date),voided=VALUES(voided)
+oxygen_saturation=VALUES(oxygen_saturation),muac=VALUES(muac), nutritional_status=VALUES(nutritional_status), population_type=VALUES(population_type), key_population_type=VALUES(key_population_type), who_stage=VALUES(who_stage),presenting_complaints = VALUES(presenting_complaints),
+clinical_notes = VALUES(clinical_notes),on_anti_tb_drugs=VALUES(on_anti_tb_drugs),on_ipt=VALUES(on_ipt),ever_on_ipt=VALUES(ever_on_ipt),spatum_smear_ordered=VALUES(spatum_smear_ordered),chest_xray_ordered=VALUES(chest_xray_ordered),genexpert_ordered=VALUES(genexpert_ordered),
+spatum_smear_result=VALUES(spatum_smear_result), chest_xray_result=VALUES(chest_xray_result),genexpert_result=VALUES(genexpert_result),referral=VALUES(referral),clinical_tb_diagnosis=VALUES(clinical_tb_diagnosis),contact_invitation=VALUES(contact_invitation),
+evaluated_for_ipt=VALUES(evaluated_for_ipt),has_known_allergies=VALUES(has_known_allergies),has_chronic_illnesses_cormobidities=VALUES(has_chronic_illnesses_cormobidities),
+has_adverse_drug_reaction=VALUES(has_adverse_drug_reaction),pregnancy_status=VALUES(pregnancy_status), wants_pregnancy=VALUES(wants_pregnancy), pregnancy_outcome=VALUES(pregnancy_outcome),anc_number=VALUES(anc_number),expected_delivery_date=VALUES(expected_delivery_date),
+last_menstrual_period=VALUES(last_menstrual_period),gravida=VALUES(gravida),parity=VALUES(parity),full_term_pregnancies=VALUES(full_term_pregnancies), abortion_miscarriages=VALUES(abortion_miscarriages),family_planning_status=VALUES(family_planning_status),family_planning_method=VALUES(family_planning_method),reason_not_using_family_planning=VALUES(reason_not_using_family_planning),
+tb_status=VALUES(tb_status),tb_treatment_no=VALUES(tb_treatment_no),ctx_adherence=VALUES(ctx_adherence),ctx_dispensed=VALUES(ctx_dispensed),dapsone_adherence=VALUES(dapsone_adherence),dapsone_dispensed=VALUES(dapsone_dispensed),inh_dispensed=VALUES(inh_dispensed),arv_adherence=VALUES(arv_adherence),poor_arv_adherence_reason=VALUES(poor_arv_adherence_reason),
+poor_arv_adherence_reason_other=VALUES(poor_arv_adherence_reason_other),pwp_disclosure=VALUES(pwp_disclosure),pwp_partner_tested=VALUES(pwp_partner_tested),condom_provided=VALUES(condom_provided),screened_for_sti=VALUES(screened_for_sti),cacx_screening=VALUES(cacx_screening), sti_partner_notification=VALUES(sti_partner_notification),at_risk_population=VALUES(at_risk_population), 
+system_review_finding=VALUES(system_review_finding), next_appointment_date=VALUES(next_appointment_date), next_appointment_reason=VALUES(next_appointment_reason), differentiated_care=VALUES(differentiated_care), voided=VALUES(voided)
 ;
 
 END$$
@@ -986,7 +1053,7 @@ and o.concept_id in(1727,1728,1659,1113,160632)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
-	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be')
+	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be', "a0034eee-1940-4e35-847f-97537a35d05e")
 ) et on et.encounter_type_id=e.encounter_type
 where e.date_created > last_update_time
 or e.date_changed > last_update_time
@@ -1667,10 +1734,7 @@ max(if(o.concept_id=164952,(case o.value_coded when 1065 then "Yes" when 1066 th
 max(if(o.concept_id=163042,o.value_text,null)) as remarks,
 e.voided
 from encounter e
-inner join
-(
-  select form_id, uuid, name from form where uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
-) ef on ef.form_id=e.form_id
+inner join form f on f.form_id=e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
 inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (162084, 164930, 160581, 164401, 164951, 162558, 1710, 164959, 164956,
                                                                                  159427, 164848, 6096, 1659, 164952, 163042)
 inner join (
@@ -1805,8 +1869,6 @@ select
 where e.date_created > last_update_time
 or e.date_changed > last_update_time
 or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
 group by e.patient_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), ccc_number=VALUES(ccc_number)
 ;
@@ -1822,7 +1884,7 @@ DECLARE update_script_id INT(11);
 
 INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('scheduled_updates', NOW());
 SET update_script_id = LAST_INSERT_ID();
-
+SELECT "last insert id", update_script_id;
 CALL sp_update_etl_patient_demographics();
 CALL sp_update_etl_hiv_enrollment();
 CALL sp_update_etl_hiv_followup();
@@ -1842,7 +1904,9 @@ CALL sp_update_etl_laboratory_extract();
 CALL sp_update_hts_test();
 CALL sp_update_hts_linkage_and_referral();
 
-UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= update_script_id;
+UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where  id= update_script_id;
+DELETE FROM kenyaemr_etl.etl_script_status where script_name="initial_creation_of_tables" and start_time < DATE_SUB(NOW(), INTERVAL 1 HOUR);
+SELECT update_script_id;
 
 END$$
 DELIMITER ;
