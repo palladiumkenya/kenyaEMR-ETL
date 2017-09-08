@@ -193,8 +193,7 @@ join patient p on p.patient_id=e.patient_id and p.voided=0
 left outer join obs o on o.encounter_id=e.encounter_id 
 	and o.concept_id in (160555,160540,160534,160535,161551,159599,160554,160632,160533,160638,160640,160642,160641)
 where e.voided=0
-group by e.patient_id, e.encounter_id
-order by e.patient_id;
+group by e.patient_id, e.encounter_id;
 SELECT "Completed processing HIV Enrollment data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
@@ -1591,7 +1590,6 @@ inner join (
              inner join form f on f.form_id=e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")   
              where o.concept_id in (1040, 1326, 164962, 164964, 162502)
              group by e.encounter_id, o.obs_group_id
-             order by e.encounter_id, o.obs_group_id
            ) t on e.encounter_id = t.encounter_id
 group by e.encounter_id;
 SELECT "Completed processing hts tests";
@@ -1681,8 +1679,135 @@ select
 
 END$$
 DELIMITER ;
+-- ----------------------------------- UPDATE DASHBOARD TABLE ---------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_update_dashboard_table$$
+CREATE PROCEDURE sp_update_dashboard_table()
+BEGIN
+
+DECLARE startDate DATE;
+DECLARE endDate DATE;
+DECLARE reportingPeriod VARCHAR(20);
+
+SET startDate = DATE_FORMAT(NOW() - INTERVAL 1 MONTH, '%Y-%m-01');
+SET endDate = DATE_FORMAT(LAST_DAY(NOW() - INTERVAL 1 MONTH), '%Y-%m-%d');
+SET reportingPeriod = DATE_FORMAT(NOW() - INTERVAL 1 MONTH, '%Y-%M');
+
+-- CURRENT IN CARE 
+DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_current_in_care;
+CREATE TABLE kenyaemr_etl.etl_last_month_current_in_care (
+patient_id INT(11) not null
+);
+
+INSERT INTO kenyaemr_etl.etl_last_month_current_in_care (patient_id)
+select distinct e.patient_id
+from (
+select fup.visit_date,fup.patient_id,p.dob,p.Gender, min(e.visit_date) as enroll_date,
+max(fup.visit_date) as latest_vis_date,
+mid(max(concat(fup.visit_date,fup.next_appointment_date)),11) as latest_tca,
+p.unique_patient_no
+from kenyaemr_etl.etl_patient_hiv_followup fup 
+join kenyaemr_etl.etl_patient_demographics p on p.patient_id=fup.patient_id 
+join kenyaemr_etl.etl_hiv_enrollment e on fup.patient_id=e.patient_id 
+where fup.visit_date <= endDate 
+group by patient_id 
+               --  we may need to filter lost to follow-up using this
+having (latest_tca>endDate or 
+((latest_tca between startDate and endDate) or (latest_vis_date between startDate and endDate)) )
+               -- drop missd completely
+) e
+                -- drop discountinued
+where e.patient_id not in (select patient_id from kenyaemr_etl.etl_patient_program_discontinuation 
+where date(visit_date) <= endDate and program_name='HIV' 
+group by patient_id 
+having if(e.latest_tca>max(visit_date),1,0)=0)
+
+;
+
+-- CURRENT ON ART
+DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_current_on_art;
+CREATE TABLE kenyaemr_etl.etl_last_month_current_on_art (
+patient_id INT(11) not null
+);
+
+INSERT INTO kenyaemr_etl.etl_last_month_current_on_art
+select distinct e.patient_id
+from ( 
+select fup.visit_date,fup.patient_id,p.dob,p.Gender, min(e.visit_date) as enroll_date,
+max(fup.visit_date) as latest_vis_date,
+mid(max(concat(fup.visit_date,fup.next_appointment_date)),11) as latest_tca,
+p.unique_patient_no
+from kenyaemr_etl.etl_patient_hiv_followup fup 
+join kenyaemr_etl.etl_patient_demographics p on p.patient_id=fup.patient_id 
+join kenyaemr_etl.etl_hiv_enrollment e on fup.patient_id=e.patient_id 
+where fup.visit_date <= endDate 
+group by patient_id 
+          --  we may need to filter lost to follow-up using this
+having (latest_tca>endDate or 
+(latest_tca between startDate and endDate and latest_vis_date between startDate and endDate) )
+       -- drop missd completely
+) e
+       -- drop discountinued
+where e.patient_id not in (select patient_id from kenyaemr_etl.etl_patient_program_discontinuation 
+where date(visit_date) <= endDate and program_name='HIV' 
+group by patient_id 
+having if(e.latest_tca>max(visit_date),1,0)=0) 
+and e.patient_id in (select distinct patient_id  
+from kenyaemr_etl.etl_drug_event  
+where date(date_started) <= endDate);
 
 
+DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_newly_enrolled_in_care;
+CREATE TABLE kenyaemr_etl.etl_last_month_newly_enrolled_in_care (
+patient_id INT(11) not null
+);
+
+INSERT INTO kenyaemr_etl.etl_last_month_newly_enrolled_in_care
+select distinct e.patient_id 
+from kenyaemr_etl.etl_hiv_enrollment e 
+join kenyaemr_etl.etl_patient_demographics p on p.patient_id=e.patient_id 
+where  e.entry_point <> 160563  and transfer_in_date is null 
+and date(e.visit_date) between startDate and endDate;
+
+
+DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_newly_on_art;
+CREATE TABLE kenyaemr_etl.etl_last_month_newly_on_art (
+patient_id INT(11) not null
+);
+
+INSERT INTO kenyaemr_etl.etl_last_month_newly_on_art
+select distinct net.patient_id 
+from ( 
+select e.patient_id,e.date_started, 
+e.gender,
+e.dob,
+d.visit_date as dis_date, 
+if(d.visit_date is not null, 1, 0) as TOut,
+e.regimen, e.regimen_line, e.alternative_regimen, 
+mid(max(concat(fup.visit_date,fup.next_appointment_date)),11) as latest_tca, 
+max(if(enr.date_started_art_at_transferring_facility is not null and enr.facility_transferred_from is not null, 1, 0)) as TI_on_art,
+max(if(enr.transfer_in_date is not null, 1, 0)) as TIn, 
+max(fup.visit_date) as latest_vis_date
+from (select e.patient_id,p.dob,p.Gender,min(e.date_started) as date_started, 
+mid(min(concat(e.date_started,e.regimen_name)),11) as regimen, 
+mid(min(concat(e.date_started,e.regimen_line)),11) as regimen_line, 
+max(if(discontinued,1,0))as alternative_regimen 
+from kenyaemr_etl.etl_drug_event e 
+join kenyaemr_etl.etl_patient_demographics p on p.patient_id=e.patient_id 
+group by e.patient_id) e 
+left outer join kenyaemr_etl.etl_patient_program_discontinuation d on d.patient_id=e.patient_id 
+left outer join kenyaemr_etl.etl_hiv_enrollment enr on enr.patient_id=e.patient_id 
+left outer join kenyaemr_etl.etl_patient_hiv_followup fup on fup.patient_id=e.patient_id 
+where  date(e.date_started) between startDate and endDate 
+group by e.patient_id 
+having TI_on_art=0
+)net;
+
+
+
+END$$
+DELIMITER ;
 
 -- ------------------------------------------- running all procedures -----------------------------
 
@@ -1713,6 +1838,7 @@ CALL sp_populate_etl_mch_delivery();
 CALL sp_drug_event();
 CALL sp_populate_hts_test();
 CALL sp_populate_hts_linkage_and_referral();
+CALL sp_update_dashboard_table();
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
 

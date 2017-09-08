@@ -878,7 +878,6 @@ index(tracing_type),
 index(tracing_status)
 );
 
--- Update stop time for script
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= script_id;
 

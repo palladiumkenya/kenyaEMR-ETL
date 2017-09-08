@@ -41,12 +41,12 @@ p.death_date
 from person p 
 join patient pa on pa.patient_id=p.person_id
 inner join person_name pn on pn.person_id = p.person_id and pn.voided=0
-where pn.date_created > last_update_time
-or pn.date_changed > last_update_time
-or pn.date_voided > last_update_time
-or p.date_created > last_update_time
-or p.date_changed > last_update_time
-or p.date_voided > last_update_time
+where pn.date_created >= last_update_time
+or pn.date_changed >= last_update_time
+or pn.date_voided >= last_update_time
+or p.date_created >= last_update_time
+or p.date_changed >= last_update_time
+or p.date_voided >= last_update_time
 GROUP BY p.person_id
 ) p
 ON DUPLICATE KEY UPDATE 
@@ -94,9 +94,9 @@ and pat.uuid in (
 	'b8d0b331-1d2d-4a9a-b741-1816f498bdb6' -- email address
 
 	)
-where pa.date_created > last_update_time
-or pa.date_changed > last_update_time
-or pa.date_voided > last_update_time
+where pa.date_created >= last_update_time
+or pa.date_changed >= last_update_time
+or pa.date_voided >= last_update_time
 group by pa.person_id
 ) att on att.person_id = d.patient_id
 set d.phone_number=att.phone_number, 
@@ -120,9 +120,9 @@ max(if(pit.uuid='0691f522-dd67-4eeb-92c8-af5083baf338',pi.identifier,null)) Hei_
 from patient_identifier pi
 join patient_identifier_type pit on pi.identifier_type=pit.patient_identifier_type_id
 where voided=0 and
-pi.date_created > last_update_time
-or pi.date_changed > last_update_time
-or pi.date_voided > last_update_time
+pi.date_created >= last_update_time
+or pi.date_changed >= last_update_time
+or pi.date_voided >= last_update_time
 group by pi.patient_id) pid on pid.patient_id=d.patient_id
 set d.unique_patient_no=pid.UPN, 
 	d.national_id_no=pid.National_id,
@@ -140,8 +140,8 @@ from obs o
 join concept_name cn on cn.concept_id=o.value_coded and cn.concept_name_type='FULLY_SPECIFIED'
 and cn.locale='en'
 where o.concept_id in (1054,1712) and o.voided=0 and 
-o.date_created > last_update_time
-or o.date_voided > last_update_time
+o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by person_id) pstatus on pstatus.patient_id=d.patient_id
 set d.marital_status=pstatus.marital_status,
 d.education_level=pstatus.education_level;
@@ -215,11 +215,11 @@ inner join
 join patient p on p.patient_id=e.patient_id and p.voided=0
 left outer join obs o on o.encounter_id=e.encounter_id 
 	and o.concept_id in (160555,160540,160534,160535,161551,159599,160554,160632,160533,160638,160640,160642,160641)
-where e.voided=0 and e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.voided=0 and e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.patient_id, e.encounter_id
 order by e.patient_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_provider=VALUES(encounter_provider),date_first_enrolled_in_care=VALUES(date_first_enrolled_in_care),entry_point=VALUES(entry_point),transfer_in_date=VALUES(transfer_in_date),
@@ -400,11 +400,11 @@ inner join
 left outer join obs o on o.encounter_id=e.encounter_id 
 	and o.concept_id in (1282,1246,161643,5089,5085,5086,5090,5088,5087,5242,5092,1343,5356,5272,161033,161655,5596,1427,5624,1053,160653,374,160575,1659,161654,161652,162229,162230,1658,160582,160632,159423,161557,159777,161558,160581,5096,163300, 164930, 160581, 1154, 160430, 164948, 164949, 164950, 1271, 307, 12, 162202, 1272, 163752, 163414, 162275, 160557, 162747,
 121764, 164933, 160080, 1823, 164940, 164934, 164935, 159615, 160288, 164947)
-where e.voided=0 and e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.voided=0 and e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.patient_id, visit_date
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_provider=VALUES(encounter_provider),visit_scheduled=VALUES(visit_scheduled),
 person_present=VALUES(person_present),weight=VALUES(weight),systolic_pressure=VALUES(systolic_pressure),diastolic_pressure=VALUES(diastolic_pressure),height=VALUES(height),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),respiratory_rate=VALUES(respiratory_rate),
@@ -470,11 +470,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('2bdada65-4c72-4a48-8730-859890e25cee','d3e3d723-7458-4b4e-8998-408e8a551a84','5feee3f1-aa16-4513-8bd0-5d9b27ef1208','7c426cfc-3b47-4481-b55f-89860c21c7de','01894f88-dc73-42d4-97a3-0929118403fb')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),discontinuation_reason=VALUES(discontinuation_reason),
 date_died=VALUES(date_died),transfer_facility=VALUES(transfer_facility),transfer_date=VALUES(transfer_date)
@@ -575,11 +575,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('3ee036d8-7c13-4393-b5d6-036f2fe45126')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),anc_number=VALUES(anc_number),gravida=VALUES(gravida),parity=VALUES(parity),parity_abortion=VALUES(parity_abortion),lmp=VALUES(lmp),lmp_estimated=VALUES(lmp_estimated),
 edd_ultrasound=VALUES(edd_ultrasound),blood_group=VALUES(blood_group),serology=VALUES(serology),tb_screening=VALUES(tb_screening),bs_for_mps=VALUES(bs_for_mps),hiv_status=VALUES(hiv_status),hiv_test_date=VALUES(hiv_status),partner_hiv_status=VALUES(partner_hiv_status),partner_hiv_test_date=VALUES(partner_hiv_test_date),
@@ -690,11 +690,11 @@ inner join
 	select encounter_type, uuid,name from form where 
 	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843')
 ) f on f.encounter_type=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),provider=VALUES(provider),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),systolic_bp=VALUES(systolic_bp),diastolic_bp=VALUES(diastolic_bp),respiratory_rate=VALUES(respiratory_rate),oxygen_saturation=VALUES(oxygen_saturation),
 weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),pallor=VALUES(pallor),maturity=VALUES(maturity),fundal_height=VALUES(fundal_height),fetal_presentation=VALUES(fetal_presentation),lie=VALUES(lie),fetal_heart_rate=VALUES(fetal_heart_rate),fetal_movement=VALUES(fetal_movement),who_stage=VALUES(who_stage),cd4=VALUES(cd4),arv_status=VALUES(arv_status),
@@ -799,11 +799,11 @@ inner join
 	select encounter_type, uuid,name from form where 
 	uuid in('72aa78e0-ee4b-47c3-9073-26f3b9ecc4a7')
 ) f on f.encounter_type=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),provider=VALUES(provider),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),systolic_bp=VALUES(systolic_bp),diastolic_bp=VALUES(diastolic_bp),respiratory_rate=VALUES(respiratory_rate),
 oxygen_saturation=VALUES(oxygen_saturation),weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),arv_status=VALUES(arv_status),general_condition=VALUES(general_condition),breast=VALUES(breast),cs_scar=VALUES(cs_scar),gravid_uterus=VALUES(gravid_uterus),episiotomy=VALUES(episiotomy),
@@ -903,11 +903,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('9d8498a4-372d-4dc4-a809-513a2434621e')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),date_treatment_started=VALUES(date_treatment_started),district=VALUES(district),referred_by=VALUES(referred_by),referral_date=VALUES(referral_date),
 date_transferred_in=VALUES(date_transferred_in),facility_transferred_from=VALUES(facility_transferred_from),district_transferred_from=VALUES(district_transferred_from),date_first_enrolled_in_tb_care=VALUES(date_first_enrolled_in_tb_care),weight=VALUES(weight),height=VALUES(height),treatment_supporter=VALUES(treatment_supporter),relation_to_patient=VALUES(relation_to_patient),
@@ -988,11 +988,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('fbf0bfce-e9f4-45bb-935a-59195d8a0e35')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),spatum_test=VALUES(spatum_test),spatum_result=VALUES(spatum_result),result_serial_number=VALUES(result_serial_number),quantity=VALUES(quantity) ,date_test_done=VALUES(date_test_done),bacterial_colonie_growth=VALUES(bacterial_colonie_growth),
 number_of_colonies=VALUES(number_of_colonies),resistant_s=VALUES(resistant_s),resistant_r=VALUES(resistant_r),resistant_inh=VALUES(resistant_inh),resistant_e=VALUES(resistant_e),sensitive_s=VALUES(sensitive_s),sensitive_r=VALUES(sensitive_r),sensitive_inh=VALUES(sensitive_inh),sensitive_e=VALUES(sensitive_e),test_date=VALUES(test_date),hiv_status=VALUES(hiv_status),next_appointment_date=VALUES(next_appointment_date)
@@ -1055,11 +1055,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be', "a0034eee-1940-4e35-847f-97537a35d05e")
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),cough_for_2wks_or_more=VALUES(cough_for_2wks_or_more),confirmed_tb_contact=VALUES(confirmed_tb_contact),chronic_cough=VALUES(chronic_cough),fever_for_2wks_or_more=VALUES(fever_for_2wks_or_more),
 noticeable_weight_loss=VALUES(noticeable_weight_loss),chest_pain=VALUES(chest_pain),night_sweat_for_2wks_or_more=VALUES(night_sweat_for_2wks_or_more),resulting_tb_status=VALUES(resulting_tb_status) ,tb_treatment_start_date=VALUES(tb_treatment_start_date),notes=VALUES(notes)
@@ -1166,11 +1166,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('415f5136-ca4a-49a8-8db3-f994187c3af6')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),child_exposed=VALUES(child_exposed),spd_number=VALUES(spd_number),birth_weight=VALUES(birth_weight),gestation_at_birth=VALUES(gestation_at_birth),date_first_seen=VALUES(date_first_seen),
 birth_notification_number=VALUES(birth_notification_number),birth_certificate_number=VALUES(birth_certificate_number),need_for_special_care=VALUES(need_for_special_care),reason_for_special_care=VALUES(reason_for_special_care),referral_source=VALUES(referral_source),transfer_in=VALUES(transfer_in),transfer_in_date=VALUES(transfer_in_date),facility_transferred_from=VALUES(facility_transferred_from),
@@ -1283,11 +1283,11 @@ inner join
 	select encounter_type_id, uuid, name from encounter_type where 
 	uuid in('bcc6da85-72f2-4291-b206-789b8186a021','c6d09e05-1f25-4164-8860-9f32c5a02df0')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id 
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),weight=VALUES(weight),height=VALUES(height),infant_feeding=VALUES(infant_feeding),tb_assessment_outcome=VALUES(tb_assessment_outcome),social_smile_milestone=VALUES(social_smile_milestone),head_control_milestone=VALUES(head_control_milestone),
 response_to_sound_milestone=VALUES(response_to_sound_milestone),hand_extension_milestone=VALUES(hand_extension_milestone),sitting_milestone=VALUES(sitting_milestone),walking_milestone=VALUES(walking_milestone),standing_milestone=VALUES(standing_milestone),talking_milestone=VALUES(talking_milestone),review_of_systems_developmental=VALUES(review_of_systems_developmental),
@@ -1364,11 +1364,11 @@ inner join
 	select encounter_type, uuid,name from form where 
 	uuid in('496c7cc3-0eea-4e84-a04c-2292949e2f7f')
 ) f on f.encounter_type=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),encounter_id=VALUES(encounter_id),data_entry_date=VALUES(data_entry_date),duration_of_pregnancy=VALUES(duration_of_pregnancy),mode_of_delivery=VALUES(mode_of_delivery),date_of_delivery=VALUES(date_of_delivery),blood_loss=VALUES(blood_loss),condition_of_mother=VALUES(condition_of_mother),
 apgar_score_1min=VALUES(apgar_score_1min),apgar_score_5min=VALUES(apgar_score_5min),apgar_score_10min=VALUES(apgar_score_10min),resuscitation_done=VALUES(resuscitation_done),place_of_delivery=VALUES(place_of_delivery),delivery_assistant=VALUES(delivery_assistant),counseling_on_infant_feeding=VALUES(counseling_on_infant_feeding) ,counseling_on_exclusive_breastfeeding=VALUES(counseling_on_exclusive_breastfeeding),
@@ -1508,8 +1508,8 @@ group by o.discontinued_date
 
 ) d on d.patient_id = o.patient_id and d.start_date=o.start_date
 where cs.concept_set = 1085 and (
-	o.date_created > last_update_time
-	or o.date_voided > last_update_time
+	o.date_created >= last_update_time
+	or o.date_voided >= last_update_time
 	)
 group by o.patient_id, o.start_date
 ON DUPLICATE KEY UPDATE date_started=VALUES(date_started), regimen=VALUES(regimen), discontinued=VALUES(discontinued), regimen_discontinued=VALUES(regimen_discontinued),
@@ -1574,8 +1574,8 @@ left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='
 left outer join concept_set cs on o.value_coded = cs.concept_id
 where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444)  and e.voided=0 and
 (
-	o.date_created > last_update_time
-	or o.date_voided > last_update_time
+	o.date_created >= last_update_time
+	or o.date_voided >= last_update_time
 	)
 group by o.obs_group_id, o.person_id, encounter_id
 having drug_dispensed is not null
@@ -1633,11 +1633,11 @@ inner join
 (
 	select encounter_type_id, uuid, name from encounter_type where uuid in('17a381d1-7e29-406a-b782-aa903b963c28', 'a0034eee-1940-4e35-847f-97537a35d05e')
 ) et on et.encounter_type_id=e.encounter_type
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), lab_test=VALUES(lab_test), test_result=VALUES(test_result)
 ; 
 
@@ -1756,11 +1756,11 @@ inner join (
              group by e.encounter_id, o.obs_group_id
              order by e.encounter_id, o.obs_group_id
            ) t on e.encounter_id = t.encounter_id
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), test_type=VALUES(test_type), population_type=VALUES(population_type),
 key_population_type=VALUES(key_population_type), ever_tested_for_hiv=VALUES(ever_tested_for_hiv), patient_disabled=VALUES(patient_disabled),
@@ -1819,11 +1819,11 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
   from encounter e
   inner join form f on f.form_id = e.form_id and f.uuid = "050a7f12-5c52-4cad-8834-863695af335d"
   left outer join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473)
-  where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
-or o.date_created > last_update_time
-or o.date_voided > last_update_time
+  where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+or o.date_created >= last_update_time
+or o.date_voided >= last_update_time
 group by e.encounter_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), tracing_type=VALUES(tracing_type), tracing_status=VALUES(tracing_status),
 facility_linked_to=VALUES(facility_linked_to), ccc_number=VALUES(ccc_number), provider_handed_to=VALUES(provider_handed_to)
@@ -1866,9 +1866,9 @@ select
  inner join form f on f.form_id = e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
  left outer join patient_identifier pi on pi.patient_id = e.patient_id
  left join patient_identifier_type pit on pi.identifier_type=pit.patient_identifier_type_id and pit.uuid = '05ee9cf4-7242-4a17-b4d4-00f707265c8a'
-where e.date_created > last_update_time
-or e.date_changed > last_update_time
-or e.date_voided > last_update_time
+where e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
 group by e.patient_id
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), ccc_number=VALUES(ccc_number)
 ;
@@ -1918,6 +1918,16 @@ CREATE EVENT event_update_kenyaemr_etl_tables
 	ON SCHEDULE EVERY 5 MINUTE STARTS CURRENT_TIMESTAMP
 	DO
 		CALL sp_scheduled_updates();
+	$$
+DELIMITER ;
+
+DELIMITER $$
+
+DROP EVENT IF EXISTS event_update_kenyaemr_etl_facility_dashboard_indicators$$
+CREATE EVENT event_update_kenyaemr_etl_facility_dashboard_indicators
+	ON SCHEDULE EVERY 12 HOUR STARTS DATE_ADD(NOW(), INTERVAL 4 HOUR)
+	DO
+		CALL sp_update_dashboard_table();
 	$$
 DELIMITER ;
 
