@@ -1695,67 +1695,37 @@ SET endDate = DATE_FORMAT(LAST_DAY(NOW() - INTERVAL 1 MONTH), '%Y-%m-%d');
 SET reportingPeriod = DATE_FORMAT(NOW() - INTERVAL 1 MONTH, '%Y-%M');
 
 -- CURRENT IN CARE 
-DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_current_in_care;
-CREATE TABLE kenyaemr_etl.etl_last_month_current_in_care (
-patient_id INT(11) not null
-);
+DROP TABLE IF EXISTS kenyaemr_etl.etl_current_in_care;
 
-INSERT INTO kenyaemr_etl.etl_last_month_current_in_care (patient_id)
-select distinct e.patient_id
-from (
+CREATE TABLE kenyaemr_etl.etl_current_in_care AS
 select fup.visit_date,fup.patient_id,p.dob,p.Gender, min(e.visit_date) as enroll_date,
 max(fup.visit_date) as latest_vis_date,
 mid(max(concat(fup.visit_date,fup.next_appointment_date)),11) as latest_tca,
-p.unique_patient_no
-from kenyaemr_etl.etl_patient_hiv_followup fup 
-join kenyaemr_etl.etl_patient_demographics p on p.patient_id=fup.patient_id 
-join kenyaemr_etl.etl_hiv_enrollment e on fup.patient_id=e.patient_id 
-where fup.visit_date <= endDate 
-group by patient_id 
-               --  we may need to filter lost to follow-up using this
-having (latest_tca>endDate or 
-((latest_tca between startDate and endDate) or (latest_vis_date between startDate and endDate)) )
-               -- drop missd completely
-) e
-                -- drop discountinued
-where e.patient_id not in (select patient_id from kenyaemr_etl.etl_patient_program_discontinuation 
-where date(visit_date) <= endDate and program_name='HIV' 
-group by patient_id 
-having if(e.latest_tca>max(visit_date),1,0)=0)
-
+p.unique_patient_no,
+max(d.visit_date) as date_discontinued,
+d.patient_id as disc_patient,
+de.patient_id as started_on_drugs
+from kenyaemr_etl.etl_patient_hiv_followup fup
+join kenyaemr_etl.etl_patient_demographics p on p.patient_id=fup.patient_id
+join kenyaemr_etl.etl_hiv_enrollment e on fup.patient_id=e.patient_id
+left outer join kenyaemr_etl.etl_drug_event de on e.patient_id = de.patient_id and date(date_started) <= endDate
+left outer JOIN
+(select patient_id, visit_date from kenyaemr_etl.etl_patient_program_discontinuation
+where date(visit_date) <= endDate and program_name='HIV'
+group by patient_id
+) d on d.patient_id = fup.patient_id
+where fup.visit_date <= endDate
+group by patient_id
+having (
+(latest_tca>endDate and (latest_tca > date_discontinued or disc_patient is null )) or
+(((latest_tca between startDate and endDate) or (latest_vis_date between startDate and endDate)) and (latest_tca > date_discontinued or disc_patient is null )) )
 ;
 
--- CURRENT ON ART
-DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_current_on_art;
-CREATE TABLE kenyaemr_etl.etl_last_month_current_on_art (
-patient_id INT(11) not null
-);
-
-INSERT INTO kenyaemr_etl.etl_last_month_current_on_art
-select distinct e.patient_id
-from ( 
-select fup.visit_date,fup.patient_id,p.dob,p.Gender, min(e.visit_date) as enroll_date,
-max(fup.visit_date) as latest_vis_date,
-mid(max(concat(fup.visit_date,fup.next_appointment_date)),11) as latest_tca,
-p.unique_patient_no
-from kenyaemr_etl.etl_patient_hiv_followup fup 
-join kenyaemr_etl.etl_patient_demographics p on p.patient_id=fup.patient_id 
-join kenyaemr_etl.etl_hiv_enrollment e on fup.patient_id=e.patient_id 
-where fup.visit_date <= endDate 
-group by patient_id 
-          --  we may need to filter lost to follow-up using this
-having (latest_tca>endDate or 
-(latest_tca between startDate and endDate and latest_vis_date between startDate and endDate) )
-       -- drop missd completely
-) e
-       -- drop discountinued
-where e.patient_id not in (select patient_id from kenyaemr_etl.etl_patient_program_discontinuation 
-where date(visit_date) <= endDate and program_name='HIV' 
-group by patient_id 
-having if(e.latest_tca>max(visit_date),1,0)=0) 
-and e.patient_id in (select distinct patient_id  
-from kenyaemr_etl.etl_drug_event  
-where date(date_started) <= endDate);
+-- ADD INDICES
+ALTER TABLE kenyaemr_etl.etl_current_in_care ADD INDEX(enroll_date);
+ALTER TABLE kenyaemr_etl.etl_current_in_care ADD INDEX(latest_vis_date);
+ALTER TABLE kenyaemr_etl.etl_current_in_care ADD INDEX(latest_tca);
+ALTER TABLE kenyaemr_etl.etl_current_in_care ADD INDEX(started_on_drugs);
 
 
 DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_newly_enrolled_in_care;
