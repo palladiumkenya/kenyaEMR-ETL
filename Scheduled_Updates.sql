@@ -1892,9 +1892,19 @@ DELIMITER $$
 SET GLOBAL EVENT_SCHEDULER=ON$$
 DROP EVENT IF EXISTS event_update_kenyaemr_etl_tables$$
 CREATE EVENT event_update_kenyaemr_etl_tables
-ON SCHEDULE EVERY 30 MINUTE STARTS CURRENT_TIMESTAMP
+ON SCHEDULE EVERY 5 MINUTE STARTS CURRENT_TIMESTAMP
 DO
 CALL sp_scheduled_updates();
+$$
+DELIMITER ;
+
+
+DELIMITER $$
+DROP EVENT IF EXISTS event_update_etl_dashboard_tables$$
+CREATE EVENT event_update_etl_dashboard_tables
+ON SCHEDULE EVERY 1 DAY STARTS '2017-09-20 08:00:00' ON COMPLETION PRESERVE ENABLE
+DO
+CALL sp_update_dashboard_table();
 $$
 DELIMITER ;
 
