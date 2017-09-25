@@ -1,10 +1,7 @@
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_patient_demographics$$
-CREATE PROCEDURE sp_update_etl_patient_demographics()
+CREATE PROCEDURE sp_update_etl_patient_demographics(IN last_update_time DATETIME)
 BEGIN
-
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
 -- update etl_patient_demographics table
 insert into kenyaemr_etl.etl_patient_demographics(
 patient_id,
@@ -152,11 +149,10 @@ DELIMITER ;
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_hiv_enrollment$$
-CREATE PROCEDURE sp_update_etl_hiv_enrollment()
+CREATE PROCEDURE sp_update_etl_hiv_enrollment(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 -- update patient_hiv_enrollment table
 -- uuid: de78a6be-bfc5-4634-adc3-5f1a280455cc
 
@@ -233,11 +229,8 @@ DELIMITER ;
 -- ------------- update etl_hiv_followup--------------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_hiv_followup$$
-CREATE PROCEDURE sp_update_etl_hiv_followup()
+CREATE PROCEDURE sp_update_etl_hiv_followup(IN last_update_time DATETIME)
 BEGIN
-
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
 
 INSERT INTO kenyaemr_etl.etl_patient_hiv_followup(
 patient_id,
@@ -426,11 +419,10 @@ DELIMITER ;
 -- ------------ create table etl_patient_treatment_event----------------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_program_discontinuation$$
-CREATE PROCEDURE sp_update_etl_program_discontinuation()
+CREATE PROCEDURE sp_update_etl_program_discontinuation(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_patient_program_discontinuation(
 patient_id,
@@ -486,11 +478,10 @@ DELIMITER ;
 -- ------------- update etl_mch_enrollment------------------------- TO BE CHECKED AGAIN
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_mch_enrollment$$
-CREATE PROCEDURE sp_update_etl_mch_enrollment()
+CREATE PROCEDURE sp_update_etl_mch_enrollment(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_mch_enrollment(
 patient_id,
@@ -593,11 +584,10 @@ DELIMITER ;
 -- ------------- update etl_mch_antenatal_visit-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_mch_antenatal_visit$$
-CREATE PROCEDURE sp_update_etl_mch_antenatal_visit()
+CREATE PROCEDURE sp_update_etl_mch_antenatal_visit(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_mch_antenatal_visit(
 patient_id,
@@ -708,11 +698,10 @@ DELIMITER ;
 -- ------------- update etl_mch_postnatal_visit-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_mch_postnatal_visit$$
-CREATE PROCEDURE sp_update_etl_mch_postnatal_visit()
+CREATE PROCEDURE sp_update_etl_mch_postnatal_visit(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_mch_postnatal_visit(
 patient_id,
@@ -817,11 +806,10 @@ DELIMITER ;
 -- ------------- update etl_tb_enrollment-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_tb_enrollment$$
-CREATE PROCEDURE sp_update_etl_tb_enrollment()
+CREATE PROCEDURE sp_update_etl_tb_enrollment(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_tb_enrollment(
 patient_id,
@@ -921,11 +909,10 @@ DELIMITER ;
 -- ------------- update etl_tb_follow_up_visit-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_tb_follow_up_visit$$
-CREATE PROCEDURE sp_update_etl_tb_follow_up_visit()
+CREATE PROCEDURE sp_update_etl_tb_follow_up_visit(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_tb_follow_up_visit(
 patient_id,
@@ -1004,11 +991,10 @@ DELIMITER ;
 -- ------------- update etl_tb_screening-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_tb_screening$$
-CREATE PROCEDURE sp_update_etl_tb_screening()
+CREATE PROCEDURE sp_update_etl_tb_screening(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_tb_screening(
 patient_id,
@@ -1071,11 +1057,10 @@ DELIMITER ;
 -- ------------- update etl_hei_enrollment-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_hei_enrolment$$
-CREATE PROCEDURE sp_update_etl_hei_enrolment()
+CREATE PROCEDURE sp_update_etl_hei_enrolment(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_hei_enrollment(
 patient_id,
@@ -1184,11 +1169,10 @@ DELIMITER ;
 -- ------------- update etl_hei_follow_up_visit-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_hei_follow_up$$
-CREATE PROCEDURE sp_update_etl_hei_follow_up()
+CREATE PROCEDURE sp_update_etl_hei_follow_up(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_hei_follow_up_visit(
 patient_id,
@@ -1301,11 +1285,10 @@ DELIMITER ;
 -- ------------- update etl_mchs_delivery-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_mch_delivery$$
-CREATE PROCEDURE sp_update_etl_mch_delivery()
+CREATE PROCEDURE sp_update_etl_mch_delivery(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_mchs_delivery(
 patient_id,
@@ -1383,11 +1366,10 @@ DELIMITER ;
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_drug_event$$
-CREATE PROCEDURE sp_update_drug_event()
+CREATE PROCEDURE sp_update_drug_event(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 INSERT INTO kenyaemr_etl.etl_drug_event(
 uuid,
@@ -1522,11 +1504,10 @@ DELIMITER ;
 -- ------------- update etl_pharmacy_extract table--------------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_pharmacy_extract$$
-CREATE PROCEDURE sp_update_etl_pharmacy_extract()
+CREATE PROCEDURE sp_update_etl_pharmacy_extract(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_pharmacy_extract(
 patient_id,
@@ -1595,11 +1576,10 @@ DELIMITER ;
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_etl_laboratory_extract$$
-CREATE PROCEDURE sp_update_etl_laboratory_extract()
+CREATE PROCEDURE sp_update_etl_laboratory_extract(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 insert into kenyaemr_etl.etl_laboratory_extract(
 uuid,
@@ -1648,11 +1628,10 @@ DELIMITER ;
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_hts_test$$
-CREATE PROCEDURE sp_update_hts_test()
+CREATE PROCEDURE sp_update_hts_test(IN last_update_time DATETIME)
 BEGIN
 
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
+
 
 INSERT INTO kenyaemr_etl.etl_hts_test (
 patient_id,
@@ -1698,7 +1677,7 @@ e.location_id,
 e.creator,
 e.date_created,
 e.encounter_datetime as visit_date,
-max(if(o.concept_id=162084 and o.value_coded=162080 and f.uuid != "b08471f6-0892-4bf7-ab2b-bf79797b8ea4","Initial","confirmation")) as test_type ,
+max(if((o.concept_id=162084 and o.value_coded=162082 and f.uuid = "402dc5d7-46da-42d4-b2be-f43ea4ad87b0") or (f.uuid = "b08471f6-0892-4bf7-ab2b-bf79797b8ea4"), 2, 1)) as test_type ,
 max(if(o.concept_id=164930,(case o.value_coded when 164928 then "General Population" when 164929 then "Key Population" else "" end),null)) as population_type,
 max(if(o.concept_id=160581,(case o.value_coded when 105 then "People who inject drugs" when 160578 then "Men who have sex with men" when 160579 then "Female sex worker" else "" end),null)) as key_population_type,
 max(if(o.concept_id=164401,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as ever_tested_for_hiv,
@@ -1744,7 +1723,7 @@ inner join (
                o.obs_group_id,
                max(if(o.concept_id=1040, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 163611 then "Invalid"  else "" end),null)) as test_1_result ,
                max(if(o.concept_id=1326, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1175 then "N/A"  else "" end),null)) as test_2_result ,
-               max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "Uni-Gold" else "" end),null)) as kit_name ,
+               max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "First Response" else "" end),null)) as kit_name ,
                max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
                max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
              from obs o inner join encounter e on e.encounter_id = o.encounter_id
@@ -1779,11 +1758,8 @@ DELIMITER ;
 -- ------------------------------------ POPULATE HTS LINKAGES AND REFERRALS -------------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_update_hts_linkage_and_referral$$
-CREATE PROCEDURE sp_update_hts_linkage_and_referral()
+CREATE PROCEDURE sp_update_hts_linkage_and_referral(IN last_update_time DATETIME)
 BEGIN 
-
-DECLARE last_update_time DATETIME;
-SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
 
 INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
   patient_id,
@@ -1829,7 +1805,7 @@ ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), tracing_type=VALUES(traci
 facility_linked_to=VALUES(facility_linked_to), ccc_number=VALUES(ccc_number), provider_handed_to=VALUES(provider_handed_to)
 ;
 
--- fetch locally enrolled clients who had went through HTS
+-- fetch locally enrolled clients who had gone through HTS
 
   INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
   patient_id,
@@ -1881,28 +1857,29 @@ DROP PROCEDURE IF EXISTS sp_scheduled_updates$$
 CREATE PROCEDURE sp_scheduled_updates()
 BEGIN
 DECLARE update_script_id INT(11);
+DECLARE last_update_time DATETIME;
+SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status;
 
 INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('scheduled_updates', NOW());
 SET update_script_id = LAST_INSERT_ID();
-SELECT "last insert id", update_script_id;
-CALL sp_update_etl_patient_demographics();
-CALL sp_update_etl_hiv_enrollment();
-CALL sp_update_etl_hiv_followup();
-CALL sp_update_etl_program_discontinuation();
-CALL sp_update_etl_mch_enrollment();
-CALL sp_update_etl_mch_antenatal_visit();
-CALL sp_update_etl_mch_postnatal_visit();
-CALL sp_update_etl_tb_enrollment();
-CALL sp_update_etl_tb_follow_up_visit();
-CALL sp_update_etl_tb_screening();
-CALL sp_update_etl_hei_enrolment();
-CALL sp_update_etl_hei_follow_up();
-CALL sp_update_etl_mch_delivery();
-CALL sp_update_drug_event();
-CALL sp_update_etl_pharmacy_extract();
-CALL sp_update_etl_laboratory_extract();
-CALL sp_update_hts_test();
-CALL sp_update_hts_linkage_and_referral();
+CALL sp_update_etl_patient_demographics(last_update_time);
+CALL sp_update_etl_hiv_enrollment(last_update_time);
+CALL sp_update_etl_hiv_followup(last_update_time);
+CALL sp_update_etl_program_discontinuation(last_update_time);
+CALL sp_update_etl_mch_enrollment(last_update_time);
+CALL sp_update_etl_mch_antenatal_visit(last_update_time);
+CALL sp_update_etl_mch_postnatal_visit(last_update_time);
+CALL sp_update_etl_tb_enrollment(last_update_time);
+CALL sp_update_etl_tb_follow_up_visit(last_update_time);
+CALL sp_update_etl_tb_screening(last_update_time);
+CALL sp_update_etl_hei_enrolment(last_update_time);
+CALL sp_update_etl_hei_follow_up(last_update_time);
+CALL sp_update_etl_mch_delivery(last_update_time);
+CALL sp_update_drug_event(last_update_time);
+CALL sp_update_etl_pharmacy_extract(last_update_time);
+CALL sp_update_etl_laboratory_extract(last_update_time);
+CALL sp_update_hts_test(last_update_time);
+CALL sp_update_hts_linkage_and_referral(last_update_time);
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where  id= update_script_id;
 DELETE FROM kenyaemr_etl.etl_script_status where script_name="initial_creation_of_tables" and start_time < DATE_SUB(NOW(), INTERVAL 1 HOUR);
@@ -1915,21 +1892,22 @@ DELIMITER $$
 SET GLOBAL EVENT_SCHEDULER=ON$$
 DROP EVENT IF EXISTS event_update_kenyaemr_etl_tables$$
 CREATE EVENT event_update_kenyaemr_etl_tables
-	ON SCHEDULE EVERY 5 MINUTE STARTS CURRENT_TIMESTAMP
-	DO
-		CALL sp_scheduled_updates();
-	$$
+ON SCHEDULE EVERY 5 MINUTE STARTS CURRENT_TIMESTAMP
+DO
+CALL sp_scheduled_updates();
+$$
 DELIMITER ;
+
 
 DELIMITER $$
-
-DROP EVENT IF EXISTS event_update_kenyaemr_etl_facility_dashboard_indicators$$
-CREATE EVENT event_update_kenyaemr_etl_facility_dashboard_indicators
-	ON SCHEDULE EVERY 12 HOUR STARTS DATE_ADD(NOW(), INTERVAL 4 HOUR)
-	DO
-		CALL sp_update_dashboard_table();
-	$$
+DROP EVENT IF EXISTS event_update_etl_dashboard_tables$$
+CREATE EVENT event_update_etl_dashboard_tables
+ON SCHEDULE EVERY 1 DAY STARTS '2017-09-20 08:00:00' ON COMPLETION PRESERVE ENABLE
+DO
+CALL sp_update_dashboard_table();
+$$
 DELIMITER ;
+
 
 
 
