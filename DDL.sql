@@ -593,10 +593,8 @@ location_id INT(11) DEFAULT NULL,
 encounter_id INT(11),
 cough_for_2wks_or_more INT(11),
 confirmed_tb_contact INT(11),
-chronic_cough INT(11),
 fever_for_2wks_or_more INT(11),
 noticeable_weight_loss INT(11),
-chest_pain INT(11),
 night_sweat_for_2wks_or_more INT(11),
 resulting_tb_status INT(11),
 tb_treatment_start_date DATE,
@@ -608,9 +606,7 @@ INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(cough_for_2wks_or_more),
 INDEX(confirmed_tb_contact),
-INDEX(chronic_cough),
 INDEX(noticeable_weight_loss),
-INDEX(chest_pain),
 INDEX(night_sweat_for_2wks_or_more),
 INDEX(resulting_tb_status)
 );
@@ -892,7 +888,8 @@ encounter_id INT(11),
 yellow_urine INT(11),
 numbness INT(11),
 yellow_eyes INT(11),
-abdominal_tenderness INT(11)
+abdominal_tenderness INT(11),
+ipt_started INT(11)
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
@@ -901,7 +898,8 @@ INDEX(patient_id),
 INDEX(yellow_urine),
 INDEX(numbness),
 INDEX(yellow_eyes),
-INDEX(abdominal_tenderness)
+INDEX(abdominal_tenderness),
+INDEX(ipt_started)
 );
 SELECT "Successfully created etl_ipt_screening table";
 
