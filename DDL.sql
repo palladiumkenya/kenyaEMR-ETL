@@ -878,6 +878,70 @@ index(tracing_type),
 index(tracing_status)
 );
 
+-- ------------ create table etl_ipt_screening-----------------------
+
+CREATE TABLE kenyaemr_etl.etl_ipt_screening (
+id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+uuid char(38),
+provider INT(11),
+patient_id INT(11) NOT NULL ,
+visit_id INT(11),
+visit_date DATE,
+location_id INT(11) DEFAULT NULL,
+encounter_id INT(11),
+yellow_urine INT(11),
+numbness INT(11),
+yellow_eyes INT(11),
+abdominal_tenderness INT(11)
+CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
+CONSTRAINT unique_uuid UNIQUE(uuid),
+INDEX(visit_date),
+INDEX(encounter_id),
+INDEX(patient_id),
+INDEX(yellow_urine),
+INDEX(numbness),
+INDEX(yellow_eyes),
+INDEX(abdominal_tenderness)
+);
+SELECT "Successfully created etl_ipt_screening table";
+
+-- ------------ create table etl_ipt_follow_up -----------------------
+
+CREATE TABLE kenyaemr_etl.etl_ipt_follow_up (
+id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+uuid char(38),
+provider INT(11),
+patient_id INT(11) NOT NULL ,
+visit_id INT(11),
+visit_date DATE,
+location_id INT(11) DEFAULT NULL,
+encounter_id INT(11),
+ipt_due_date DATE DEFAULT NULL,
+date_collected_ipt DATE DEFAULT NULL,
+hepatotoxity INT(11),
+peripheral_neuropathy INT(11),
+rash INT(11),
+adherence INT(11),
+outcome INT(11),
+date_of_outcome DATE DEFAULT NULL,
+discontinuation_reason INT(11),
+action_taken VARCHAR(100)
+CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
+CONSTRAINT unique_uuid UNIQUE(uuid),
+INDEX(visit_date),
+INDEX(encounter_id),
+INDEX(patient_id),
+INDEX(ipt_due_date),
+INDEX(date_collected_ipt),
+INDEX(hepatotoxity),
+INDEX(peripheral_neuropathy),
+INDEX(rash),
+INDEX(adherence),
+INDEX(outcome),
+INDEX(discontinuation_reason)
+);
+SELECT "Successfully created etl_ipt_follow_up table";
+
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= script_id;
 
