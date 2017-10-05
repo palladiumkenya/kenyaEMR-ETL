@@ -1881,11 +1881,11 @@ DELIMITER ;
 
 -- ------------- populate etl_ipt_followup-------------------------
 DELIMITER $$
-DROP PROCEDURE IF EXISTS sp_populate_etl_ipt_screening$$
-CREATE PROCEDURE sp_populate_etl_etl_ipt_screening()
+DROP PROCEDURE IF EXISTS sp_populate_etl_ipt_follow_up$$
+CREATE PROCEDURE sp_populate_etl_ipt_follow_up()
 BEGIN
 SELECT "Processing IPT followup forms", CONCAT("Time: ", NOW());
-insert into kenyaemr_etl.etl_ipt_screening(
+insert into kenyaemr_etl.etl_ipt_follow_up(
 patient_id,
 uuid,
 provider,
@@ -1904,7 +1904,7 @@ discontinuation_reason,
 action_taken
 )
 select
-patient_id, uuid, creator, visit_id, encounter_datetime, encounter_id, location_id,
+e.patient_id, e.uuid, e.creator, e.visit_id, e.encounter_datetime, e.encounter_id, e.location_id,
 max(if(o.concept_id = 164073, o.value_datetime, "" )) as ipt_due_date,
 max(if(o.concept_id = 164074, o.value_datetime, "" )) as date_collected_ipt,
 max(if(o.concept_id = 159098, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as hepatotoxity,
