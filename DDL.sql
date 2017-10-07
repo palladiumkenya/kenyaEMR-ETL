@@ -124,7 +124,8 @@ index(arv_status),
 index(date_confirmed_hiv_positive),
 index(entry_point),
 index(transfer_in_date),
-index(date_first_enrolled_in_care)
+index(date_first_enrolled_in_care),
+index(entry_point, transfer_in_date, visit_date, patient_id)
 
 );
 
@@ -236,7 +237,10 @@ INDEX(key_population_type),
 INDEX(on_anti_tb_drugs),
 INDEX(on_ipt),
 INDEX(ever_on_ipt),
-INDEX(differentiated_care)
+INDEX(differentiated_care),
+INDEX(visit_date, patient_id),
+INDEX(visit_date, condom_provided),
+INDEX(visit_date, family_planning_method)
 
 );
 
@@ -328,6 +332,8 @@ transfer_date DATE,
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
+INDEX(visit_date, program_name, patient_id),
+INDEX(visit_date, patient_id),
 INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(discontinuation_reason),
@@ -799,7 +805,8 @@ voided INT(11),
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 INDEX(patient_id),
 INDEX(date_started),
-INDEX(date_discontinued)
+INDEX(date_discontinued),
+INDEX(patient_id, date_started)
 );
 SELECT "Successfully created etl_drug_event table";
 
@@ -893,12 +900,10 @@ ipt_started INT(11),
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
-INDEX(encounter_id),
 INDEX(patient_id),
-INDEX(yellow_urine),
-INDEX(numbness),
-INDEX(yellow_eyes),
-INDEX(abdominal_tenderness),
+INDEX(visit_date, ipt_started),
+INDEX(ipt_started, visit_date),
+INDEX(encounter_id),
 INDEX(ipt_started)
 );
 SELECT "Successfully created etl_ipt_screening table";
@@ -927,6 +932,7 @@ action_taken VARCHAR(100),
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
+INDEX(visit_date, discontinuation_reason),
 INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(ipt_due_date),
