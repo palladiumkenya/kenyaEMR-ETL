@@ -124,7 +124,8 @@ index(arv_status),
 index(date_confirmed_hiv_positive),
 index(entry_point),
 index(transfer_in_date),
-index(date_first_enrolled_in_care)
+index(date_first_enrolled_in_care),
+index(entry_point, transfer_in_date, visit_date, patient_id)
 
 );
 
@@ -236,7 +237,10 @@ INDEX(key_population_type),
 INDEX(on_anti_tb_drugs),
 INDEX(on_ipt),
 INDEX(ever_on_ipt),
-INDEX(differentiated_care)
+INDEX(differentiated_care),
+INDEX(visit_date, patient_id),
+INDEX(visit_date, condom_provided),
+INDEX(visit_date, family_planning_method)
 
 );
 
@@ -328,6 +332,8 @@ transfer_date DATE,
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
+INDEX(visit_date, program_name, patient_id),
+INDEX(visit_date, patient_id),
 INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(discontinuation_reason),
@@ -593,10 +599,8 @@ location_id INT(11) DEFAULT NULL,
 encounter_id INT(11),
 cough_for_2wks_or_more INT(11),
 confirmed_tb_contact INT(11),
-chronic_cough INT(11),
 fever_for_2wks_or_more INT(11),
 noticeable_weight_loss INT(11),
-chest_pain INT(11),
 night_sweat_for_2wks_or_more INT(11),
 resulting_tb_status INT(11),
 tb_treatment_start_date DATE,
@@ -608,9 +612,7 @@ INDEX(encounter_id),
 INDEX(patient_id),
 INDEX(cough_for_2wks_or_more),
 INDEX(confirmed_tb_contact),
-INDEX(chronic_cough),
 INDEX(noticeable_weight_loss),
-INDEX(chest_pain),
 INDEX(night_sweat_for_2wks_or_more),
 INDEX(resulting_tb_status)
 );
@@ -761,11 +763,9 @@ SELECT "Successfully created etl_mchs_delivery table";
 -- ------------ create table etl_patients_booked_today-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_patients_booked_today(
-id INT(11) NOT NULL PRIMARY KEY,
+id INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 patient_id INT(11) NOT NULL ,
-last_tca_date DATE,
 last_visit_date DATE,
-date_table_created DATE,
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 INDEX(patient_id)
 );
@@ -803,7 +803,8 @@ voided INT(11),
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 INDEX(patient_id),
 INDEX(date_started),
-INDEX(date_discontinued)
+INDEX(date_discontinued),
+INDEX(patient_id, date_started)
 );
 SELECT "Successfully created etl_drug_event table";
 
@@ -877,6 +878,71 @@ index(visit_date),
 index(tracing_type),
 index(tracing_status)
 );
+
+-- ------------ create table etl_ipt_screening-----------------------
+
+CREATE TABLE kenyaemr_etl.etl_ipt_screening (
+id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+uuid char(38),
+provider INT(11),
+patient_id INT(11) NOT NULL ,
+visit_id INT(11),
+visit_date DATE,
+location_id INT(11) DEFAULT NULL,
+encounter_id INT(11),
+yellow_urine INT(11),
+numbness INT(11),
+yellow_eyes INT(11),
+abdominal_tenderness INT(11),
+ipt_started INT(11),
+CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
+CONSTRAINT unique_uuid UNIQUE(uuid),
+INDEX(visit_date),
+INDEX(patient_id),
+INDEX(visit_date, ipt_started, patient_id),
+INDEX(ipt_started, visit_date),
+INDEX(encounter_id),
+INDEX(ipt_started)
+);
+SELECT "Successfully created etl_ipt_screening table";
+
+-- ------------ create table etl_ipt_follow_up -----------------------
+
+CREATE TABLE kenyaemr_etl.etl_ipt_follow_up (
+id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+uuid char(38),
+provider INT(11),
+patient_id INT(11) NOT NULL ,
+visit_id INT(11),
+visit_date DATE,
+location_id INT(11) DEFAULT NULL,
+encounter_id INT(11),
+ipt_due_date DATE DEFAULT NULL,
+date_collected_ipt DATE DEFAULT NULL,
+hepatotoxity INT(11),
+peripheral_neuropathy INT(11),
+rash INT(11),
+adherence INT(11),
+outcome INT(11),
+date_of_outcome DATE DEFAULT NULL,
+discontinuation_reason INT(11),
+action_taken VARCHAR(100),
+CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
+CONSTRAINT unique_uuid UNIQUE(uuid),
+INDEX(visit_date),
+INDEX(visit_date, discontinuation_reason),
+INDEX(encounter_id),
+INDEX(patient_id),
+INDEX(ipt_due_date),
+INDEX(date_collected_ipt),
+INDEX(hepatotoxity),
+INDEX(peripheral_neuropathy),
+INDEX(rash),
+INDEX(adherence),
+INDEX(outcome),
+INDEX(discontinuation_reason)
+);
+SELECT "Successfully created etl_ipt_follow_up table";
 
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= script_id;

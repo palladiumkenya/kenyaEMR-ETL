@@ -543,7 +543,7 @@ select
 e.patient_id,
 e.uuid,
 e.visit_id,
-e.encounter_datetime,
+e.encounter_datetime, -- trying to make us of index
 et.uuid,
 (case et.uuid
 	when '2bdada65-4c72-4a48-8730-859890e25cee' then 'HIV'
@@ -1001,11 +1001,11 @@ max(if(o.concept_id=160023,o.value_numeric,null)) as quantity,
 max(if(o.concept_id=159964,o.value_datetime,null)) as date_test_done,
 max(if(o.concept_id=159982,o.value_coded,null)) as bacterial_colonie_growth,
 max(if(o.concept_id=159952,o.value_numeric,null)) as number_of_colonies,
-max(if(o.concept_id=159956 and o.value_coded=84360,o.value_numeric,null)) as resistant_s,
-max(if(o.concept_id=159956 and o.value_coded=767,o.value_text,null)) as resistant_r,
+max(if(o.concept_id=159956 and o.value_coded=84360,o.value_coded,null)) as resistant_s,
+max(if(o.concept_id=159956 and o.value_coded=767,o.value_coded,null)) as resistant_r,
 max(if(o.concept_id=159956 and o.value_coded=78280,o.value_coded,null)) as resistant_inh,
-max(if(o.concept_id=159956 and o.value_coded=75948,o.value_text,null)) as resistant_e,
-max(if(o.concept_id=159958 and o.value_coded=84360,o.value_text,null)) as sensitive_s,
+max(if(o.concept_id=159956 and o.value_coded=75948,o.value_coded,null)) as resistant_e,
+max(if(o.concept_id=159958 and o.value_coded=84360,o.value_coded,null)) as sensitive_s,
 max(if(o.concept_id=159958 and o.value_coded=767,o.value_coded,null)) as sensitive_r,
 max(if(o.concept_id=159958 and o.value_coded=78280,o.value_coded,null)) as sensitive_inh,
 max(if(o.concept_id=159958 and o.value_coded=75948,o.value_coded,null)) as sensitive_e,
@@ -1031,7 +1031,7 @@ DROP PROCEDURE IF EXISTS sp_populate_etl_tb_screening$$
 CREATE PROCEDURE sp_populate_etl_tb_screening()
 BEGIN
 SELECT "Processing TB Screening data ", CONCAT("Time: ", NOW());
-insert into kenyaemr_etl.etl_tb_screening(
+/*insert into kenyaemr_etl.etl_tb_screening(
 patient_id,
 uuid,
 provider,
@@ -1041,10 +1041,8 @@ encounter_id,
 location_id,
 cough_for_2wks_or_more,
 confirmed_tb_contact,
-chronic_cough,
 fever_for_2wks_or_more,
 noticeable_weight_loss,
-chest_pain,
 night_sweat_for_2wks_or_more,
 resulting_tb_status ,
 tb_treatment_start_date ,
@@ -1056,14 +1054,12 @@ e.uuid,
 e.creator,
 e.visit_id,
 e.encounter_datetime,
-e.location_id,
 e.encounter_id,
+e.location_id,
 max(if(o.concept_id=1728 and o.value_coded=159799,o.value_coded,null)) as cough_for_2wks_or_more,
 max(if(o.concept_id=1728 and o.value_coded=124068,o.value_coded,null)) as confirmed_tb_contact,
-max(if(o.concept_id=1728 and o.value_coded=145455,o.value_coded,null)) as chronic_cough,
 max(if(o.concept_id=1728 and o.value_coded=1494,o.value_coded,null)) as fever_for_2wks_or_more,
 max(if(o.concept_id=1728 and o.value_coded=832,o.value_coded,null)) as noticeable_weight_loss,
-max(if(o.concept_id=1728 and o.value_coded=120749,o.value_coded,null)) as chest_pain,
 max(if(o.concept_id=1728 and o.value_coded=133027,o.value_coded,null)) as night_sweat_for_2wks_or_more,
 max(if(o.concept_id=1659,o.value_coded,null)) as resulting_tb_status,
 max(if(o.concept_id=1113,o.value_datetime,null)) as tb_treatment_start_date,
@@ -1074,9 +1070,61 @@ and o.concept_id in(1727,1728,1659,1113,160632)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
-	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be', "a0034eee-1940-4e35-847f-97537a35d05e")
+	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be') -- limit to just tb screening encounter
 ) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id;
+group by e.encounter_id; */
+
+-- add TB screening done via green card and tb screening form
+
+insert into kenyaemr_etl.etl_tb_screening(
+patient_id,
+uuid,
+provider,
+visit_id,
+visit_date,
+encounter_id,
+location_id,
+cough_for_2wks_or_more,
+confirmed_tb_contact,
+fever_for_2wks_or_more,
+noticeable_weight_loss,
+night_sweat_for_2wks_or_more,
+resulting_tb_status ,
+tb_treatment_start_date ,
+notes 
+)
+select
+patient_id, uuid, creator, visit_id, encounter_datetime, encounter_id, location_id,
+max(case concept_answer when 159799 then "Yes" when 1066 then "No" else "" end) as cough_for_2wks_or_more,
+max(case concept_answer when 124068 then "Yes" when 1066 then "No" else "" end) as confirmed_tb_contact,
+max(case concept_answer when 1494 then "Yes" when 1066 then "No" else "" end) as fever_for_2wks_or_more,
+max(case concept_answer when 832 then "Yes" when 1066 then "No" else "" end) as noticeable_weight_loss,
+max(case concept_answer when 133027 then "Yes" when 1066 then "No" else "" end) as night_sweat_for_2wks_or_more,
+max(case concept_question when 1659 then concept_answer else "" end) as resulting_tb_status,
+max(case concept_question when 1113 then concept_answer  else "" end) as tb_treatment_start_date,
+max(case concept_question when 160632 then concept_answer else "" end) as notes
+from (
+select a.obs_id, b.encounter_id, b.encounter_datetime, b.uuid, b.visit_id, b.creator, b.location_id, a.patient_id, a.concept_id as grouping_concept, b.concept_id as concept_question,  b.concept_answer
+from
+(select
+o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, (case o.concept_id when 1729 then o.value_coded when 1659 then o.value_coded when 1113 then o.value_datetime when 160632 then o.value_text else ""  end) as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
+where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (160108) and o.obs_group_id is null) or o.concept_id in (1659, 1113, 160632)
+) a
+inner join
+(select
+o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, (case o.concept_id when 1729 then o.value_coded when 1659 then o.value_coded when 1113 then o.value_datetime when 160632 then o.value_text else ""  end) as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
+where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (160108) and o.obs_group_id is null) or o.concept_id in (1659, 1113, 160632)
+) b on a.patient_id = b.patient_id and a.obs_id = b.obs_group_id
+) s 
+group by encounter_id;
+
+
 SELECT "Completed processing TB Screening data ", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
@@ -1582,7 +1630,7 @@ inner join (
                o.obs_group_id,
                max(if(o.concept_id=1040, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 163611 then "Invalid"  else "" end),null)) as test_1_result ,
                max(if(o.concept_id=1326, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1175 then "N/A"  else "" end),null)) as test_2_result ,
-               max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "Uni-Gold" else "" end),null)) as kit_name ,
+               max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "First Response" else "" end),null)) as kit_name ,
                max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
                max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
              from obs o 
@@ -1717,8 +1765,8 @@ group by patient_id
 where fup.visit_date <= endDate
 group by patient_id
 having (
-(latest_tca>endDate and (latest_tca > date_discontinued or disc_patient is null )) or
-(((latest_tca between startDate and endDate) or (latest_vis_date between startDate and endDate)) and (latest_tca > date_discontinued or disc_patient is null )) )
+(date(latest_tca) > endDate and (date(latest_tca) > date(date_discontinued) or disc_patient is null )) or
+(((date(latest_tca) between startDate and endDate) and (date(latest_vis_date) >= date(latest_tca))) and (date(latest_tca) > date(date_discontinued) or disc_patient is null )) )
 ;
 
 -- ADD INDICES
@@ -1774,12 +1822,118 @@ group by e.patient_id
 having TI_on_art=0
 )net;
 
+-- populate people booked today
+TRUNCATE TABLE kenyaemr_etl.etl_patients_booked_today;
+ALTER TABLE kenyaemr_etl.etl_patients_booked_today AUTO_INCREMENT = 1;
 
+INSERT INTO kenyaemr_etl.etl_patients_booked_today(patient_id, last_visit_date)
+SELECT patient_id, max(visit_date) 
+FROM kenyaemr_etl.etl_patient_hiv_followup
+WHERE date(next_appointment_date) = CURDATE()
+GROUP BY patient_id;
 
 END$$
 DELIMITER ;
 
+-- ------------- populate etl_ipt_screening-------------------------
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_populate_etl_ipt_screening$$
+CREATE PROCEDURE sp_populate_etl_ipt_screening()
+BEGIN
+SELECT "Processing IPT screening forms", CONCAT("Time: ", NOW());
+insert into kenyaemr_etl.etl_ipt_screening(
+patient_id,
+uuid,
+provider,
+visit_id,
+visit_date,
+encounter_id,
+location_id,
+yellow_urine,
+numbness,
+yellow_eyes,
+abdominal_tenderness,
+ipt_started
+)
+select
+patient_id, uuid, creator, visit_id, encounter_datetime, encounter_id, location_id,
+max(case concept_answer when 162311 then "Yes" when 1066 then "No" else "" end) as yellow_urine,
+max(case concept_answer when 132652 then "Yes" when 1066 then "No" else "" end) as numbness,
+max(case concept_answer when 5192 then "Yes" when 1066 then "No" else "" end) as yellow_eyes,
+max(case concept_answer when 12499 then "Yes" when 1066 then "No" else "" end) as abdominal_tenderness,
+max(case concept_question when 1265 then concept_answer else "" end) as ipt_started
+from (
+select a.obs_id, b.encounter_id, b.encounter_datetime, b.uuid, b.visit_id, b.creator, b.location_id, a.patient_id, a.concept_id as grouping_concept, b.concept_id as concept_question,  b.concept_answer
+from
+(select
+o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, o.value_coded as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 and e.encounter_datetime > '2017-09-25' -- exclude encounters that didn't have screening
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
+where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (1727) and o.obs_group_id is null) or o.concept_id in (1265)
+) a
+inner join
+(select
+o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, o.value_coded as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 and e.encounter_datetime > '2017-09-25' -- exclude encounters that didn't have screening
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
+where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (1727) and o.obs_group_id is null) or o.concept_id in (1265)
+) b on a.patient_id = b.patient_id and a.obs_id = b.obs_group_id
+) s 
+group by encounter_id ;
+SELECT "Completed processing IPT screening forms", CONCAT("Time: ", NOW());
+END$$
+DELIMITER ;
+
+
+-- ------------- populate etl_ipt_followup-------------------------
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_populate_etl_ipt_follow_up$$
+CREATE PROCEDURE sp_populate_etl_ipt_follow_up()
+BEGIN
+SELECT "Processing IPT followup forms", CONCAT("Time: ", NOW());
+insert into kenyaemr_etl.etl_ipt_follow_up(
+patient_id,
+uuid,
+provider,
+visit_id,
+visit_date,
+encounter_id,
+location_id,
+ipt_due_date,
+date_collected_ipt,
+hepatotoxity,
+peripheral_neuropathy,
+rash,
+adherence,
+outcome,
+discontinuation_reason,
+action_taken
+)
+select
+e.patient_id, e.uuid, e.creator, e.visit_id, e.encounter_datetime, e.encounter_id, e.location_id,
+max(if(o.concept_id = 164073, o.value_datetime, "" )) as ipt_due_date,
+max(if(o.concept_id = 164074, o.value_datetime, "" )) as date_collected_ipt,
+max(if(o.concept_id = 159098, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as hepatotoxity,
+max(if(o.concept_id = 118983, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as peripheral_neuropathy,
+max(if(o.concept_id = 512, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as rash,
+max(if(o.concept_id = 164075, (case o.value_coded when 159407 then "Poor" when 159405 then "Good" when 159406 then "Fair" when 164077 then "Very Good" when 164076 then "Excellent" when 1067 then "Unknown" else "" end), "" )) as adherence,
+max(if(o.concept_id = 160433, (case o.value_coded when 1267 then "Completed" when 5240 then "Lost to followup" when 159836 then "Discontinued" when 160034 then "Died" when 159492 then "Transferred Out" else "" end), "" )) as outcome,
+max(if(o.concept_id = 1266, (case o.value_coded when 102 then "Drug Toxicity" when 112141 then "TB" when 5622 then "Other" else "" end), "" )) as discontinuation_reason,
+max(if(o.concept_id = 160632, o.value_text, "" )) as action_taken
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259")
+where o.concept_id in (164073, 164074, 159098, 118983, 512, 164075, 160433, 1266, 160632)
+group by e.encounter_id ;
+SELECT "Completed processing IPT followup forms", CONCAT("Time: ", NOW());
+END$$
+DELIMITER ;
+
+
 -- ------------------------------------------- running all procedures -----------------------------
+
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_first_time_setup$$
