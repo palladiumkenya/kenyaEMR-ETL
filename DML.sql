@@ -543,7 +543,7 @@ select
 e.patient_id,
 e.uuid,
 e.visit_id,
-e.encounter_datetime,
+e.encounter_datetime, -- trying to make us of index
 et.uuid,
 (case et.uuid
 	when '2bdada65-4c72-4a48-8730-859890e25cee' then 'HIV'
@@ -1122,7 +1122,7 @@ inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1
 where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (160108) and o.obs_group_id is null) or o.concept_id in (1659, 1113, 160632)
 ) b on a.patient_id = b.patient_id and a.obs_id = b.obs_group_id
 ) s 
-group by encounter_id
+group by encounter_id;
 
 
 SELECT "Completed processing TB Screening data ", CONCAT("Time: ", NOW());
@@ -1765,8 +1765,8 @@ group by patient_id
 where fup.visit_date <= endDate
 group by patient_id
 having (
-(latest_tca>endDate and (latest_tca > date_discontinued or disc_patient is null )) or
-(((latest_tca between startDate and endDate) or (latest_vis_date between startDate and endDate)) and (latest_tca > date_discontinued or disc_patient is null )) )
+(date(latest_tca) > endDate and (date(latest_tca) > date(date_discontinued) or disc_patient is null )) or
+(((date(latest_tca) between startDate and endDate) and (date(latest_vis_date) >= date(latest_tca))) and (date(latest_tca) > date(date_discontinued) or disc_patient is null )) )
 ;
 
 -- ADD INDICES
@@ -1822,7 +1822,15 @@ group by e.patient_id
 having TI_on_art=0
 )net;
 
+-- populate people booked today
+TRUNCATE kenyaemr_etl.etl_patients_booked_today;
+ALTER TABLE kenyaemr_etl.etl_patients_booked_today AUTO_INCREMENT = 1;
 
+INSERT INTO kenyaemr_etl.etl_patients_booked_today(patient_id, last_visit_date)
+SELECT patient_id, max(visit_date) 
+FROM kenyaemr_etl.etl_patient_hiv_followup
+WHERE date(next_appointment_date) = CURDATE()
+GROUP BY patient_id;
 
 END$$
 DELIMITER ;
@@ -1830,7 +1838,7 @@ DELIMITER ;
 -- ------------- populate etl_ipt_screening-------------------------
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_populate_etl_ipt_screening$$
-CREATE PROCEDURE sp_populate_etl_etl_ipt_screening()
+CREATE PROCEDURE sp_populate_etl_ipt_screening()
 BEGIN
 SELECT "Processing IPT screening forms", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_ipt_screening(

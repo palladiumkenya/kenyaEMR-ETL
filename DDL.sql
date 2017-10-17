@@ -763,11 +763,9 @@ SELECT "Successfully created etl_mchs_delivery table";
 -- ------------ create table etl_patients_booked_today-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_patients_booked_today(
-id INT(11) NOT NULL PRIMARY KEY,
+id INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 patient_id INT(11) NOT NULL ,
-last_tca_date DATE,
 last_visit_date DATE,
-date_table_created DATE,
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
 INDEX(patient_id)
 );
@@ -901,7 +899,7 @@ CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demograp
 CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
 INDEX(patient_id),
-INDEX(visit_date, ipt_started),
+INDEX(visit_date, ipt_started, patient_id),
 INDEX(ipt_started, visit_date),
 INDEX(encounter_id),
 INDEX(ipt_started)
