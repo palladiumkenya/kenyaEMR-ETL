@@ -1823,7 +1823,7 @@ having TI_on_art=0
 )net;
 
 -- populate people booked today
-TRUNCATE kenyaemr_etl.etl_patients_booked_today;
+TRUNCATE TABLE kenyaemr_etl.etl_patients_booked_today;
 ALTER TABLE kenyaemr_etl.etl_patients_booked_today AUTO_INCREMENT = 1;
 
 INSERT INTO kenyaemr_etl.etl_patients_booked_today(patient_id, last_visit_date)
