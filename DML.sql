@@ -1463,8 +1463,14 @@ group_concat(distinct cn.name order by o.order_id) as regimen,
 	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("NEVIRAPINE", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "ABC+3TC+NVP"
 	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("EFAVIRENZ", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "ABC+3TC+EFV"
 	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("ZIDOVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "ABC+3TC+AZT"
-	
 
+	WHEN FIND_IN_SET("ZIDOVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("DOLUTEGRAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "AZT+3TC+DTG"
+	WHEN FIND_IN_SET("TENOFOVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("DOLUTEGRAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "TDF+3TC+DTG"
+	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("DOLUTEGRAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "ABC+3TC+DTG"
+	
+	WHEN FIND_IN_SET("TENOFOVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("ATAZANAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "TDF+3TC+ATV/r"
+	WHEN FIND_IN_SET("ZIDOVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("ATAZANAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "AZT+3TC+ATV/r"
+	
 END) as regimen_name,
 (CASE 
 	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LOPINAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("RITONAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 THEN "2nd Line"
@@ -1500,6 +1506,12 @@ END) as regimen_name,
 	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("EFAVIRENZ", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "1st Line"
 	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("ZIDOVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "1st Line"
 	
+	WHEN FIND_IN_SET("ZIDOVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("DOLUTEGRAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "1st Line"
+	WHEN FIND_IN_SET("TENOFOVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("DOLUTEGRAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "1st Line"
+	WHEN FIND_IN_SET("ABACAVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("DOLUTEGRAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "1st Line"
+	
+	WHEN FIND_IN_SET("TENOFOVIR", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("ATAZANAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "2nd Line"
+	WHEN FIND_IN_SET("ZIDOVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("LAMIVUDINE", group_concat(distinct cn.name order by o.order_id)) > 0 AND FIND_IN_SET("ATAZANAVIR", group_concat(distinct cn.name order by o.order_id)) > 0  THEN "2nd Line"
 
 END) as regimen_line,
 -- cs.concept_set, 
