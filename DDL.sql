@@ -3,6 +3,22 @@ DROP PROCEDURE IF EXISTS create_etl_tables$$
 CREATE PROCEDURE create_etl_tables()
 BEGIN
 DECLARE script_id INT(11);
+
+-- create readonly user for use with data tools
+SELECT "Creating kenyaemr_reports mysql user";
+grant usage on *.* to 'kenyaemr_reports'@'localhost';
+DROP USER 'kenyaemr_reports'@'localhost';
+FLUSH PRIVILEGES;
+CREATE USER 'kenyaemr_reports'@'localhost' IDENTIFIED BY 'kenyaemrreports123#';
+GRANT SELECT, SHOW VIEW ON kenyaemr_datatools.* TO 'kenyaemr_reports'@'localhost';
+FLUSH PRIVILEGES;
+SELECT "Successfully created kenyaemr_reports mysql user";
+
+SELECT "Grant access to openmrs_user to etl tables";
+-- grants access to openmrs user
+GRANT ALL PRIVILEGES ON kenyaemr_etl.* TO openmrs_user;
+FLUSH PRIVILEGES;
+SELECT "Granted access to openmrs database user";
 -- create/recreate database kenyaemr_etl
 SELECT "Recreating kenyaemr_etl database";
 drop database if exists kenyaemr_etl;
@@ -89,13 +105,12 @@ SELECT "Successfully created etl_patient_demographics table";
 
 
 create table kenyaemr_etl.etl_hiv_enrollment(
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL,
 visit_id INT(11) DEFAULT NULL,
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 encounter_provider INT(11),
 date_first_enrolled_in_care DATE,
 entry_point INT(11),
@@ -133,9 +148,8 @@ SELECT "Successfully created etl_hiv_enrollment table";
 -- create table etl_hiv_followup
 
 CREATE TABLE kenyaemr_etl.etl_patient_hiv_followup (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid CHAR(38),
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 patient_id INT(11) NOT NULL ,
 location_id INT(11) DEFAULT NULL,
 visit_date DATE,
@@ -248,8 +262,7 @@ SELECT "Successfully created etl_patient_hiv_followup table";
 -- ------- create table etl_laboratory_extract-----------------------------------------
 
 CREATE TABLE kenyaemr_etl.etl_laboratory_extract (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-uuid char(38),
+uuid char(38) PRIMARY KEY,
 encounter_id INT(11),
 patient_id INT(11) NOT NULL ,
 location_id INT(11) DEFAULT NULL,
@@ -263,7 +276,6 @@ test_requested_by INT(11),
 date_created DATE,
 created_by INT(11),
 CONSTRAINT FOREIGN KEY (patient_id) REFERENCES kenyaemr_etl.etl_patient_demographics(patient_id),
-CONSTRAINT unique_uuid UNIQUE(uuid),
 INDEX(visit_date),
 INDEX(encounter_id),
 INDEX(patient_id),
@@ -276,7 +288,7 @@ SELECT "Successfully created etl_laboratory_extract table";
 
 
 CREATE TABLE kenyaemr_etl.etl_pharmacy_extract(
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+obs_group_id INT(11) PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 location_id INT(11) DEFAULT NULL,
@@ -316,7 +328,6 @@ SELECT "Successfully created etl_pharmacy_extract table";
 -- ------------ create table etl_patient_treatment_discontinuation-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_patient_program_discontinuation(
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
@@ -324,7 +335,7 @@ visit_date DATETIME,
 location_id INT(11) DEFAULT NULL,
 program_uuid CHAR(38) ,
 program_name VARCHAR(50),
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 discontinuation_reason INT(11),
 date_died DATE,
 transfer_facility VARCHAR(50),
@@ -344,13 +355,12 @@ SELECT "Successfully created etl_patient_program_discontinuation table";
 -- ------------ create table etl_mch_enrollment-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mch_enrollment (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 anc_number VARCHAR(50),
 gravida INT(11),
 parity INT(11),
@@ -395,13 +405,12 @@ SELECT "Successfully created etl_mch_enrollment table";
 -- ------------ create table etl_mch_antenatal_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mch_antenatal_visit (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 provider INT(11),
 temperature DOUBLE,
 pulse_rate DOUBLE,
@@ -449,13 +458,12 @@ SELECT "Successfully created etl_mch_antenatal_visit table";
 -- ------------ create table etl_mch_postnatal_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mch_postnatal_visit (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 provider INT(11),
 temperature DOUBLE,
 pulse_rate DOUBLE,
@@ -501,13 +509,12 @@ SELECT "Successfully created etl_mch_postnatal_visit table";
 -- ------------ create table etl_tb_enrollment-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_tb_enrollment (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 provider INT(11),
 date_treatment_started DATE,
 district VARCHAR(50),
@@ -552,14 +559,13 @@ SELECT "Successfully created etl_tb_enrollment table";
 -- ------------ create table etl_tb_follow_up_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_tb_follow_up_visit (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 provider INT(11),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 spatum_test INT(11),
 spatum_result INT(11),
 result_serial_number VARCHAR(20),
@@ -589,14 +595,13 @@ SELECT "Successfully created etl_tb_follow_up_visit table";
 -- ------------ create table etl_tb_screening-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_tb_screening (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 provider INT(11),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 cough_for_2wks_or_more INT(11),
 confirmed_tb_contact INT(11),
 fever_for_2wks_or_more INT(11),
@@ -620,14 +625,13 @@ SELECT "Successfully created etl_tb_screening table";
 -- ------------ create table etl_hei_enrollment-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_hei_enrollment (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
 provider INT(11),
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 child_exposed INT(11),
 hei_id_number VARCHAR(50),
 spd_number VARCHAR(50),
@@ -676,14 +680,13 @@ SELECT "Successfully created etl_hei_enrollment table";
 -- ------------ create table etl_hei_follow_up_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_hei_follow_up_visit (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 provider INT(11),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 weight DOUBLE,
 height DOUBLE,
 infant_feeding INT(11),
@@ -729,14 +732,13 @@ SELECT "Successfully created etl_hei_follow_up_visit table";
 -- ------------ create table etl_mchs_delivery-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_mchs_delivery (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 provider INT(11),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 data_entry_date DATE,
 duration_of_pregnancy DOUBLE,
 mode_of_delivery INT(11),
@@ -787,8 +789,7 @@ INDEX(patient_id)
 -- --------------------------- CREATE drug_event table ---------------------
 
 CREATE TABLE kenyaemr_etl.etl_drug_event(
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-uuid CHAR(38) DEFAULT NULL,
+uuid CHAR(38) NOT NULL PRIMARY KEY,
 patient_id INT(11) NOT NULL ,
 date_started DATE,
 regimen VARCHAR(100),
@@ -882,14 +883,13 @@ index(tracing_status)
 -- ------------ create table etl_ipt_screening-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_ipt_screening (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 provider INT(11),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 yellow_urine INT(11),
 numbness INT(11),
 yellow_eyes INT(11),
@@ -909,14 +909,13 @@ SELECT "Successfully created etl_ipt_screening table";
 -- ------------ create table etl_ipt_follow_up -----------------------
 
 CREATE TABLE kenyaemr_etl.etl_ipt_follow_up (
-id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 uuid char(38),
 provider INT(11),
 patient_id INT(11) NOT NULL ,
 visit_id INT(11),
 visit_date DATE,
 location_id INT(11) DEFAULT NULL,
-encounter_id INT(11),
+encounter_id INT(11) NOT NULL PRIMARY KEY,
 ipt_due_date DATE DEFAULT NULL,
 date_collected_ipt DATE DEFAULT NULL,
 hepatotoxity INT(11),

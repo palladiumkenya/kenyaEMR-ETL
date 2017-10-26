@@ -36,7 +36,7 @@ p.dead,
 p.voided,
 p.death_date
 from person p 
-join patient pa on pa.patient_id=p.person_id
+left join patient pa on pa.patient_id=p.person_id
 inner join person_name pn on pn.person_id = p.person_id and pn.voided=0
 where pn.date_created >= last_update_time
 or pn.date_changed >= last_update_time
@@ -1569,6 +1569,7 @@ BEGIN
 
 
 insert into kenyaemr_etl.etl_pharmacy_extract(
+obs_group_id,
 patient_id,
 uuid,
 visit_date,
@@ -1576,8 +1577,9 @@ visit_id,
 encounter_id,
 date_created,
 encounter_name,
+location_id,
 drug,
--- drug_name,
+drug_name,
 is_arv,
 is_ctx,
 is_dapsone,
@@ -1588,7 +1590,8 @@ voided,
 date_voided,
 dispensing_provider
 )
-select
+select 
+	o.obs_group_id obs_group_id,
 	o.person_id,
 	max(if(o.concept_id=1282, o.uuid, null)),
 	date(o.obs_datetime) as enc_date,
@@ -1596,11 +1599,12 @@ select
 	o.encounter_id,
 	e.date_created,
 	et.name as enc_name,
+	e.location_id,
 	max(if(o.concept_id = 1282 and o.value_coded is not null,o.value_coded, null)) as drug_dispensed,
+	max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
 	max(if(o.concept_id = 1282 and cs.concept_set=1085, 1, 0)) as arv_drug, -- arv:1085
 	max(if(o.concept_id = 1282 and o.value_coded = 105281,1, 0)) as is_ctx,
 	max(if(o.concept_id = 1282 and o.value_coded = 74250,1, 0)) as is_dapsone,
-	-- max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
 	max(if(o.concept_id = 1443, o.value_numeric, null)) as dose,
 	max(if(o.concept_id = 159368, o.value_numeric, null)) as duration,
 	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as duration_units,
@@ -1610,15 +1614,15 @@ select
 from obs o
 left outer join encounter e on e.encounter_id = o.encounter_id and e.voided=0
 left outer join encounter_type et on et.encounter_type_id = e.encounter_type
-left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='SHORT' -- FULLY_SPECIFIED'
-left outer join concept_set cs on o.value_coded = cs.concept_id
+left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='FULLY_SPECIFIED' -- SHORT'
+left outer join concept_set cs on o.value_coded = cs.concept_id 
 where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444)  and e.voided=0 and
 (
 	o.date_created >= last_update_time
 	or o.date_voided >= last_update_time
 	)
 group by o.obs_group_id, o.person_id, encounter_id
-having drug_dispensed is not null
+having drug_dispensed is not null and obs_group_id is not null
 ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), encounter_name=VALUES(encounter_name), is_arv=VALUES(is_arv), is_ctx=VALUES(is_ctx), is_dapsone=VALUES(is_dapsone), frequency=VALUES(frequency),
 duration=VALUES(duration), duration_units=VALUES(duration_units), voided=VALUES(voided), date_voided=VALUES(date_voided)
 ;
@@ -1909,6 +1913,126 @@ ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), ccc_number=VALUES(ccc_num
 ;
 END$$
 DELIMITER ;
+
+
+
+
+-- ------------- populate etl_ipt_screening-------------------------
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_update_etl_ipt_screening$$
+CREATE PROCEDURE sp_update_etl_ipt_screening(IN last_update_time DATETIME)
+BEGIN
+insert into kenyaemr_etl.etl_ipt_screening(
+patient_id,
+uuid,
+provider,
+visit_id,
+visit_date,
+encounter_id,
+location_id,
+yellow_urine,
+numbness,
+yellow_eyes,
+abdominal_tenderness,
+ipt_started
+)
+select
+patient_id, uuid, creator, visit_id, encounter_datetime, encounter_id, location_id,
+max(case concept_answer when 162311 then "Yes" when 1066 then "No" else "" end) as yellow_urine,
+max(case concept_answer when 132652 then "Yes" when 1066 then "No" else "" end) as numbness,
+max(case concept_answer when 5192 then "Yes" when 1066 then "No" else "" end) as yellow_eyes,
+max(case concept_answer when 12499 then "Yes" when 1066 then "No" else "" end) as abdominal_tenderness,
+max(case concept_question when 1265 then concept_answer else "" end) as ipt_started
+from (
+select a.obs_id, b.encounter_id, b.encounter_datetime, b.uuid, b.visit_id, b.creator, b.location_id, a.patient_id, a.concept_id as grouping_concept, b.concept_id as concept_question,  b.concept_answer
+from
+(select
+o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, o.value_coded as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 and e.encounter_datetime > '2017-09-25' -- exclude encounters that didn't have screening
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
+where ((o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (1727) and o.obs_group_id is null) or o.concept_id in (1265))
+and e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+) a
+inner join
+(select
+o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, o.value_coded as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 and e.encounter_datetime > '2017-09-25' -- exclude encounters that didn't have screening
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
+where ((o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (1727) and o.obs_group_id is null) or o.concept_id in (1265))
+and e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+) b on a.patient_id = b.patient_id and a.obs_id = b.obs_group_id
+) s 
+group by encounter_id 
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), yellow_urine=VALUES(yellow_urine), numbness=VALUES(numbness), yellow_eyes=VALUES(yellow_eyes), abdominal_tenderness=VALUES(abdominal_tenderness), ipt_started=VALUES(ipt_started)
+;
+SELECT "Completed processing IPT screening forms", CONCAT("Time: ", NOW());
+END$$
+DELIMITER ;
+
+
+-- ------------- populate etl_ipt_followup-------------------------
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_update_etl_ipt_follow_up$$
+CREATE PROCEDURE sp_update_etl_ipt_follow_up(IN last_update_time DATETIME)
+BEGIN
+SELECT "Processing IPT followup forms", CONCAT("Time: ", NOW());
+insert into kenyaemr_etl.etl_ipt_follow_up(
+patient_id,
+uuid,
+provider,
+visit_id,
+visit_date,
+encounter_id,
+location_id,
+ipt_due_date,
+date_collected_ipt,
+hepatotoxity,
+peripheral_neuropathy,
+rash,
+adherence,
+outcome,
+discontinuation_reason,
+action_taken
+)
+select
+e.patient_id, e.uuid, e.creator, e.visit_id, e.encounter_datetime, e.encounter_id, e.location_id,
+max(if(o.concept_id = 164073, o.value_datetime, "" )) as ipt_due_date,
+max(if(o.concept_id = 164074, o.value_datetime, "" )) as date_collected_ipt,
+max(if(o.concept_id = 159098, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as hepatotoxity,
+max(if(o.concept_id = 118983, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as peripheral_neuropathy,
+max(if(o.concept_id = 512, (case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end), "" )) as rash,
+max(if(o.concept_id = 164075, (case o.value_coded when 159407 then "Poor" when 159405 then "Good" when 159406 then "Fair" when 164077 then "Very Good" when 164076 then "Excellent" when 1067 then "Unknown" else "" end), "" )) as adherence,
+max(if(o.concept_id = 160433, (case o.value_coded when 1267 then "Completed" when 5240 then "Lost to followup" when 159836 then "Discontinued" when 160034 then "Died" when 159492 then "Transferred Out" else "" end), "" )) as outcome,
+max(if(o.concept_id = 1266, (case o.value_coded when 102 then "Drug Toxicity" when 112141 then "TB" when 5622 then "Other" else "" end), "" )) as discontinuation_reason,
+max(if(o.concept_id = 160632, o.value_text, "" )) as action_taken
+from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 
+inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259")
+where o.concept_id in (164073, 164074, 159098, 118983, 512, 164075, 160433, 1266, 160632)
+and e.date_created >= last_update_time
+or e.date_changed >= last_update_time
+or e.date_voided >= last_update_time
+group by e.encounter_id
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date), 
+ipt_due_date=VALUES(ipt_due_date),
+date_collected_ipt=VALUES(date_collected_ipt),
+hepatotoxity=VALUES(hepatotoxity),
+peripheral_neuropathy=VALUES(peripheral_neuropathy),
+rash=VALUES(rash),
+adherence=VALUES(adherence),
+outcome=VALUES(outcome),
+discontinuation_reason=VALUES(discontinuation_reason),
+action_taken=VALUES(action_taken) ;
+
+END$$
+DELIMITER ;
+
 -- ----------------------------  scheduled updates ---------------------
 
 DELIMITER $$
@@ -1939,6 +2063,9 @@ CALL sp_update_etl_pharmacy_extract(last_update_time);
 CALL sp_update_etl_laboratory_extract(last_update_time);
 CALL sp_update_hts_test(last_update_time);
 CALL sp_update_hts_linkage_and_referral(last_update_time);
+CALL sp_update_etl_ipt_screening(last_update_time);
+CALL sp_update_etl_ipt_follow_up(last_update_time);
+-- CALL create_datatools_tables();
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where  id= update_script_id;
 DELETE FROM kenyaemr_etl.etl_script_status where script_name="initial_creation_of_tables" and start_time < DATE_SUB(NOW(), INTERVAL 1 HOUR);
@@ -1948,12 +2075,13 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-SET GLOBAL EVENT_SCHEDULER=ON$$
+
 DROP EVENT IF EXISTS event_update_kenyaemr_etl_tables$$
 CREATE EVENT event_update_kenyaemr_etl_tables
-ON SCHEDULE EVERY 5 MINUTE STARTS CURRENT_TIMESTAMP
+ON SCHEDULE EVERY 30 MINUTE STARTS CURRENT_TIMESTAMP
 DO
 CALL sp_scheduled_updates();
+CALL create_datatools_tables();
 $$
 DELIMITER ;
 

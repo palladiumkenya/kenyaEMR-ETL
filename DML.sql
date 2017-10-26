@@ -38,7 +38,7 @@ p.dead,
 p.voided,
 p.death_date
 from person p 
-join patient pa on pa.patient_id=p.person_id
+left join patient pa on pa.patient_id=p.person_id
 left join person_name pn on pn.person_id = p.person_id and pn.voided=0
 GROUP BY p.person_id
 ) p
@@ -465,6 +465,7 @@ CREATE PROCEDURE sp_populate_etl_pharmacy_extract()
 BEGIN
 SELECT "Processing Pharmacy data ", CONCAT("Time: ", NOW());
 insert into kenyaemr_etl.etl_pharmacy_extract(
+obs_group_id,
 patient_id,
 uuid,
 visit_date,
@@ -472,8 +473,9 @@ visit_id,
 encounter_id,
 date_created,
 encounter_name,
+location_id,
 drug,
--- drug_name,
+drug_name,
 is_arv,
 is_ctx,
 is_dapsone,
@@ -485,6 +487,7 @@ date_voided,
 dispensing_provider
 )
 select 
+	o.obs_group_id obs_group_id,
 	o.person_id,
 	max(if(o.concept_id=1282, o.uuid, null)),
 	date(o.obs_datetime) as enc_date,
@@ -492,11 +495,12 @@ select
 	o.encounter_id,
 	e.date_created,
 	et.name as enc_name,
+	e.location_id,
 	max(if(o.concept_id = 1282 and o.value_coded is not null,o.value_coded, null)) as drug_dispensed,
+	max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
 	max(if(o.concept_id = 1282 and cs.concept_set=1085, 1, 0)) as arv_drug, -- arv:1085
 	max(if(o.concept_id = 1282 and o.value_coded = 105281,1, 0)) as is_ctx,
 	max(if(o.concept_id = 1282 and o.value_coded = 74250,1, 0)) as is_dapsone,
-	-- max(if(o.concept_id = 1282, cn.name, 0)) as drug_name, -- arv:1085
 	max(if(o.concept_id = 1443, o.value_numeric, null)) as dose,
 	max(if(o.concept_id = 159368, o.value_numeric, null)) as duration,
 	max(if(o.concept_id = 1732 and o.value_coded=1072,'Days',if(o.concept_id=1732 and o.value_coded=1073,'Weeks',if(o.concept_id=1732 and o.value_coded=1074,'Months',null)))) as duration_units,
@@ -506,11 +510,11 @@ select
 from obs o
 left outer join encounter e on e.encounter_id = o.encounter_id and e.voided=0
 left outer join encounter_type et on et.encounter_type_id = e.encounter_type
-left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='SHORT' -- FULLY_SPECIFIED'
+left outer join concept_name cn on o.value_coded = cn.concept_id and cn.locale='en' and cn.concept_name_type='FULLY_SPECIFIED' -- SHORT'
 left outer join concept_set cs on o.value_coded = cs.concept_id 
 where o.voided=0 and o.concept_id in(1282,1732,159368,1443,1444)  and e.voided=0
 group by o.obs_group_id, o.person_id, encounter_id
-having drug_dispensed is not null;
+having drug_dispensed is not null and obs_group_id is not null;
 
 update kenyaemr_etl.etl_pharmacy_extract
 	set duration_in_days = if(duration_units= 'Days', duration,if(duration_units='Weeks',duration * 7,if(duration_units='Months',duration * 31,null)))
@@ -1962,6 +1966,8 @@ CALL sp_populate_etl_mch_delivery();
 CALL sp_drug_event();
 CALL sp_populate_hts_test();
 CALL sp_populate_hts_linkage_and_referral();
+CALL sp_populate_etl_ipt_screening();
+CALL sp_populate_etl_ipt_follow_up();
 CALL sp_update_dashboard_table();
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
