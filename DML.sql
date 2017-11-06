@@ -146,6 +146,7 @@ location_id,
 encounter_id,
 encounter_provider,
 date_created,
+patient_type,
 date_first_enrolled_in_care,
 entry_point,
 transfer_in_date,
@@ -170,6 +171,7 @@ e.location_id,
 e.encounter_id,
 e.creator,
 e.date_created,
+max(if(o.concept_id=164932,o.value_coded,null)) as patient_type ,
 max(if(o.concept_id=160555,o.value_datetime,null)) as date_first_enrolled_in_care ,
 max(if(o.concept_id=160540,o.value_coded,null)) as entry_point,
 max(if(o.concept_id=160534,o.value_datetime,null)) as transfer_in_date,
@@ -1035,50 +1037,6 @@ DROP PROCEDURE IF EXISTS sp_populate_etl_tb_screening$$
 CREATE PROCEDURE sp_populate_etl_tb_screening()
 BEGIN
 SELECT "Processing TB Screening data ", CONCAT("Time: ", NOW());
-/*insert into kenyaemr_etl.etl_tb_screening(
-patient_id,
-uuid,
-provider,
-visit_id,
-visit_date,
-encounter_id,
-location_id,
-cough_for_2wks_or_more,
-confirmed_tb_contact,
-fever_for_2wks_or_more,
-noticeable_weight_loss,
-night_sweat_for_2wks_or_more,
-resulting_tb_status ,
-tb_treatment_start_date ,
-notes 
-)
-select
-e.patient_id,
-e.uuid,
-e.creator,
-e.visit_id,
-e.encounter_datetime,
-e.encounter_id,
-e.location_id,
-max(if(o.concept_id=1728 and o.value_coded=159799,o.value_coded,null)) as cough_for_2wks_or_more,
-max(if(o.concept_id=1728 and o.value_coded=124068,o.value_coded,null)) as confirmed_tb_contact,
-max(if(o.concept_id=1728 and o.value_coded=1494,o.value_coded,null)) as fever_for_2wks_or_more,
-max(if(o.concept_id=1728 and o.value_coded=832,o.value_coded,null)) as noticeable_weight_loss,
-max(if(o.concept_id=1728 and o.value_coded=133027,o.value_coded,null)) as night_sweat_for_2wks_or_more,
-max(if(o.concept_id=1659,o.value_coded,null)) as resulting_tb_status,
-max(if(o.concept_id=1113,o.value_datetime,null)) as tb_treatment_start_date,
-max(if(o.concept_id=160632,o.value_text,null)) as notes
-from encounter e 
-inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(1727,1728,1659,1113,160632)
-inner join 
-(
-	select encounter_type_id, uuid, name from encounter_type where 
-	uuid in('ed6dacc9-0827-4c82-86be-53c0d8c449be') -- limit to just tb screening encounter
-) et on et.encounter_type_id=e.encounter_type
-group by e.encounter_id; */
-
--- add TB screening done via green card and tb screening form
 
 insert into kenyaemr_etl.etl_tb_screening(
 patient_id,
@@ -1088,46 +1046,20 @@ visit_id,
 visit_date,
 encounter_id,
 location_id,
-cough_for_2wks_or_more,
-confirmed_tb_contact,
-fever_for_2wks_or_more,
-noticeable_weight_loss,
-night_sweat_for_2wks_or_more,
 resulting_tb_status ,
 tb_treatment_start_date ,
 notes 
-)
+) 
 select
-patient_id, uuid, creator, visit_id, encounter_datetime, encounter_id, location_id,
-max(case concept_answer when 159799 then "Yes" when 1066 then "No" else "" end) as cough_for_2wks_or_more,
-max(case concept_answer when 124068 then "Yes" when 1066 then "No" else "" end) as confirmed_tb_contact,
-max(case concept_answer when 1494 then "Yes" when 1066 then "No" else "" end) as fever_for_2wks_or_more,
-max(case concept_answer when 832 then "Yes" when 1066 then "No" else "" end) as noticeable_weight_loss,
-max(case concept_answer when 133027 then "Yes" when 1066 then "No" else "" end) as night_sweat_for_2wks_or_more,
-max(case concept_question when 1659 then concept_answer else "" end) as resulting_tb_status,
-max(case concept_question when 1113 then concept_answer  else "" end) as tb_treatment_start_date,
-max(case concept_question when 160632 then concept_answer else "" end) as notes
-from (
-select a.obs_id, b.encounter_id, b.encounter_datetime, b.uuid, b.visit_id, b.creator, b.location_id, a.patient_id, a.concept_id as grouping_concept, b.concept_id as concept_question,  b.concept_answer
-from
-(select
-o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, (case o.concept_id when 1729 then o.value_coded when 1659 then o.value_coded when 1113 then o.value_datetime when 160632 then o.value_text else ""  end) as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
-from obs o 
-inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 
+e.patient_id, e.uuid, e.creator, e.visit_id, e.encounter_datetime, e.encounter_id, e.location_id,
+max(case o.concept_id when 1659 then o.value_coded else "" end) as resulting_tb_status,
+max(case o.concept_id when 1113 then date(o.value_datetime)  else "" end) as tb_treatment_start_date,
+max(case o.concept_id when 160632 then value_text else "" end) as notes
+from encounter e 
 inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
-where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (160108) and o.obs_group_id is null) or o.concept_id in (1659, 1113, 160632)
-) a
-inner join
-(select
-o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, (case o.concept_id when 1729 then o.value_coded when 1659 then o.value_coded when 1113 then o.value_datetime when 160632 then o.value_text else ""  end) as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
-from obs o 
-inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 
-inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
-where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (160108) and o.obs_group_id is null) or o.concept_id in (1659, 1113, 160632)
-) b on a.patient_id = b.patient_id and a.obs_id = b.obs_group_id
-) s 
-group by encounter_id;
-
+inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (1659, 1113, 160632)
+where e.voided=0
+group by e.encounter_id;
 
 SELECT "Completed processing TB Screening data ", CONCAT("Time: ", NOW());
 END$$
@@ -1857,6 +1789,7 @@ DROP PROCEDURE IF EXISTS sp_populate_etl_ipt_screening$$
 CREATE PROCEDURE sp_populate_etl_ipt_screening()
 BEGIN
 SELECT "Processing IPT screening forms", CONCAT("Time: ", NOW());
+
 insert into kenyaemr_etl.etl_ipt_screening(
 patient_id,
 uuid,
@@ -1865,39 +1798,17 @@ visit_id,
 visit_date,
 encounter_id,
 location_id,
-yellow_urine,
-numbness,
-yellow_eyes,
-abdominal_tenderness,
 ipt_started
 )
 select
-patient_id, uuid, creator, visit_id, encounter_datetime, encounter_id, location_id,
-max(case concept_answer when 162311 then "Yes" when 1066 then "No" else "" end) as yellow_urine,
-max(case concept_answer when 132652 then "Yes" when 1066 then "No" else "" end) as numbness,
-max(case concept_answer when 5192 then "Yes" when 1066 then "No" else "" end) as yellow_eyes,
-max(case concept_answer when 12499 then "Yes" when 1066 then "No" else "" end) as abdominal_tenderness,
-max(case concept_question when 1265 then concept_answer else "" end) as ipt_started
-from (
-select a.obs_id, b.encounter_id, b.encounter_datetime, b.uuid, b.visit_id, b.creator, b.location_id, a.patient_id, a.concept_id as grouping_concept, b.concept_id as concept_question,  b.concept_answer
-from
-(select
-o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, o.value_coded as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
-from obs o 
-inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 and e.encounter_datetime > '2017-09-25' -- exclude encounters that didn't have screening
+e.patient_id, e.uuid, e.creator, e.visit_id, e.encounter_datetime, e.encounter_id, e.location_id,
+max(o.value_coded) as ipt_started
+from encounter e 
 inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
-where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (1727) and o.obs_group_id is null) or o.concept_id in (1265)
-) a
-inner join
-(select
-o.obs_id, e.patient_id, e.visit_id, e.encounter_datetime, e.uuid, e.creator, o.location_id, o.concept_id, o.value_coded as concept_answer, IFNULL(o.obs_id, o.concept_id) obs_group_id, e.encounter_id
-from obs o 
-inner join encounter e on e.encounter_id = o.encounter_id and e.voided =0 and e.encounter_datetime > '2017-09-25' -- exclude encounters that didn't have screening
-inner join form f on f.form_id=e.form_id and f.uuid in ("22c68f86-bbf0-49ba-b2d1-23fa7ccf0259", "59ed8e62-7f1f-40ae-a2e3-eabe350277ce")
-where (o.concept_id = 1729 and o.obs_group_id is not null) or (o.concept_id in (1727) and o.obs_group_id is null) or o.concept_id in (1265)
-) b on a.patient_id = b.patient_id and a.obs_id = b.obs_group_id
-) s 
-group by encounter_id ;
+inner join obs o on o.encounter_id = e.encounter_id and o.concept_id=1265
+where e.voided=0
+group by e.encounter_id;
+
 SELECT "Completed processing IPT screening forms", CONCAT("Time: ", NOW());
 END$$
 DELIMITER ;
