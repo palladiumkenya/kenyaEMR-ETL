@@ -1734,7 +1734,7 @@ select distinct e.patient_id
 from kenyaemr_etl.etl_hiv_enrollment e 
 join kenyaemr_etl.etl_patient_demographics p on p.patient_id=e.patient_id 
 where  e.entry_point <> 160563  and transfer_in_date is null 
-and date(e.visit_date) between startDate and endDate;
+and date(e.visit_date) between startDate and endDate and (e.patient_type not in (160563, 164931, 159833) or e.patient_type is null or e.patient_type='');
 
 
 DROP TABLE IF EXISTS kenyaemr_etl.etl_last_month_newly_on_art;
