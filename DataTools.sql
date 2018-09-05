@@ -327,9 +327,11 @@ visit_date,
 location_id,
 encounter_id,
 anc_number,
+first_anc_visit_date,
 gravida,
 parity,
 parity_abortion,
+age_at_menarche,
 lmp,
 lmp_estimated,
 edd_ultrasound,
@@ -379,6 +381,7 @@ visit_date,
 location_id,
 encounter_id,
 provider,
+anc_visit_number,
 temperature,
 pulse_rate,
 systolic_bp,
@@ -389,6 +392,7 @@ weight,
 height,
 muac,
 hemoglobin,
+(case breast_exam_done when 1065 then "Yes" when 1066 then "No" else "" end) as breast_exam_done,
 (case pallor when 1065 then "Yes" when 1066 then "No" else "" end) as pallor,
 maturity,
 fundal_height,
@@ -401,6 +405,18 @@ fetal_heart_rate,
 (case who_stage when 1204 then "WHO Stage1" when 1205 then "WHO Stage2" when 1206 then "WHO Stage3" when 1207 then "WHO Stage4" else "" end) as who_stage,
 cd4,
 (case arv_status when 1148 then "ARV Prophylaxis" when 1149 then "HAART" when 1175 then "NA" else "" end) as arv_status,
+test_1_kit_name,
+test_1_kit_lot_no,
+test_1_kit_expiry,
+test_1_result,
+test_2_kit_name,
+test_2_kit_lot_no,
+test_2_kit_expiry,
+test_2_result,
+final_test_result,
+patient_given_result,
+partner_hiv_tested,
+partner_hiv_status,
 urine_microscopy,
 (case urinary_albumin when 664 then "Negative" when 1874 then "Trace - 15" when 1362 then "One Plus(+) - 30" when 1363 then "Two Plus(++) - 100" when 1364 then "Three Plus(+++) - 300" when 1365 then "Four Plus(++++) - 1000" else "" end) as urinary_albumin,
 (case glucose_measurement when 1115 then "Normal" when 1874 then "Trace" when 1362 then "One Plus(+)" when 1363 then "Two Plus(++)" when 1364 then "Three Plus(+++)" when 1365 then "Four Plus(++++)" else "" end) as glucose_measurement,
@@ -413,7 +429,9 @@ urine_gravity,
 (case urine_bile_pigment_test when 664 then "NEGATIVE" when 1362 then "One Plus(+)" when 1363 then "Two Plus(++)" when 1364 then "Three Plus(+++)" else "" end) as urine_bile_pigment_test,
 (case urine_colour when 162099 then "Colourless" when 127778 then "Red color" when 162097 then "Light yellow colour" when 162105 then "Yellow-green colour" when 162098 then "Dark yellow colour" when 162100 then "Brown color" else "" end) as urine_colour,
 (case urine_turbidity when 162102 then "Urine appears clear" when 162103 then "Cloudy urine" when 162104 then "Urine appears turbid" else "" end) as urine_turbidity,
-(case urine_dipstick_for_blood when 664 then "NEGATIVE" when 1874 then "Trace" when 1362 then "One Plus(+)" when 1363 then "Two Plus(++)" when 1364 then "Three Plus(+++)" else "" end) as urine_dipstick_for_blood
+(case urine_dipstick_for_blood when 664 then "NEGATIVE" when 1874 then "Trace" when 1362 then "One Plus(+)" when 1363 then "Two Plus(++)" when 1364 then "Three Plus(+++)" else "" end) as urine_dipstick_for_blood,
+(case syphilis_test_status when 1229 then "Non Reactive" when 1228 then "Reactive" when 1402 then "Not Tested" when 1304 then "Poor Sample quality" else "" end) as syphilis_test_status,
+(case syphilis_treated_status when 1065 then "Yes" when 1066 then "No" else "" end) as syphilis_treated_status
 from kenyaemr_etl.etl_mch_antenatal_visit;
 
 ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
@@ -422,6 +440,14 @@ ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(visit_date);
 ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(encounter_id);
 ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(who_stage);
 ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(arv_status);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(cd4);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(final_test_result);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(test_1_kit_name);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(test_2_kit_name);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(tb_screening);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(syphilis_test_status);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(cacx_screening);
+ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(next_appointment_date);
 
 SELECT "Successfully created mch_antenatal_visit table";
 

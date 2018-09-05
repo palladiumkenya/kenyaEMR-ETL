@@ -2,6 +2,8 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/DDL.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DML.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/DataTools.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/Scheduled_Updates.sql" dialect="MySQL" />
   </component>
 </project>

@@ -493,9 +493,11 @@ visit_date,
 location_id,
 encounter_id,
 anc_number,
+first_anc_visit_date,
 gravida,
 parity,
 parity_abortion,
+age_at_menarche,
 lmp,
 lmp_estimated,
 edd_ultrasound,
@@ -531,9 +533,11 @@ e.encounter_datetime,
 e.location_id,
 e.encounter_id,
 max(if(o.concept_id=161655,o.value_numeric,null)) as anc_number,
+max(if(o.concept_id=163547,o.value_datetime,null)) as first_anc_visit_date,
 max(if(o.concept_id=5624,o.value_numeric,null)) as gravida,
 max(if(o.concept_id=160080,o.value_numeric,null)) as parity,
 max(if(o.concept_id=1823,o.value_numeric,null)) as parity_abortion,
+max(if(o.concept_id=160598,o.value_numeric,null)) as age_at_menarche,
 max(if(o.concept_id=1427,o.value_datetime,null)) as lmp,
 max(if(o.concept_id=162095,o.value_datetime,null)) as lmp_estimated,
 max(if(o.concept_id=5596,o.value_datetime,null)) as edd_ultrasound,
@@ -562,7 +566,7 @@ max(if(o.concept_id=162096,o.value_coded,null)) as urine_dipstick_for_blood,
 max(if(o.concept_id=161555,o.value_coded,null)) as discontinuation_reason
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(161655,5624,160080,1823,1427,162095,5596,300,299,160108,32,159427,160554,1436,160082,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,161555)
+and o.concept_id in(161655,163547,5624,160080,1823,160598,1427,162095,5596,300,299,160108,32,159427,160554,1436,160082,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,161555)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
@@ -574,7 +578,7 @@ or e.date_voided >= last_update_time
 or o.date_created >= last_update_time
 or o.date_voided >= last_update_time
 group by e.encounter_id
-ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),anc_number=VALUES(anc_number),gravida=VALUES(gravida),parity=VALUES(parity),parity_abortion=VALUES(parity_abortion),lmp=VALUES(lmp),lmp_estimated=VALUES(lmp_estimated),
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),anc_number=VALUES(anc_number),first_anc_visit_date=VALUES(first_anc_visit_date),gravida=VALUES(gravida),parity=VALUES(parity),parity_abortion=VALUES(parity_abortion),age_at_menarche=VALUES(age_at_menarche),lmp=VALUES(lmp),lmp_estimated=VALUES(lmp_estimated),
 edd_ultrasound=VALUES(edd_ultrasound),blood_group=VALUES(blood_group),serology=VALUES(serology),tb_screening=VALUES(tb_screening),bs_for_mps=VALUES(bs_for_mps),hiv_status=VALUES(hiv_status),hiv_test_date=VALUES(hiv_status),partner_hiv_status=VALUES(partner_hiv_status),partner_hiv_test_date=VALUES(partner_hiv_test_date),
 urine_microscopy=VALUES(urine_microscopy),urinary_albumin=VALUES(urinary_albumin),glucose_measurement=VALUES(glucose_measurement),urine_ph=VALUES(urine_ph),urine_gravity=VALUES(urine_gravity),urine_nitrite_test=VALUES(urine_nitrite_test),urine_leukocyte_esterace_test=VALUES(urine_leukocyte_esterace_test),urinary_ketone=VALUES(urinary_ketone),
 urine_bile_salt_test=VALUES(urine_bile_salt_test),urine_bile_pigment_test=VALUES(urine_bile_pigment_test),urine_colour=VALUES(urine_colour),urine_turbidity=VALUES(urine_turbidity),urine_dipstick_for_blood=VALUES(urine_dipstick_for_blood),discontinuation_reason=VALUES(discontinuation_reason)
@@ -599,6 +603,7 @@ visit_date,
 location_id,
 encounter_id,
 provider,
+anc_visit_number,
 temperature,
 pulse_rate,
 systolic_bp,
@@ -609,6 +614,7 @@ weight,
 height,
 muac,
 hemoglobin,
+breast_exam_done,
 pallor,
 maturity,
 fundal_height,
@@ -619,6 +625,18 @@ fetal_movement,
 who_stage,
 cd4,
 arv_status,
+test_1_kit_name,
+test_1_kit_lot_no,
+test_1_kit_expiry,
+test_1_result,
+test_2_kit_name,
+test_2_kit_lot_no,
+test_2_kit_expiry,
+test_2_result,
+final_test_result,
+patient_given_result,
+partner_hiv_tested,
+partner_hiv_status,
 urine_microscopy,
 urinary_albumin,
 glucose_measurement,
@@ -631,7 +649,9 @@ urine_bile_salt_test,
 urine_bile_pigment_test,
 urine_colour,
 urine_turbidity,
-urine_dipstick_for_blood
+urine_dipstick_for_blood,
+syphilis_test_status,
+syphilis_treated_status
 )
 select
 e.patient_id,
@@ -641,6 +661,7 @@ e.encounter_datetime,
 e.location_id,
 e.encounter_id,
 e.creator,
+max(if(o.concept_id=1590,o.value_numeric,null)) as anc_visit_number,
 max(if(o.concept_id=5088,o.value_numeric,null)) as temperature,
 max(if(o.concept_id=5087,o.value_numeric,null)) as pulse_rate,
 max(if(o.concept_id=5085,o.value_numeric,null)) as systolic_bp,
@@ -651,6 +672,7 @@ max(if(o.concept_id=5089,o.value_numeric,null)) as weight,
 max(if(o.concept_id=5090,o.value_numeric,null)) as height,
 max(if(o.concept_id=1343,o.value_numeric,null)) as muac,
 max(if(o.concept_id=21,o.value_numeric,null)) as hemoglobin,
+max(if(o.concept_id=163590,o.value_coded,null)) as breast_exam_done,
 max(if(o.concept_id=5245,o.value_coded,null)) as pallor,
 max(if(o.concept_id=1438,o.value_numeric,null)) as maturity,
 max(if(o.concept_id=1439,o.value_numeric,null)) as fundal_height,
@@ -661,6 +683,18 @@ max(if(o.concept_id=162107,o.value_coded,null)) as fetal_movement,
 max(if(o.concept_id=5356,o.value_coded,null)) as who_stage,
 max(if(o.concept_id=5497,o.value_numeric,null)) as cd4,
 max(if(o.concept_id=1147,o.value_coded,null)) as arv_status,
+max(if(t.test_1_result is not null, t.kit_name, "")) as test_1_kit_name,
+max(if(t.test_1_result is not null, t.lot_no, "")) as test_1_kit_lot_no,
+max(if(t.test_1_result is not null, t.expiry_date, "")) as test_1_kit_expiry,
+max(if(t.test_1_result is not null, t.test_1_result, "")) as test_1_result,
+max(if(t.test_2_result is not null, t.kit_name, "")) as test_2_kit_name,
+max(if(t.test_2_result is not null, t.lot_no, "")) as test_2_kit_lot_no,
+max(if(t.test_2_result is not null, t.expiry_date, "")) as test_2_kit_expiry,
+max(if(t.test_2_result is not null, t.test_2_result, "")) as test_2_result,
+max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1138 then "Inconclusive" else "" end),null)) as final_test_result,
+max(if(o.concept_id=164848,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as patient_given_result,
+max(if(o.concept_id=161557,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as partner_hiv_tested,
+max(if(o.concept_id=1436,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1067 then "Unknown" else "" end),null)) as partner_hiv_status,
 max(if(o.concept_id=56,o.value_text,null)) as urine_microscopy,
 max(if(o.concept_id=1875,o.value_coded,null)) as urinary_albumin,
 max(if(o.concept_id=159734,o.value_coded,null)) as glucose_measurement,
@@ -673,13 +707,15 @@ max(if(o.concept_id=161444,o.value_coded,null)) as urine_bile_salt_test,
 max(if(o.concept_id=161443,o.value_coded,null)) as urine_bile_pigment_test,
 max(if(o.concept_id=162106,o.value_coded,null)) as urine_colour,
 max(if(o.concept_id=162101,o.value_coded,null)) as urine_turbidity,
-max(if(o.concept_id=162096,o.value_coded,null)) as urine_dipstick_for_blood
-from encounter e 
-inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(5088,5087,5085,5086,5242,5092,5089,5090,1343,21,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096)
-inner join 
+max(if(o.concept_id=162096,o.value_coded,null)) as urine_dipstick_for_blood,
+max(if(o.concept_id=299,o.value_coded,null)) as syphilis_test_status,
+max(if(o.concept_id=160733,o.value_coded,null)) as syphilis_treated_status
+from encounter e
+inner join obs o on e.encounter_id = o.encounter_id and o.voided =0
+and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,159427,164848,161557,1436,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733)
+inner join
 (
-	select encounter_type, uuid,name from form where 
+	select encounter_type, uuid,name from form where
 	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843')
 ) f on f.encounter_type=e.encounter_type
 where e.date_created >= last_update_time
@@ -688,10 +724,17 @@ or e.date_voided >= last_update_time
 or o.date_created >= last_update_time
 or o.date_voided >= last_update_time
 group by e.encounter_id
-ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),provider=VALUES(provider),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),systolic_bp=VALUES(systolic_bp),diastolic_bp=VALUES(diastolic_bp),respiratory_rate=VALUES(respiratory_rate),oxygen_saturation=VALUES(oxygen_saturation),
-weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),pallor=VALUES(pallor),maturity=VALUES(maturity),fundal_height=VALUES(fundal_height),fetal_presentation=VALUES(fetal_presentation),lie=VALUES(lie),fetal_heart_rate=VALUES(fetal_heart_rate),fetal_movement=VALUES(fetal_movement),who_stage=VALUES(who_stage),cd4=VALUES(cd4),arv_status=VALUES(arv_status),
-urine_microscopy=VALUES(urine_microscopy),urinary_albumin=VALUES(urinary_albumin),glucose_measurement=VALUES(glucose_measurement),urine_ph=VALUES(urine_ph),urine_gravity=VALUES(urine_gravity),urine_nitrite_test=VALUES(urine_nitrite_test),urine_leukocyte_esterace_test=VALUES(urine_leukocyte_esterace_test),urinary_ketone=VALUES(urinary_ketone),urine_bile_salt_test=VALUES(urine_bile_salt_test),
-urine_bile_pigment_test=VALUES(urine_bile_pigment_test),urine_colour=VALUES(urine_colour),urine_turbidity=VALUES(urine_turbidity),urine_dipstick_for_blood=VALUES(urine_dipstick_for_blood)
+ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),provider=VALUES(provider),anc_visit_number=VALUES(anc_visit_number),temperature=VALUES(temperature),pulse_rate=VALUES(pulse_rate),systolic_bp=VALUES(systolic_bp),diastolic_bp=VALUES(diastolic_bp),respiratory_rate=VALUES(respiratory_rate),
+		oxygen_saturation=VALUES(oxygen_saturation),
+weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),breast_exam_done=VALUES(breast_exam_done),pallor=VALUES(pallor),maturity=VALUES(maturity),fundal_height=VALUES(fundal_height),fetal_presentation=VALUES(fetal_presentation),lie=VALUES(lie),
+		fetal_heart_rate=VALUES(fetal_heart_rate),fetal_movement=VALUES(fetal_movement),
+		who_stage=VALUES(who_stage),cd4=VALUES(cd4),arv_status=VALUES(arv_status),test_1_kit_name=VALUES(test_1_kit_name),test_1_kit_lot_no=VALUES(test_1_kit_lot_no),
+test_1_kit_expiry=VALUES(test_1_kit_expiry),test_1_result=VALUES(test_1_result),test_2_kit_name=VALUES(test_2_kit_name),test_2_kit_lot_no=VALUES(test_2_kit_lot_no),test_2_kit_expiry=VALUES(test_2_kit_expiry),test_2_result=VALUES(test_2_result),final_test_result=VALUES(final_test_result),
+		patient_given_result=VALUES(patient_given_result),
+		partner_hiv_tested=VALUES(partner_hiv_tested),partner_hiv_status=VALUES(partner_hiv_status),urine_microscopy=VALUES(urine_microscopy),urinary_albumin=VALUES(urinary_albumin),glucose_measurement=VALUES(glucose_measurement),urine_ph=VALUES(urine_ph),urine_gravity=VALUES(urine_gravity),
+		urine_nitrite_test=VALUES(urine_nitrite_test),
+		urine_leukocyte_esterace_test=VALUES(urine_leukocyte_esterace_test),urinary_ketone=VALUES(urinary_ketone),urine_bile_salt_test=VALUES(urine_bile_salt_test),
+urine_bile_pigment_test=VALUES(urine_bile_pigment_test),urine_colour=VALUES(urine_colour),urine_turbidity=VALUES(urine_turbidity),urine_dipstick_for_blood=VALUES(urine_dipstick_for_blood),syphilis_test_status=VALUES(syphilis_test_status),syphilis_treated_status=VALUES(syphilis_treated_status)
 ;
 
 END$$

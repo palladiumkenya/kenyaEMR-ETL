@@ -14915,2016 +14915,2159 @@ patient_id</ColNames>
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3447" parent="224" name="temperature">
+    <column id="3447" parent="224" name="anc_visit_number">
       <Position>8</Position>
-      <DataType>double|0</DataType>
+      <DataType>int(11)|0</DataType>
     </column>
-    <column id="3448" parent="224" name="pulse_rate">
+    <column id="3448" parent="224" name="temperature">
       <Position>9</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3449" parent="224" name="systolic_bp">
+    <column id="3449" parent="224" name="pulse_rate">
       <Position>10</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3450" parent="224" name="diastolic_bp">
+    <column id="3450" parent="224" name="systolic_bp">
       <Position>11</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3451" parent="224" name="respiratory_rate">
+    <column id="3451" parent="224" name="diastolic_bp">
       <Position>12</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3452" parent="224" name="oxygen_saturation">
+    <column id="3452" parent="224" name="respiratory_rate">
       <Position>13</Position>
-      <DataType>int(11)|0</DataType>
-    </column>
-    <column id="3453" parent="224" name="weight">
-      <Position>14</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3454" parent="224" name="height">
+    <column id="3453" parent="224" name="oxygen_saturation">
+      <Position>14</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3454" parent="224" name="weight">
       <Position>15</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3455" parent="224" name="muac">
+    <column id="3455" parent="224" name="height">
       <Position>16</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3456" parent="224" name="hemoglobin">
+    <column id="3456" parent="224" name="muac">
       <Position>17</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3457" parent="224" name="pallor">
+    <column id="3457" parent="224" name="hemoglobin">
       <Position>18</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>double|0</DataType>
     </column>
-    <column id="3458" parent="224" name="maturity">
+    <column id="3458" parent="224" name="breast_exam_done">
       <Position>19</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3459" parent="224" name="fundal_height">
+    <column id="3459" parent="224" name="pallor">
       <Position>20</Position>
-      <DataType>double|0</DataType>
+      <DataType>int(11)|0</DataType>
     </column>
-    <column id="3460" parent="224" name="fetal_presentation">
+    <column id="3460" parent="224" name="maturity">
       <Position>21</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3461" parent="224" name="lie">
+    <column id="3461" parent="224" name="fundal_height">
       <Position>22</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>double|0</DataType>
     </column>
-    <column id="3462" parent="224" name="fetal_heart_rate">
+    <column id="3462" parent="224" name="fetal_presentation">
       <Position>23</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3463" parent="224" name="fetal_movement">
+    <column id="3463" parent="224" name="lie">
       <Position>24</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3464" parent="224" name="who_stage">
+    <column id="3464" parent="224" name="fetal_heart_rate">
       <Position>25</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3465" parent="224" name="cd4">
+    <column id="3465" parent="224" name="fetal_movement">
       <Position>26</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3466" parent="224" name="arv_status">
+    <column id="3466" parent="224" name="who_stage">
       <Position>27</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3467" parent="224" name="urine_microscopy">
+    <column id="3467" parent="224" name="cd4">
       <Position>28</Position>
-      <DataType>varchar(100)|0</DataType>
+      <DataType>int(11)|0</DataType>
     </column>
-    <column id="3468" parent="224" name="urinary_albumin">
+    <column id="3468" parent="224" name="arv_status">
       <Position>29</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3469" parent="224" name="glucose_measurement">
+    <column id="3469" parent="224" name="test_1_kit_name">
       <Position>30</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3470" parent="224" name="urine_ph">
+    <column id="3470" parent="224" name="test_1_kit_lot_no">
       <Position>31</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3471" parent="224" name="urine_gravity">
+    <column id="3471" parent="224" name="test_1_kit_expiry">
       <Position>32</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>date|0</DataType>
     </column>
-    <column id="3472" parent="224" name="urine_nitrite_test">
+    <column id="3472" parent="224" name="test_1_result">
       <Position>33</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3473" parent="224" name="urine_leukocyte_esterace_test">
+    <column id="3473" parent="224" name="test_2_kit_name">
       <Position>34</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3474" parent="224" name="urinary_ketone">
+    <column id="3474" parent="224" name="test_2_kit_lot_no">
       <Position>35</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3475" parent="224" name="urine_bile_salt_test">
+    <column id="3475" parent="224" name="test_2_kit_expiry">
       <Position>36</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>date|0</DataType>
     </column>
-    <column id="3476" parent="224" name="urine_bile_pigment_test">
+    <column id="3476" parent="224" name="test_2_result">
       <Position>37</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3477" parent="224" name="urine_colour">
+    <column id="3477" parent="224" name="final_test_result">
       <Position>38</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3478" parent="224" name="urine_turbidity">
+    <column id="3478" parent="224" name="patient_given_result">
       <Position>39</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3479" parent="224" name="urine_dipstick_for_blood">
+    <column id="3479" parent="224" name="partner_hiv_tested">
       <Position>40</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="3480" parent="224" name="arv_status">
+    <column id="3480" parent="224" name="partner_hiv_status">
+      <Position>41</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3481" parent="224" name="urine_microscopy">
+      <Position>42</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="3482" parent="224" name="urinary_albumin">
+      <Position>43</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3483" parent="224" name="glucose_measurement">
+      <Position>44</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3484" parent="224" name="urine_ph">
+      <Position>45</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3485" parent="224" name="urine_gravity">
+      <Position>46</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3486" parent="224" name="urine_nitrite_test">
+      <Position>47</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3487" parent="224" name="urine_leukocyte_esterace_test">
+      <Position>48</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3488" parent="224" name="urinary_ketone">
+      <Position>49</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3489" parent="224" name="urine_bile_salt_test">
+      <Position>50</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3490" parent="224" name="urine_bile_pigment_test">
+      <Position>51</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3491" parent="224" name="urine_colour">
+      <Position>52</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3492" parent="224" name="urine_turbidity">
+      <Position>53</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3493" parent="224" name="urine_dipstick_for_blood">
+      <Position>54</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3494" parent="224" name="syphilis_test_status">
+      <Position>55</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3495" parent="224" name="syphilis_treated_status">
+      <Position>56</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3496" parent="224" name="bs_mps">
+      <Position>57</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3497" parent="224" name="anc_exercises">
+      <Position>58</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3498" parent="224" name="tb_screening">
+      <Position>59</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3499" parent="224" name="cacx_screening">
+      <Position>60</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3500" parent="224" name="cacx_screening_method">
+      <Position>61</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3501" parent="224" name="has_other_illnes">
+      <Position>62</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3502" parent="224" name="counselled">
+      <Position>63</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3503" parent="224" name="referred_from">
+      <Position>64</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3504" parent="224" name="referred_to">
+      <Position>65</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3505" parent="224" name="clinical_notes">
+      <Position>66</Position>
+      <DataType>varchar(200)|0</DataType>
+    </column>
+    <column id="3506" parent="224" name="next_appointment_date">
+      <Position>67</Position>
+      <DataType>date|0</DataType>
+    </column>
+    <index id="3507" parent="224" name="arv_status">
       <ColNames>arv_status</ColNames>
     </index>
-    <index id="3481" parent="224" name="cd4">
+    <index id="3508" parent="224" name="cd4">
       <ColNames>cd4</ColNames>
     </index>
-    <index id="3482" parent="224" name="encounter_id">
+    <index id="3509" parent="224" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3483" parent="224" name="patient_id">
+    <index id="3510" parent="224" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3484" parent="224" name="unique_uuid">
+    <index id="3511" parent="224" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3485" parent="224" name="visit_date">
+    <index id="3512" parent="224" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <index id="3486" parent="224" name="who_stage">
+    <index id="3513" parent="224" name="who_stage">
       <ColNames>who_stage</ColNames>
     </index>
-    <key id="3487" parent="224" name="PRIMARY">
+    <index id="3514" parent="224" name="anc_visit_number">
+      <ColNames>anc_visit_number</ColNames>
+    </index>
+    <index id="3515" parent="224" name="cacx_screening">
+      <ColNames>cacx_screening</ColNames>
+    </index>
+    <index id="3516" parent="224" name="final_test_result">
+      <ColNames>final_test_result</ColNames>
+    </index>
+    <index id="3517" parent="224" name="next_appointment_date">
+      <ColNames>next_appointment_date</ColNames>
+    </index>
+    <index id="3518" parent="224" name="tb_screening">
+      <ColNames>tb_screening</ColNames>
+    </index>
+    <index id="3519" parent="224" name="test_1_kit_name">
+      <ColNames>test_1_kit_name</ColNames>
+    </index>
+    <index id="3520" parent="224" name="test_2_kit_name">
+      <ColNames>test_2_kit_name</ColNames>
+    </index>
+    <key id="3521" parent="224" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3488" parent="224" name="unique_uuid">
+    <key id="3522" parent="224" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3489" parent="224" name="etl_mch_antenatal_visit_ibfk_1">
+    <foreign-key id="3523" parent="224" name="etl_mch_antenatal_visit_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3490" parent="225" name="uuid">
+    <column id="3524" parent="225" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3491" parent="225" name="patient_id">
+    <column id="3525" parent="225" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3492" parent="225" name="visit_id">
+    <column id="3526" parent="225" name="visit_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3493" parent="225" name="visit_date">
+    <column id="3527" parent="225" name="visit_date">
       <Position>4</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3494" parent="225" name="location_id">
+    <column id="3528" parent="225" name="location_id">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3495" parent="225" name="encounter_id">
+    <column id="3529" parent="225" name="encounter_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3496" parent="225" name="anc_number">
+    <column id="3530" parent="225" name="anc_number">
       <Position>7</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3497" parent="225" name="gravida">
+    <column id="3531" parent="225" name="first_anc_visit_date">
       <Position>8</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>date|0</DataType>
     </column>
-    <column id="3498" parent="225" name="parity">
+    <column id="3532" parent="225" name="gravida">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3499" parent="225" name="parity_abortion">
+    <column id="3533" parent="225" name="parity">
       <Position>10</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3500" parent="225" name="lmp">
+    <column id="3534" parent="225" name="parity_abortion">
       <Position>11</Position>
-      <DataType>date|0</DataType>
+      <DataType>int(11)|0</DataType>
     </column>
-    <column id="3501" parent="225" name="lmp_estimated">
+    <column id="3535" parent="225" name="age_at_menarche">
       <Position>12</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3502" parent="225" name="edd_ultrasound">
+    <column id="3536" parent="225" name="lmp">
       <Position>13</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3503" parent="225" name="blood_group">
+    <column id="3537" parent="225" name="lmp_estimated">
       <Position>14</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3504" parent="225" name="serology">
+    <column id="3538" parent="225" name="edd_ultrasound">
       <Position>15</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>date|0</DataType>
     </column>
-    <column id="3505" parent="225" name="tb_screening">
+    <column id="3539" parent="225" name="blood_group">
       <Position>16</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3506" parent="225" name="bs_for_mps">
+    <column id="3540" parent="225" name="serology">
       <Position>17</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3507" parent="225" name="hiv_status">
+    <column id="3541" parent="225" name="tb_screening">
       <Position>18</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3508" parent="225" name="hiv_test_date">
+    <column id="3542" parent="225" name="bs_for_mps">
       <Position>19</Position>
-      <DataType>date|0</DataType>
+      <DataType>int(11)|0</DataType>
     </column>
-    <column id="3509" parent="225" name="partner_hiv_status">
+    <column id="3543" parent="225" name="hiv_status">
       <Position>20</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3510" parent="225" name="partner_hiv_test_date">
+    <column id="3544" parent="225" name="hiv_test_date">
       <Position>21</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3511" parent="225" name="urine_microscopy">
+    <column id="3545" parent="225" name="partner_hiv_status">
       <Position>22</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="3546" parent="225" name="partner_hiv_test_date">
+      <Position>23</Position>
+      <DataType>date|0</DataType>
+    </column>
+    <column id="3547" parent="225" name="urine_microscopy">
+      <Position>24</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3512" parent="225" name="urinary_albumin">
-      <Position>23</Position>
-      <DataType>int(11)|0</DataType>
-    </column>
-    <column id="3513" parent="225" name="glucose_measurement">
-      <Position>24</Position>
-      <DataType>int(11)|0</DataType>
-    </column>
-    <column id="3514" parent="225" name="urine_ph">
+    <column id="3548" parent="225" name="urinary_albumin">
       <Position>25</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3515" parent="225" name="urine_gravity">
+    <column id="3549" parent="225" name="glucose_measurement">
       <Position>26</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3516" parent="225" name="urine_nitrite_test">
+    <column id="3550" parent="225" name="urine_ph">
       <Position>27</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3517" parent="225" name="urine_leukocyte_esterace_test">
+    <column id="3551" parent="225" name="urine_gravity">
       <Position>28</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3518" parent="225" name="urinary_ketone">
+    <column id="3552" parent="225" name="urine_nitrite_test">
       <Position>29</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3519" parent="225" name="urine_bile_salt_test">
+    <column id="3553" parent="225" name="urine_leukocyte_esterace_test">
       <Position>30</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3520" parent="225" name="urine_bile_pigment_test">
+    <column id="3554" parent="225" name="urinary_ketone">
       <Position>31</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3521" parent="225" name="urine_colour">
+    <column id="3555" parent="225" name="urine_bile_salt_test">
       <Position>32</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3522" parent="225" name="urine_turbidity">
+    <column id="3556" parent="225" name="urine_bile_pigment_test">
       <Position>33</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3523" parent="225" name="urine_dipstick_for_blood">
+    <column id="3557" parent="225" name="urine_colour">
       <Position>34</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3524" parent="225" name="date_of_discontinuation">
+    <column id="3558" parent="225" name="urine_turbidity">
       <Position>35</Position>
-      <DataType>datetime|0</DataType>
+      <DataType>int(11)|0</DataType>
     </column>
-    <column id="3525" parent="225" name="discontinuation_reason">
+    <column id="3559" parent="225" name="urine_dipstick_for_blood">
       <Position>36</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="3526" parent="225" name="encounter_id">
+    <column id="3560" parent="225" name="date_of_discontinuation">
+      <Position>37</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="3561" parent="225" name="discontinuation_reason">
+      <Position>38</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="3562" parent="225" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3527" parent="225" name="hiv_status">
+    <index id="3563" parent="225" name="hiv_status">
       <ColNames>hiv_status</ColNames>
     </index>
-    <index id="3528" parent="225" name="hiv_test_date">
+    <index id="3564" parent="225" name="hiv_test_date">
       <ColNames>hiv_test_date</ColNames>
     </index>
-    <index id="3529" parent="225" name="partner_hiv_status">
+    <index id="3565" parent="225" name="partner_hiv_status">
       <ColNames>partner_hiv_status</ColNames>
     </index>
-    <index id="3530" parent="225" name="patient_id">
+    <index id="3566" parent="225" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3531" parent="225" name="tb_screening">
+    <index id="3567" parent="225" name="tb_screening">
       <ColNames>tb_screening</ColNames>
     </index>
-    <index id="3532" parent="225" name="unique_uuid">
+    <index id="3568" parent="225" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3533" parent="225" name="visit_date">
+    <index id="3569" parent="225" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3534" parent="225" name="PRIMARY">
+    <index id="3570" parent="225" name="age_at_menarche">
+      <ColNames>age_at_menarche</ColNames>
+    </index>
+    <index id="3571" parent="225" name="first_anc_visit_date">
+      <ColNames>first_anc_visit_date</ColNames>
+    </index>
+    <key id="3572" parent="225" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3535" parent="225" name="unique_uuid">
+    <key id="3573" parent="225" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3536" parent="225" name="etl_mch_enrollment_ibfk_1">
+    <foreign-key id="3574" parent="225" name="etl_mch_enrollment_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3537" parent="226" name="uuid">
+    <column id="3575" parent="226" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3538" parent="226" name="patient_id">
+    <column id="3576" parent="226" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3539" parent="226" name="visit_id">
+    <column id="3577" parent="226" name="visit_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3540" parent="226" name="visit_date">
+    <column id="3578" parent="226" name="visit_date">
       <Position>4</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3541" parent="226" name="location_id">
+    <column id="3579" parent="226" name="location_id">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3542" parent="226" name="encounter_id">
+    <column id="3580" parent="226" name="encounter_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3543" parent="226" name="provider">
+    <column id="3581" parent="226" name="provider">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3544" parent="226" name="temperature">
+    <column id="3582" parent="226" name="temperature">
       <Position>8</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3545" parent="226" name="pulse_rate">
+    <column id="3583" parent="226" name="pulse_rate">
       <Position>9</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3546" parent="226" name="systolic_bp">
+    <column id="3584" parent="226" name="systolic_bp">
       <Position>10</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3547" parent="226" name="diastolic_bp">
+    <column id="3585" parent="226" name="diastolic_bp">
       <Position>11</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3548" parent="226" name="respiratory_rate">
+    <column id="3586" parent="226" name="respiratory_rate">
       <Position>12</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3549" parent="226" name="oxygen_saturation">
+    <column id="3587" parent="226" name="oxygen_saturation">
       <Position>13</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3550" parent="226" name="weight">
+    <column id="3588" parent="226" name="weight">
       <Position>14</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3551" parent="226" name="height">
+    <column id="3589" parent="226" name="height">
       <Position>15</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3552" parent="226" name="muac">
+    <column id="3590" parent="226" name="muac">
       <Position>16</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3553" parent="226" name="hemoglobin">
+    <column id="3591" parent="226" name="hemoglobin">
       <Position>17</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3554" parent="226" name="arv_status">
+    <column id="3592" parent="226" name="arv_status">
       <Position>18</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3555" parent="226" name="general_condition">
+    <column id="3593" parent="226" name="general_condition">
       <Position>19</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3556" parent="226" name="breast">
+    <column id="3594" parent="226" name="breast">
       <Position>20</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3557" parent="226" name="cs_scar">
+    <column id="3595" parent="226" name="cs_scar">
       <Position>21</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3558" parent="226" name="gravid_uterus">
+    <column id="3596" parent="226" name="gravid_uterus">
       <Position>22</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3559" parent="226" name="episiotomy">
+    <column id="3597" parent="226" name="episiotomy">
       <Position>23</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3560" parent="226" name="lochia">
+    <column id="3598" parent="226" name="lochia">
       <Position>24</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3561" parent="226" name="mother_hiv_status">
+    <column id="3599" parent="226" name="mother_hiv_status">
       <Position>25</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3562" parent="226" name="condition_of_baby">
+    <column id="3600" parent="226" name="condition_of_baby">
       <Position>26</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3563" parent="226" name="baby_feeding_method">
+    <column id="3601" parent="226" name="baby_feeding_method">
       <Position>27</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3564" parent="226" name="umblical_cord">
+    <column id="3602" parent="226" name="umblical_cord">
       <Position>28</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3565" parent="226" name="baby_immunization_started">
+    <column id="3603" parent="226" name="baby_immunization_started">
       <Position>29</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3566" parent="226" name="family_planning_counseling">
+    <column id="3604" parent="226" name="family_planning_counseling">
       <Position>30</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3567" parent="226" name="uterus_examination">
+    <column id="3605" parent="226" name="uterus_examination">
       <Position>31</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3568" parent="226" name="uterus_cervix_examination">
+    <column id="3606" parent="226" name="uterus_cervix_examination">
       <Position>32</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3569" parent="226" name="vaginal_examination">
+    <column id="3607" parent="226" name="vaginal_examination">
       <Position>33</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3570" parent="226" name="parametrial_examination">
+    <column id="3608" parent="226" name="parametrial_examination">
       <Position>34</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3571" parent="226" name="external_genitalia_examination">
+    <column id="3609" parent="226" name="external_genitalia_examination">
       <Position>35</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3572" parent="226" name="ovarian_examination">
+    <column id="3610" parent="226" name="ovarian_examination">
       <Position>36</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3573" parent="226" name="pelvic_lymph_node_exam">
+    <column id="3611" parent="226" name="pelvic_lymph_node_exam">
       <Position>37</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <index id="3574" parent="226" name="arv_status">
+    <index id="3612" parent="226" name="arv_status">
       <ColNames>arv_status</ColNames>
     </index>
-    <index id="3575" parent="226" name="arv_status_2">
+    <index id="3613" parent="226" name="arv_status_2">
       <ColNames>arv_status</ColNames>
     </index>
-    <index id="3576" parent="226" name="encounter_id">
+    <index id="3614" parent="226" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3577" parent="226" name="mother_hiv_status">
+    <index id="3615" parent="226" name="mother_hiv_status">
       <ColNames>mother_hiv_status</ColNames>
     </index>
-    <index id="3578" parent="226" name="patient_id">
+    <index id="3616" parent="226" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3579" parent="226" name="unique_uuid">
+    <index id="3617" parent="226" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3580" parent="226" name="visit_date">
+    <index id="3618" parent="226" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3581" parent="226" name="PRIMARY">
+    <key id="3619" parent="226" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3582" parent="226" name="unique_uuid">
+    <key id="3620" parent="226" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3583" parent="226" name="etl_mch_postnatal_visit_ibfk_1">
+    <foreign-key id="3621" parent="226" name="etl_mch_postnatal_visit_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3584" parent="227" name="uuid">
+    <column id="3622" parent="227" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3585" parent="227" name="provider">
+    <column id="3623" parent="227" name="provider">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3586" parent="227" name="patient_id">
+    <column id="3624" parent="227" name="patient_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3587" parent="227" name="visit_id">
+    <column id="3625" parent="227" name="visit_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3588" parent="227" name="visit_date">
+    <column id="3626" parent="227" name="visit_date">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3589" parent="227" name="location_id">
+    <column id="3627" parent="227" name="location_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3590" parent="227" name="encounter_id">
+    <column id="3628" parent="227" name="encounter_id">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3591" parent="227" name="data_entry_date">
+    <column id="3629" parent="227" name="data_entry_date">
       <Position>8</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3592" parent="227" name="duration_of_pregnancy">
+    <column id="3630" parent="227" name="duration_of_pregnancy">
       <Position>9</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3593" parent="227" name="mode_of_delivery">
+    <column id="3631" parent="227" name="mode_of_delivery">
       <Position>10</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3594" parent="227" name="date_of_delivery">
+    <column id="3632" parent="227" name="date_of_delivery">
       <Position>11</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3595" parent="227" name="blood_loss">
+    <column id="3633" parent="227" name="blood_loss">
       <Position>12</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3596" parent="227" name="condition_of_mother">
+    <column id="3634" parent="227" name="condition_of_mother">
       <Position>13</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3597" parent="227" name="apgar_score_1min">
+    <column id="3635" parent="227" name="apgar_score_1min">
       <Position>14</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3598" parent="227" name="apgar_score_5min">
+    <column id="3636" parent="227" name="apgar_score_5min">
       <Position>15</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3599" parent="227" name="apgar_score_10min">
+    <column id="3637" parent="227" name="apgar_score_10min">
       <Position>16</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3600" parent="227" name="resuscitation_done">
+    <column id="3638" parent="227" name="resuscitation_done">
       <Position>17</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3601" parent="227" name="place_of_delivery">
+    <column id="3639" parent="227" name="place_of_delivery">
       <Position>18</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3602" parent="227" name="delivery_assistant">
+    <column id="3640" parent="227" name="delivery_assistant">
       <Position>19</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3603" parent="227" name="counseling_on_infant_feeding">
+    <column id="3641" parent="227" name="counseling_on_infant_feeding">
       <Position>20</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3604" parent="227" name="counseling_on_exclusive_breastfeeding">
+    <column id="3642" parent="227" name="counseling_on_exclusive_breastfeeding">
       <Position>21</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3605" parent="227" name="counseling_on_infant_feeding_for_hiv_infected">
+    <column id="3643" parent="227" name="counseling_on_infant_feeding_for_hiv_infected">
       <Position>22</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3606" parent="227" name="mother_decision">
+    <column id="3644" parent="227" name="mother_decision">
       <Position>23</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="3607" parent="227" name="encounter_id">
+    <index id="3645" parent="227" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3608" parent="227" name="patient_id">
+    <index id="3646" parent="227" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3609" parent="227" name="unique_uuid">
+    <index id="3647" parent="227" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3610" parent="227" name="visit_date">
+    <index id="3648" parent="227" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3611" parent="227" name="PRIMARY">
+    <key id="3649" parent="227" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3612" parent="227" name="unique_uuid">
+    <key id="3650" parent="227" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3613" parent="227" name="etl_mchs_delivery_ibfk_1">
+    <foreign-key id="3651" parent="227" name="etl_mchs_delivery_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3614" parent="228" name="id">
+    <column id="3652" parent="228" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3615" parent="228" name="patient_id">
+    <column id="3653" parent="228" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3616" parent="228" name="last_tca_date">
+    <column id="3654" parent="228" name="last_tca_date">
       <Position>3</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3617" parent="228" name="last_visit_date">
+    <column id="3655" parent="228" name="last_visit_date">
       <Position>4</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3618" parent="228" name="last_encounter_type">
+    <column id="3656" parent="228" name="last_encounter_type">
       <Position>5</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3619" parent="228" name="days_since_last_visit">
+    <column id="3657" parent="228" name="days_since_last_visit">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3620" parent="228" name="date_table_created">
+    <column id="3658" parent="228" name="date_table_created">
       <Position>7</Position>
       <DataType>date|0</DataType>
     </column>
-    <index id="3621" parent="228" name="patient_id">
+    <index id="3659" parent="228" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <key id="3622" parent="228" name="PRIMARY">
+    <key id="3660" parent="228" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="3623" parent="228" name="etl_missed_appointments_ibfk_1">
+    <foreign-key id="3661" parent="228" name="etl_missed_appointments_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3624" parent="229" name="patient_id">
+    <column id="3662" parent="229" name="patient_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3625" parent="229" name="given_name">
+    <column id="3663" parent="229" name="given_name">
       <Position>2</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3626" parent="229" name="middle_name">
+    <column id="3664" parent="229" name="middle_name">
       <Position>3</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3627" parent="229" name="family_name">
+    <column id="3665" parent="229" name="family_name">
       <Position>4</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3628" parent="229" name="Gender">
+    <column id="3666" parent="229" name="Gender">
       <Position>5</Position>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="3629" parent="229" name="DOB">
+    <column id="3667" parent="229" name="DOB">
       <Position>6</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3630" parent="229" name="national_id_no">
+    <column id="3668" parent="229" name="national_id_no">
       <Position>7</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3631" parent="229" name="unique_patient_no">
+    <column id="3669" parent="229" name="unique_patient_no">
       <Position>8</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3632" parent="229" name="patient_clinic_number">
+    <column id="3670" parent="229" name="patient_clinic_number">
       <Position>9</Position>
       <DataType>varchar(15)|0</DataType>
     </column>
-    <column id="3633" parent="229" name="Tb_no">
+    <column id="3671" parent="229" name="Tb_no">
       <Position>10</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3634" parent="229" name="district_reg_no">
+    <column id="3672" parent="229" name="district_reg_no">
       <Position>11</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3635" parent="229" name="hei_no">
+    <column id="3673" parent="229" name="hei_no">
       <Position>12</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3636" parent="229" name="phone_number">
+    <column id="3674" parent="229" name="phone_number">
       <Position>13</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3637" parent="229" name="birth_place">
+    <column id="3675" parent="229" name="birth_place">
       <Position>14</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3638" parent="229" name="citizenship">
+    <column id="3676" parent="229" name="citizenship">
       <Position>15</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3639" parent="229" name="email_address">
+    <column id="3677" parent="229" name="email_address">
       <Position>16</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3640" parent="229" name="next_of_kin">
+    <column id="3678" parent="229" name="next_of_kin">
       <Position>17</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3641" parent="229" name="next_of_kin_phone">
+    <column id="3679" parent="229" name="next_of_kin_phone">
       <Position>18</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="3642" parent="229" name="next_of_kin_relationship">
+    <column id="3680" parent="229" name="next_of_kin_relationship">
       <Position>19</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3643" parent="229" name="marital_status">
+    <column id="3681" parent="229" name="marital_status">
       <Position>20</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3644" parent="229" name="education_level">
+    <column id="3682" parent="229" name="education_level">
       <Position>21</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3645" parent="229" name="dead">
+    <column id="3683" parent="229" name="dead">
       <Position>22</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3646" parent="229" name="death_date">
+    <column id="3684" parent="229" name="death_date">
       <Position>23</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3647" parent="229" name="voided">
+    <column id="3685" parent="229" name="voided">
       <Position>24</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="3648" parent="229" name="DOB">
+    <index id="3686" parent="229" name="DOB">
       <ColNames>DOB</ColNames>
     </index>
-    <index id="3649" parent="229" name="Gender">
+    <index id="3687" parent="229" name="Gender">
       <ColNames>Gender</ColNames>
     </index>
-    <index id="3650" parent="229" name="patient_id">
+    <index id="3688" parent="229" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3651" parent="229" name="unique_patient_no">
+    <index id="3689" parent="229" name="unique_patient_no">
       <ColNames>unique_patient_no</ColNames>
     </index>
-    <key id="3652" parent="229" name="PRIMARY">
+    <key id="3690" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>patient_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="3653" parent="230" name="uuid">
+    <column id="3691" parent="230" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3654" parent="230" name="encounter_id">
+    <column id="3692" parent="230" name="encounter_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3655" parent="230" name="patient_id">
+    <column id="3693" parent="230" name="patient_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3656" parent="230" name="location_id">
+    <column id="3694" parent="230" name="location_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3657" parent="230" name="visit_date">
+    <column id="3695" parent="230" name="visit_date">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3658" parent="230" name="visit_id">
+    <column id="3696" parent="230" name="visit_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3659" parent="230" name="encounter_provider">
+    <column id="3697" parent="230" name="encounter_provider">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3660" parent="230" name="date_created">
+    <column id="3698" parent="230" name="date_created">
       <Position>8</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3661" parent="230" name="visit_scheduled">
+    <column id="3699" parent="230" name="visit_scheduled">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3662" parent="230" name="person_present">
+    <column id="3700" parent="230" name="person_present">
       <Position>10</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3663" parent="230" name="weight">
+    <column id="3701" parent="230" name="weight">
       <Position>11</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3664" parent="230" name="systolic_pressure">
+    <column id="3702" parent="230" name="systolic_pressure">
       <Position>12</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3665" parent="230" name="diastolic_pressure">
+    <column id="3703" parent="230" name="diastolic_pressure">
       <Position>13</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3666" parent="230" name="height">
+    <column id="3704" parent="230" name="height">
       <Position>14</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3667" parent="230" name="temperature">
+    <column id="3705" parent="230" name="temperature">
       <Position>15</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3668" parent="230" name="pulse_rate">
+    <column id="3706" parent="230" name="pulse_rate">
       <Position>16</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3669" parent="230" name="respiratory_rate">
+    <column id="3707" parent="230" name="respiratory_rate">
       <Position>17</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3670" parent="230" name="oxygen_saturation">
+    <column id="3708" parent="230" name="oxygen_saturation">
       <Position>18</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3671" parent="230" name="muac">
+    <column id="3709" parent="230" name="muac">
       <Position>19</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3672" parent="230" name="nutritional_status">
+    <column id="3710" parent="230" name="nutritional_status">
       <Position>20</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3673" parent="230" name="population_type">
+    <column id="3711" parent="230" name="population_type">
       <Position>21</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3674" parent="230" name="key_population_type">
+    <column id="3712" parent="230" name="key_population_type">
       <Position>22</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3675" parent="230" name="who_stage">
+    <column id="3713" parent="230" name="who_stage">
       <Position>23</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3676" parent="230" name="presenting_complaints">
+    <column id="3714" parent="230" name="presenting_complaints">
       <Position>24</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3677" parent="230" name="clinical_notes">
+    <column id="3715" parent="230" name="clinical_notes">
       <Position>25</Position>
       <DataType>varchar(200)|0</DataType>
     </column>
-    <column id="3678" parent="230" name="on_anti_tb_drugs">
+    <column id="3716" parent="230" name="on_anti_tb_drugs">
       <Position>26</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3679" parent="230" name="on_ipt">
+    <column id="3717" parent="230" name="on_ipt">
       <Position>27</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3680" parent="230" name="ever_on_ipt">
+    <column id="3718" parent="230" name="ever_on_ipt">
       <Position>28</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3681" parent="230" name="spatum_smear_ordered">
+    <column id="3719" parent="230" name="spatum_smear_ordered">
       <Position>29</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3682" parent="230" name="chest_xray_ordered">
+    <column id="3720" parent="230" name="chest_xray_ordered">
       <Position>30</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3683" parent="230" name="genexpert_ordered">
+    <column id="3721" parent="230" name="genexpert_ordered">
       <Position>31</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3684" parent="230" name="spatum_smear_result">
+    <column id="3722" parent="230" name="spatum_smear_result">
       <Position>32</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3685" parent="230" name="chest_xray_result">
+    <column id="3723" parent="230" name="chest_xray_result">
       <Position>33</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3686" parent="230" name="genexpert_result">
+    <column id="3724" parent="230" name="genexpert_result">
       <Position>34</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3687" parent="230" name="referral">
+    <column id="3725" parent="230" name="referral">
       <Position>35</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3688" parent="230" name="clinical_tb_diagnosis">
+    <column id="3726" parent="230" name="clinical_tb_diagnosis">
       <Position>36</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3689" parent="230" name="contact_invitation">
+    <column id="3727" parent="230" name="contact_invitation">
       <Position>37</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3690" parent="230" name="evaluated_for_ipt">
+    <column id="3728" parent="230" name="evaluated_for_ipt">
       <Position>38</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3691" parent="230" name="has_known_allergies">
+    <column id="3729" parent="230" name="has_known_allergies">
       <Position>39</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3692" parent="230" name="has_chronic_illnesses_cormobidities">
+    <column id="3730" parent="230" name="has_chronic_illnesses_cormobidities">
       <Position>40</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3693" parent="230" name="has_adverse_drug_reaction">
+    <column id="3731" parent="230" name="has_adverse_drug_reaction">
       <Position>41</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3694" parent="230" name="substitution_first_line_regimen_date">
+    <column id="3732" parent="230" name="substitution_first_line_regimen_date">
       <Position>42</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3695" parent="230" name="substitution_first_line_regimen_reason">
+    <column id="3733" parent="230" name="substitution_first_line_regimen_reason">
       <Position>43</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3696" parent="230" name="substitution_second_line_regimen_date">
+    <column id="3734" parent="230" name="substitution_second_line_regimen_date">
       <Position>44</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3697" parent="230" name="substitution_second_line_regimen_reason">
+    <column id="3735" parent="230" name="substitution_second_line_regimen_reason">
       <Position>45</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3698" parent="230" name="second_line_regimen_change_date">
+    <column id="3736" parent="230" name="second_line_regimen_change_date">
       <Position>46</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3699" parent="230" name="second_line_regimen_change_reason">
+    <column id="3737" parent="230" name="second_line_regimen_change_reason">
       <Position>47</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3700" parent="230" name="pregnancy_status">
+    <column id="3738" parent="230" name="pregnancy_status">
       <Position>48</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3701" parent="230" name="wants_pregnancy">
+    <column id="3739" parent="230" name="wants_pregnancy">
       <Position>49</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3702" parent="230" name="pregnancy_outcome">
+    <column id="3740" parent="230" name="pregnancy_outcome">
       <Position>50</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3703" parent="230" name="anc_number">
+    <column id="3741" parent="230" name="anc_number">
       <Position>51</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3704" parent="230" name="expected_delivery_date">
+    <column id="3742" parent="230" name="expected_delivery_date">
       <Position>52</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3705" parent="230" name="last_menstrual_period">
+    <column id="3743" parent="230" name="last_menstrual_period">
       <Position>53</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3706" parent="230" name="gravida">
+    <column id="3744" parent="230" name="gravida">
       <Position>54</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3707" parent="230" name="parity">
+    <column id="3745" parent="230" name="parity">
       <Position>55</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3708" parent="230" name="full_term_pregnancies">
+    <column id="3746" parent="230" name="full_term_pregnancies">
       <Position>56</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3709" parent="230" name="abortion_miscarriages">
+    <column id="3747" parent="230" name="abortion_miscarriages">
       <Position>57</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3710" parent="230" name="family_planning_status">
+    <column id="3748" parent="230" name="family_planning_status">
       <Position>58</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3711" parent="230" name="family_planning_method">
+    <column id="3749" parent="230" name="family_planning_method">
       <Position>59</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3712" parent="230" name="reason_not_using_family_planning">
+    <column id="3750" parent="230" name="reason_not_using_family_planning">
       <Position>60</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3713" parent="230" name="tb_status">
+    <column id="3751" parent="230" name="tb_status">
       <Position>61</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3714" parent="230" name="tb_treatment_no">
+    <column id="3752" parent="230" name="tb_treatment_no">
       <Position>62</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3715" parent="230" name="ctx_adherence">
+    <column id="3753" parent="230" name="ctx_adherence">
       <Position>63</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3716" parent="230" name="ctx_dispensed">
+    <column id="3754" parent="230" name="ctx_dispensed">
       <Position>64</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3717" parent="230" name="dapsone_adherence">
+    <column id="3755" parent="230" name="dapsone_adherence">
       <Position>65</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3718" parent="230" name="dapsone_dispensed">
+    <column id="3756" parent="230" name="dapsone_dispensed">
       <Position>66</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3719" parent="230" name="inh_dispensed">
+    <column id="3757" parent="230" name="inh_dispensed">
       <Position>67</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3720" parent="230" name="arv_adherence">
+    <column id="3758" parent="230" name="arv_adherence">
       <Position>68</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3721" parent="230" name="poor_arv_adherence_reason">
+    <column id="3759" parent="230" name="poor_arv_adherence_reason">
       <Position>69</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3722" parent="230" name="poor_arv_adherence_reason_other">
+    <column id="3760" parent="230" name="poor_arv_adherence_reason_other">
       <Position>70</Position>
       <DataType>varchar(200)|0</DataType>
     </column>
-    <column id="3723" parent="230" name="pwp_disclosure">
+    <column id="3761" parent="230" name="pwp_disclosure">
       <Position>71</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3724" parent="230" name="pwp_partner_tested">
+    <column id="3762" parent="230" name="pwp_partner_tested">
       <Position>72</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3725" parent="230" name="condom_provided">
+    <column id="3763" parent="230" name="condom_provided">
       <Position>73</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3726" parent="230" name="screened_for_sti">
+    <column id="3764" parent="230" name="screened_for_sti">
       <Position>74</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3727" parent="230" name="cacx_screening">
+    <column id="3765" parent="230" name="cacx_screening">
       <Position>75</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3728" parent="230" name="sti_partner_notification">
+    <column id="3766" parent="230" name="sti_partner_notification">
       <Position>76</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3729" parent="230" name="at_risk_population">
+    <column id="3767" parent="230" name="at_risk_population">
       <Position>77</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3730" parent="230" name="system_review_finding">
+    <column id="3768" parent="230" name="system_review_finding">
       <Position>78</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3731" parent="230" name="next_appointment_date">
+    <column id="3769" parent="230" name="next_appointment_date">
       <Position>79</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3732" parent="230" name="next_appointment_reason">
+    <column id="3770" parent="230" name="next_appointment_reason">
       <Position>80</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3733" parent="230" name="differentiated_care">
+    <column id="3771" parent="230" name="differentiated_care">
       <Position>81</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3734" parent="230" name="voided">
+    <column id="3772" parent="230" name="voided">
       <Position>82</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="3735" parent="230" name="at_risk_population">
+    <index id="3773" parent="230" name="at_risk_population">
       <ColNames>at_risk_population</ColNames>
     </index>
-    <index id="3736" parent="230" name="condom_provided">
+    <index id="3774" parent="230" name="condom_provided">
       <ColNames>condom_provided</ColNames>
     </index>
-    <index id="3737" parent="230" name="ctx_dispensed">
+    <index id="3775" parent="230" name="ctx_dispensed">
       <ColNames>ctx_dispensed</ColNames>
     </index>
-    <index id="3738" parent="230" name="differentiated_care">
+    <index id="3776" parent="230" name="differentiated_care">
       <ColNames>differentiated_care</ColNames>
     </index>
-    <index id="3739" parent="230" name="encounter_id">
+    <index id="3777" parent="230" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3740" parent="230" name="ever_on_ipt">
+    <index id="3778" parent="230" name="ever_on_ipt">
       <ColNames>ever_on_ipt</ColNames>
     </index>
-    <index id="3741" parent="230" name="family_planning_method">
+    <index id="3779" parent="230" name="family_planning_method">
       <ColNames>family_planning_method</ColNames>
     </index>
-    <index id="3742" parent="230" name="family_planning_status">
+    <index id="3780" parent="230" name="family_planning_status">
       <ColNames>family_planning_status</ColNames>
     </index>
-    <index id="3743" parent="230" name="inh_dispensed">
+    <index id="3781" parent="230" name="inh_dispensed">
       <ColNames>inh_dispensed</ColNames>
     </index>
-    <index id="3744" parent="230" name="key_population_type">
+    <index id="3782" parent="230" name="key_population_type">
       <ColNames>key_population_type</ColNames>
     </index>
-    <index id="3745" parent="230" name="on_anti_tb_drugs">
+    <index id="3783" parent="230" name="on_anti_tb_drugs">
       <ColNames>on_anti_tb_drugs</ColNames>
     </index>
-    <index id="3746" parent="230" name="on_ipt">
+    <index id="3784" parent="230" name="on_ipt">
       <ColNames>on_ipt</ColNames>
     </index>
-    <index id="3747" parent="230" name="patient_id">
+    <index id="3785" parent="230" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3748" parent="230" name="patient_id_2">
+    <index id="3786" parent="230" name="patient_id_2">
       <ColNames>patient_id
 visit_date</ColNames>
     </index>
-    <index id="3749" parent="230" name="population_type">
+    <index id="3787" parent="230" name="population_type">
       <ColNames>population_type</ColNames>
     </index>
-    <index id="3750" parent="230" name="pregnancy_outcome">
+    <index id="3788" parent="230" name="pregnancy_outcome">
       <ColNames>pregnancy_outcome</ColNames>
     </index>
-    <index id="3751" parent="230" name="pregnancy_status">
+    <index id="3789" parent="230" name="pregnancy_status">
       <ColNames>pregnancy_status</ColNames>
     </index>
-    <index id="3752" parent="230" name="tb_status">
+    <index id="3790" parent="230" name="tb_status">
       <ColNames>tb_status</ColNames>
     </index>
-    <index id="3753" parent="230" name="unique_uuid">
+    <index id="3791" parent="230" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3754" parent="230" name="visit_date">
+    <index id="3792" parent="230" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <index id="3755" parent="230" name="visit_date_2">
+    <index id="3793" parent="230" name="visit_date_2">
       <ColNames>visit_date
 patient_id</ColNames>
     </index>
-    <index id="3756" parent="230" name="visit_date_3">
+    <index id="3794" parent="230" name="visit_date_3">
       <ColNames>visit_date
 condom_provided</ColNames>
     </index>
-    <index id="3757" parent="230" name="visit_date_4">
+    <index id="3795" parent="230" name="visit_date_4">
       <ColNames>visit_date
 family_planning_method</ColNames>
     </index>
-    <index id="3758" parent="230" name="who_stage">
+    <index id="3796" parent="230" name="who_stage">
       <ColNames>who_stage</ColNames>
     </index>
-    <key id="3759" parent="230" name="PRIMARY">
+    <key id="3797" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3760" parent="230" name="unique_uuid">
+    <key id="3798" parent="230" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3761" parent="230" name="etl_patient_hiv_followup_ibfk_1">
+    <foreign-key id="3799" parent="230" name="etl_patient_hiv_followup_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3762" parent="231" name="uuid">
+    <column id="3800" parent="231" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3763" parent="231" name="patient_id">
+    <column id="3801" parent="231" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3764" parent="231" name="visit_id">
+    <column id="3802" parent="231" name="visit_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3765" parent="231" name="visit_date">
+    <column id="3803" parent="231" name="visit_date">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="3766" parent="231" name="location_id">
+    <column id="3804" parent="231" name="location_id">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3767" parent="231" name="program_uuid">
+    <column id="3805" parent="231" name="program_uuid">
       <Position>6</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3768" parent="231" name="program_name">
+    <column id="3806" parent="231" name="program_name">
       <Position>7</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3769" parent="231" name="encounter_id">
+    <column id="3807" parent="231" name="encounter_id">
       <Position>8</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3770" parent="231" name="discontinuation_reason">
+    <column id="3808" parent="231" name="discontinuation_reason">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3771" parent="231" name="date_died">
+    <column id="3809" parent="231" name="date_died">
       <Position>10</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3772" parent="231" name="transfer_facility">
+    <column id="3810" parent="231" name="transfer_facility">
       <Position>11</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3773" parent="231" name="transfer_date">
+    <column id="3811" parent="231" name="transfer_date">
       <Position>12</Position>
       <DataType>date|0</DataType>
     </column>
-    <index id="3774" parent="231" name="date_died">
+    <index id="3812" parent="231" name="date_died">
       <ColNames>date_died</ColNames>
     </index>
-    <index id="3775" parent="231" name="discontinuation_reason">
+    <index id="3813" parent="231" name="discontinuation_reason">
       <ColNames>discontinuation_reason</ColNames>
     </index>
-    <index id="3776" parent="231" name="encounter_id">
+    <index id="3814" parent="231" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3777" parent="231" name="patient_id">
+    <index id="3815" parent="231" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3778" parent="231" name="transfer_date">
+    <index id="3816" parent="231" name="transfer_date">
       <ColNames>transfer_date</ColNames>
     </index>
-    <index id="3779" parent="231" name="unique_uuid">
+    <index id="3817" parent="231" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3780" parent="231" name="visit_date">
+    <index id="3818" parent="231" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <index id="3781" parent="231" name="visit_date_2">
+    <index id="3819" parent="231" name="visit_date_2">
       <ColNames>visit_date
 program_name
 patient_id</ColNames>
     </index>
-    <index id="3782" parent="231" name="visit_date_3">
+    <index id="3820" parent="231" name="visit_date_3">
       <ColNames>visit_date
 patient_id</ColNames>
     </index>
-    <key id="3783" parent="231" name="PRIMARY">
+    <key id="3821" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3784" parent="231" name="unique_uuid">
+    <key id="3822" parent="231" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3785" parent="231" name="etl_patient_program_discontinuation_ibfk_1">
+    <foreign-key id="3823" parent="231" name="etl_patient_program_discontinuation_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3786" parent="232" name="id">
+    <column id="3824" parent="232" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="3787" parent="232" name="patient_id">
+    <column id="3825" parent="232" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3788" parent="232" name="last_visit_date">
+    <column id="3826" parent="232" name="last_visit_date">
       <Position>3</Position>
       <DataType>date|0</DataType>
     </column>
-    <index id="3789" parent="232" name="patient_id">
+    <index id="3827" parent="232" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <key id="3790" parent="232" name="PRIMARY">
+    <key id="3828" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="3791" parent="232" name="etl_patients_booked_today_ibfk_1">
+    <foreign-key id="3829" parent="232" name="etl_patients_booked_today_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3792" parent="233" name="obs_group_id">
+    <column id="3830" parent="233" name="obs_group_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3793" parent="233" name="uuid">
+    <column id="3831" parent="233" name="uuid">
       <Position>2</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3794" parent="233" name="patient_id">
+    <column id="3832" parent="233" name="patient_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3795" parent="233" name="location_id">
+    <column id="3833" parent="233" name="location_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3796" parent="233" name="visit_date">
+    <column id="3834" parent="233" name="visit_date">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3797" parent="233" name="visit_id">
+    <column id="3835" parent="233" name="visit_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3798" parent="233" name="encounter_id">
+    <column id="3836" parent="233" name="encounter_id">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3799" parent="233" name="encounter_name">
+    <column id="3837" parent="233" name="encounter_name">
       <Position>8</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3800" parent="233" name="drug">
+    <column id="3838" parent="233" name="drug">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3801" parent="233" name="is_arv">
+    <column id="3839" parent="233" name="is_arv">
       <Position>10</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3802" parent="233" name="is_ctx">
+    <column id="3840" parent="233" name="is_ctx">
       <Position>11</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3803" parent="233" name="is_dapsone">
+    <column id="3841" parent="233" name="is_dapsone">
       <Position>12</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3804" parent="233" name="drug_name">
+    <column id="3842" parent="233" name="drug_name">
       <Position>13</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3805" parent="233" name="dose">
+    <column id="3843" parent="233" name="dose">
       <Position>14</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3806" parent="233" name="unit">
+    <column id="3844" parent="233" name="unit">
       <Position>15</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3807" parent="233" name="frequency">
+    <column id="3845" parent="233" name="frequency">
       <Position>16</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3808" parent="233" name="duration">
+    <column id="3846" parent="233" name="duration">
       <Position>17</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3809" parent="233" name="duration_units">
+    <column id="3847" parent="233" name="duration_units">
       <Position>18</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="3810" parent="233" name="duration_in_days">
+    <column id="3848" parent="233" name="duration_in_days">
       <Position>19</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3811" parent="233" name="prescription_provider">
+    <column id="3849" parent="233" name="prescription_provider">
       <Position>20</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3812" parent="233" name="dispensing_provider">
+    <column id="3850" parent="233" name="dispensing_provider">
       <Position>21</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3813" parent="233" name="regimen">
+    <column id="3851" parent="233" name="regimen">
       <Position>22</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3814" parent="233" name="adverse_effects">
+    <column id="3852" parent="233" name="adverse_effects">
       <Position>23</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3815" parent="233" name="date_of_refill">
+    <column id="3853" parent="233" name="date_of_refill">
       <Position>24</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3816" parent="233" name="date_created">
+    <column id="3854" parent="233" name="date_created">
       <Position>25</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3817" parent="233" name="voided">
+    <column id="3855" parent="233" name="voided">
       <Position>26</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3818" parent="233" name="date_voided">
+    <column id="3856" parent="233" name="date_voided">
       <Position>27</Position>
       <DataType>date|0</DataType>
     </column>
-    <index id="3819" parent="233" name="drug">
+    <index id="3857" parent="233" name="drug">
       <ColNames>drug</ColNames>
     </index>
-    <index id="3820" parent="233" name="encounter_id">
+    <index id="3858" parent="233" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3821" parent="233" name="is_arv">
+    <index id="3859" parent="233" name="is_arv">
       <ColNames>is_arv</ColNames>
     </index>
-    <index id="3822" parent="233" name="patient_id">
+    <index id="3860" parent="233" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3823" parent="233" name="unique_uuid">
+    <index id="3861" parent="233" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3824" parent="233" name="visit_date">
+    <index id="3862" parent="233" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3825" parent="233" name="PRIMARY">
+    <key id="3863" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>obs_group_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3826" parent="233" name="unique_uuid">
+    <key id="3864" parent="233" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3827" parent="233" name="etl_pharmacy_extract_ibfk_1">
+    <foreign-key id="3865" parent="233" name="etl_pharmacy_extract_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3828" parent="234" name="id">
+    <column id="3866" parent="234" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="3829" parent="234" name="uuid">
+    <column id="3867" parent="234" name="uuid">
       <Position>2</Position>
       <DataType>char(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3830" parent="234" name="script_name">
+    <column id="3868" parent="234" name="script_name">
       <Position>3</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3831" parent="234" name="start_time">
+    <column id="3869" parent="234" name="start_time">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="3832" parent="234" name="stop_time">
+    <column id="3870" parent="234" name="stop_time">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="3833" parent="234" name="error">
+    <column id="3871" parent="234" name="error">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="3834" parent="234" name="start_time">
+    <index id="3872" parent="234" name="start_time">
       <ColNames>start_time</ColNames>
     </index>
-    <index id="3835" parent="234" name="stop_time">
+    <index id="3873" parent="234" name="stop_time">
       <ColNames>stop_time</ColNames>
     </index>
-    <key id="3836" parent="234" name="PRIMARY">
+    <key id="3874" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="3837" parent="235" name="uuid">
+    <column id="3875" parent="235" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3838" parent="235" name="patient_id">
+    <column id="3876" parent="235" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3839" parent="235" name="visit_id">
+    <column id="3877" parent="235" name="visit_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3840" parent="235" name="visit_date">
+    <column id="3878" parent="235" name="visit_date">
       <Position>4</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3841" parent="235" name="location_id">
+    <column id="3879" parent="235" name="location_id">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3842" parent="235" name="encounter_id">
+    <column id="3880" parent="235" name="encounter_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3843" parent="235" name="provider">
+    <column id="3881" parent="235" name="provider">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3844" parent="235" name="date_treatment_started">
+    <column id="3882" parent="235" name="date_treatment_started">
       <Position>8</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3845" parent="235" name="district">
+    <column id="3883" parent="235" name="district">
       <Position>9</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3846" parent="235" name="district_registration_number">
+    <column id="3884" parent="235" name="district_registration_number">
       <Position>10</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="3847" parent="235" name="referred_by">
+    <column id="3885" parent="235" name="referred_by">
       <Position>11</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3848" parent="235" name="referral_date">
+    <column id="3886" parent="235" name="referral_date">
       <Position>12</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3849" parent="235" name="date_transferred_in">
+    <column id="3887" parent="235" name="date_transferred_in">
       <Position>13</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3850" parent="235" name="facility_transferred_from">
+    <column id="3888" parent="235" name="facility_transferred_from">
       <Position>14</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3851" parent="235" name="district_transferred_from">
+    <column id="3889" parent="235" name="district_transferred_from">
       <Position>15</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="3852" parent="235" name="date_first_enrolled_in_tb_care">
+    <column id="3890" parent="235" name="date_first_enrolled_in_tb_care">
       <Position>16</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3853" parent="235" name="weight">
+    <column id="3891" parent="235" name="weight">
       <Position>17</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3854" parent="235" name="height">
+    <column id="3892" parent="235" name="height">
       <Position>18</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3855" parent="235" name="treatment_supporter">
+    <column id="3893" parent="235" name="treatment_supporter">
       <Position>19</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3856" parent="235" name="relation_to_patient">
+    <column id="3894" parent="235" name="relation_to_patient">
       <Position>20</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3857" parent="235" name="treatment_supporter_address">
+    <column id="3895" parent="235" name="treatment_supporter_address">
       <Position>21</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3858" parent="235" name="treatment_supporter_phone_contact">
+    <column id="3896" parent="235" name="treatment_supporter_phone_contact">
       <Position>22</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3859" parent="235" name="disease_classification">
+    <column id="3897" parent="235" name="disease_classification">
       <Position>23</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3860" parent="235" name="patient_classification">
+    <column id="3898" parent="235" name="patient_classification">
       <Position>24</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3861" parent="235" name="pulmonary_smear_result">
+    <column id="3899" parent="235" name="pulmonary_smear_result">
       <Position>25</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3862" parent="235" name="has_extra_pulmonary_pleurial_effusion">
+    <column id="3900" parent="235" name="has_extra_pulmonary_pleurial_effusion">
       <Position>26</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3863" parent="235" name="has_extra_pulmonary_milliary">
+    <column id="3901" parent="235" name="has_extra_pulmonary_milliary">
       <Position>27</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3864" parent="235" name="has_extra_pulmonary_lymph_node">
+    <column id="3902" parent="235" name="has_extra_pulmonary_lymph_node">
       <Position>28</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3865" parent="235" name="has_extra_pulmonary_menengitis">
+    <column id="3903" parent="235" name="has_extra_pulmonary_menengitis">
       <Position>29</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3866" parent="235" name="has_extra_pulmonary_skeleton">
+    <column id="3904" parent="235" name="has_extra_pulmonary_skeleton">
       <Position>30</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3867" parent="235" name="has_extra_pulmonary_abdominal">
+    <column id="3905" parent="235" name="has_extra_pulmonary_abdominal">
       <Position>31</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3868" parent="235" name="has_extra_pulmonary_other">
+    <column id="3906" parent="235" name="has_extra_pulmonary_other">
       <Position>32</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3869" parent="235" name="treatment_outcome">
+    <column id="3907" parent="235" name="treatment_outcome">
       <Position>33</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3870" parent="235" name="treatment_outcome_date">
+    <column id="3908" parent="235" name="treatment_outcome_date">
       <Position>34</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3871" parent="235" name="date_of_discontinuation">
+    <column id="3909" parent="235" name="date_of_discontinuation">
       <Position>35</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="3872" parent="235" name="discontinuation_reason">
+    <column id="3910" parent="235" name="discontinuation_reason">
       <Position>36</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="3873" parent="235" name="date_first_enrolled_in_tb_care">
+    <index id="3911" parent="235" name="date_first_enrolled_in_tb_care">
       <ColNames>date_first_enrolled_in_tb_care</ColNames>
     </index>
-    <index id="3874" parent="235" name="disease_classification">
+    <index id="3912" parent="235" name="disease_classification">
       <ColNames>disease_classification</ColNames>
     </index>
-    <index id="3875" parent="235" name="encounter_id">
+    <index id="3913" parent="235" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3876" parent="235" name="patient_classification">
+    <index id="3914" parent="235" name="patient_classification">
       <ColNames>patient_classification</ColNames>
     </index>
-    <index id="3877" parent="235" name="patient_id">
+    <index id="3915" parent="235" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3878" parent="235" name="pulmonary_smear_result">
+    <index id="3916" parent="235" name="pulmonary_smear_result">
       <ColNames>pulmonary_smear_result</ColNames>
     </index>
-    <index id="3879" parent="235" name="unique_uuid">
+    <index id="3917" parent="235" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3880" parent="235" name="visit_date">
+    <index id="3918" parent="235" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3881" parent="235" name="PRIMARY">
+    <key id="3919" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3882" parent="235" name="unique_uuid">
+    <key id="3920" parent="235" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3883" parent="235" name="etl_tb_enrollment_ibfk_1">
+    <foreign-key id="3921" parent="235" name="etl_tb_enrollment_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3884" parent="236" name="uuid">
+    <column id="3922" parent="236" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3885" parent="236" name="provider">
+    <column id="3923" parent="236" name="provider">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3886" parent="236" name="patient_id">
+    <column id="3924" parent="236" name="patient_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3887" parent="236" name="visit_id">
+    <column id="3925" parent="236" name="visit_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3888" parent="236" name="visit_date">
+    <column id="3926" parent="236" name="visit_date">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3889" parent="236" name="location_id">
+    <column id="3927" parent="236" name="location_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3890" parent="236" name="encounter_id">
+    <column id="3928" parent="236" name="encounter_id">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3891" parent="236" name="spatum_test">
+    <column id="3929" parent="236" name="spatum_test">
       <Position>8</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3892" parent="236" name="spatum_result">
+    <column id="3930" parent="236" name="spatum_result">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3893" parent="236" name="result_serial_number">
+    <column id="3931" parent="236" name="result_serial_number">
       <Position>10</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="3894" parent="236" name="quantity">
+    <column id="3932" parent="236" name="quantity">
       <Position>11</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3895" parent="236" name="date_test_done">
+    <column id="3933" parent="236" name="date_test_done">
       <Position>12</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3896" parent="236" name="bacterial_colonie_growth">
+    <column id="3934" parent="236" name="bacterial_colonie_growth">
       <Position>13</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3897" parent="236" name="number_of_colonies">
+    <column id="3935" parent="236" name="number_of_colonies">
       <Position>14</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3898" parent="236" name="resistant_s">
+    <column id="3936" parent="236" name="resistant_s">
       <Position>15</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3899" parent="236" name="resistant_r">
+    <column id="3937" parent="236" name="resistant_r">
       <Position>16</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3900" parent="236" name="resistant_inh">
+    <column id="3938" parent="236" name="resistant_inh">
       <Position>17</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3901" parent="236" name="resistant_e">
+    <column id="3939" parent="236" name="resistant_e">
       <Position>18</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3902" parent="236" name="sensitive_s">
+    <column id="3940" parent="236" name="sensitive_s">
       <Position>19</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3903" parent="236" name="sensitive_r">
+    <column id="3941" parent="236" name="sensitive_r">
       <Position>20</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3904" parent="236" name="sensitive_inh">
+    <column id="3942" parent="236" name="sensitive_inh">
       <Position>21</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3905" parent="236" name="sensitive_e">
+    <column id="3943" parent="236" name="sensitive_e">
       <Position>22</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3906" parent="236" name="test_date">
+    <column id="3944" parent="236" name="test_date">
       <Position>23</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3907" parent="236" name="hiv_status">
+    <column id="3945" parent="236" name="hiv_status">
       <Position>24</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3908" parent="236" name="next_appointment_date">
+    <column id="3946" parent="236" name="next_appointment_date">
       <Position>25</Position>
       <DataType>date|0</DataType>
     </column>
-    <index id="3909" parent="236" name="encounter_id">
+    <index id="3947" parent="236" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3910" parent="236" name="hiv_status">
+    <index id="3948" parent="236" name="hiv_status">
       <ColNames>hiv_status</ColNames>
     </index>
-    <index id="3911" parent="236" name="patient_id">
+    <index id="3949" parent="236" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3912" parent="236" name="unique_uuid">
+    <index id="3950" parent="236" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3913" parent="236" name="visit_date">
+    <index id="3951" parent="236" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3914" parent="236" name="PRIMARY">
+    <key id="3952" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3915" parent="236" name="unique_uuid">
+    <key id="3953" parent="236" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3916" parent="236" name="etl_tb_follow_up_visit_ibfk_1">
+    <foreign-key id="3954" parent="236" name="etl_tb_follow_up_visit_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3917" parent="237" name="uuid">
+    <column id="3955" parent="237" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
     </column>
-    <column id="3918" parent="237" name="provider">
+    <column id="3956" parent="237" name="provider">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3919" parent="237" name="patient_id">
+    <column id="3957" parent="237" name="patient_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3920" parent="237" name="visit_id">
+    <column id="3958" parent="237" name="visit_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3921" parent="237" name="visit_date">
+    <column id="3959" parent="237" name="visit_date">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3922" parent="237" name="location_id">
+    <column id="3960" parent="237" name="location_id">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3923" parent="237" name="encounter_id">
+    <column id="3961" parent="237" name="encounter_id">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3924" parent="237" name="cough_for_2wks_or_more">
+    <column id="3962" parent="237" name="cough_for_2wks_or_more">
       <Position>8</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3925" parent="237" name="confirmed_tb_contact">
+    <column id="3963" parent="237" name="confirmed_tb_contact">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3926" parent="237" name="fever_for_2wks_or_more">
+    <column id="3964" parent="237" name="fever_for_2wks_or_more">
       <Position>10</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3927" parent="237" name="noticeable_weight_loss">
+    <column id="3965" parent="237" name="noticeable_weight_loss">
       <Position>11</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3928" parent="237" name="night_sweat_for_2wks_or_more">
+    <column id="3966" parent="237" name="night_sweat_for_2wks_or_more">
       <Position>12</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3929" parent="237" name="resulting_tb_status">
+    <column id="3967" parent="237" name="resulting_tb_status">
       <Position>13</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="3930" parent="237" name="tb_treatment_start_date">
+    <column id="3968" parent="237" name="tb_treatment_start_date">
       <Position>14</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3931" parent="237" name="notes">
+    <column id="3969" parent="237" name="notes">
       <Position>15</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <index id="3932" parent="237" name="confirmed_tb_contact">
+    <index id="3970" parent="237" name="confirmed_tb_contact">
       <ColNames>confirmed_tb_contact</ColNames>
     </index>
-    <index id="3933" parent="237" name="cough_for_2wks_or_more">
+    <index id="3971" parent="237" name="cough_for_2wks_or_more">
       <ColNames>cough_for_2wks_or_more</ColNames>
     </index>
-    <index id="3934" parent="237" name="encounter_id">
+    <index id="3972" parent="237" name="encounter_id">
       <ColNames>encounter_id</ColNames>
     </index>
-    <index id="3935" parent="237" name="night_sweat_for_2wks_or_more">
+    <index id="3973" parent="237" name="night_sweat_for_2wks_or_more">
       <ColNames>night_sweat_for_2wks_or_more</ColNames>
     </index>
-    <index id="3936" parent="237" name="noticeable_weight_loss">
+    <index id="3974" parent="237" name="noticeable_weight_loss">
       <ColNames>noticeable_weight_loss</ColNames>
     </index>
-    <index id="3937" parent="237" name="patient_id">
+    <index id="3975" parent="237" name="patient_id">
       <ColNames>patient_id</ColNames>
     </index>
-    <index id="3938" parent="237" name="resulting_tb_status">
+    <index id="3976" parent="237" name="resulting_tb_status">
       <ColNames>resulting_tb_status</ColNames>
     </index>
-    <index id="3939" parent="237" name="unique_uuid">
+    <index id="3977" parent="237" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3940" parent="237" name="visit_date">
+    <index id="3978" parent="237" name="visit_date">
       <ColNames>visit_date</ColNames>
     </index>
-    <key id="3941" parent="237" name="PRIMARY">
+    <key id="3979" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>encounter_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="3942" parent="237" name="unique_uuid">
+    <key id="3980" parent="237" name="unique_uuid">
       <ColNames>uuid</ColNames>
       <UnderlyingIndexName>unique_uuid</UnderlyingIndexName>
     </key>
-    <foreign-key id="3943" parent="237" name="etl_tb_screening_ibfk_1">
+    <foreign-key id="3981" parent="237" name="etl_tb_screening_ibfk_1">
       <ColNames>patient_id</ColNames>
       <RefSchemaName>kenyaemr_etl</RefSchemaName>
       <RefTableName>etl_patient_demographics</RefTableName>
       <RefColNames>patient_id</RefColNames>
     </foreign-key>
-    <column id="3944" parent="238" name="uuid">
+    <column id="3982" parent="238" name="uuid">
       <Position>1</Position>
       <DataType>char(38)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3945" parent="238" name="patient_id">
+    <column id="3983" parent="238" name="patient_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="3946" parent="238" name="date_started">
+    <column id="3984" parent="238" name="date_started">
       <Position>3</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="3947" parent="238" name="originalRegimen">
+    <column id="3985" parent="238" name="originalRegimen">
       <Position>4</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3948" parent="238" name="DiscontinuedRegimen">
+    <column id="3986" parent="238" name="DiscontinuedRegimen">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="3949" parent="238" name="startedRegimen">
+    <column id="3987" parent="238" name="startedRegimen">
       <Position>6</Position>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="3950" parent="238" name="resultingRegimen">
+    <column id="3988" parent="238" name="resultingRegimen">
       <Position>7</Position>
       <DataType>varchar(201)|0</DataType>
     </column>
-    <column id="3951" parent="238" name="rowNum">
+    <column id="3989" parent="238" name="rowNum">
       <Position>8</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="3952" parent="238" name="dummy">
+    <column id="3990" parent="238" name="dummy">
       <Position>9</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
