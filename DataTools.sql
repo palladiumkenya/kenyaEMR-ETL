@@ -431,7 +431,19 @@ urine_gravity,
 (case urine_turbidity when 162102 then "Urine appears clear" when 162103 then "Cloudy urine" when 162104 then "Urine appears turbid" else "" end) as urine_turbidity,
 (case urine_dipstick_for_blood when 664 then "NEGATIVE" when 1874 then "Trace" when 1362 then "One Plus(+)" when 1363 then "Two Plus(++)" when 1364 then "Three Plus(+++)" else "" end) as urine_dipstick_for_blood,
 (case syphilis_test_status when 1229 then "Non Reactive" when 1228 then "Reactive" when 1402 then "Not Tested" when 1304 then "Poor Sample quality" else "" end) as syphilis_test_status,
-(case syphilis_treated_status when 1065 then "Yes" when 1066 then "No" else "" end) as syphilis_treated_status
+(case syphilis_treated_status when 1065 then "Yes" when 1066 then "No" else "" end) as syphilis_treated_status,
+(case bs_mps when 664 then "Negative" when 703 then "Positive" when 1138 then "Indeterminate" else "" end) as bs_mps,
+(case anc_exercises when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as anc_exercises,
+(case tb_screening when 1660 then "No TB signs" when 164128 then "No signs and started on INH" when 142177 then "Presumed TB" when 1662 then "TB Confirmed" when 160737 then "Not done" when 1111 then "On TB Treatment"  else "" end) as tb_screening,
+(case cacx_screening when 703 then "POSITIVE" when 664 then "NEGATIVE" when 159393 then "Presumed" when 1118 then "Not Done" when 1175 then "N/A" else "" end) as cacx_screening,
+(case cacx_screening_method when 885 then "PAP Smear" when 162816 then "VIA" when 5622 then "Other" else "" end) as cacx_screening_method,
+(case has_other_illnes  when 1065 then "Yes" when 1066 then "No" else "" end) as has_other_illnes,
+(case counselled  when 1065 then "Yes" when 1066 then "No" else "" end) as counselled,
+(case referred_from when 1537 then "Another Health Facility" when 163488 then "Community Unit" when 1175 then "N/A" else "" end) as referred_from,
+(case referred_to when 1537 then "Another Health Facility" when 163488 then "Community Unit" when 1175 then "N/A" else "" end) as referred_to,
+next_appointment_date,
+clinical_notes
+
 from kenyaemr_etl.etl_mch_antenatal_visit;
 
 ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
@@ -451,6 +463,39 @@ ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(next_appointment_da
 
 SELECT "Successfully created mch_antenatal_visit table";
 
+  -- create table mch_discharge table
+create table kenyaemr_datatools.mch_delivery as
+select
+patient_id,
+uuid,
+provider,
+visit_id,
+visit_date,
+location_id,
+encounter_id,
+data_entry_date,
+(case counselled_on_feeding when 1065 then "Yes" when 1066 then "No" else "" end) as counselled_on_feeding,
+(case baby_status when 163016 then "Alive" when 160432 then "Dead" else "" end) as baby_status,
+(case vitamin_A_dispensed when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as vitamin_A_dispensed,
+birth_notification_number,
+maternal_condition,
+discharge_date,
+(case referred_from when 1537 then "Another Health Facility" when 163488 then "Community Unit" when 1175 then "N/A" else "" end) as referred_from,
+(case referred_to when 1537 then "Another Health Facility" when 163488 then "Community Unit" when 1175 then "N/A" else "" end) as referred_to,
+clinical_notes
+
+from kenyaemr_etl.etl_mchs_discharge;
+
+ALTER TABLE kenyaemr_datatools.mch_discharge ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
+
+ALTER TABLE kenyaemr_datatools.mch_discharge ADD INDEX(patient_id);
+ALTER TABLE kenyaemr_datatools.mch_discharge ADD INDEX(visit_date);
+ALTER TABLE kenyaemr_datatools.mch_discharge ADD INDEX(encounter_id);
+ALTER TABLE kenyaemr_datatools.mch_discharge ADD INDEX(baby_status);
+ALTER TABLE kenyaemr_datatools.mch_discharge ADD INDEX(discharge_date);
+
+SELECT "Successfully created mch_discharge table";
+
 -- create table mch_postnatal_visit
 create table kenyaemr_datatools.mch_postnatal_visit as
 select 
@@ -461,6 +506,11 @@ visit_date,
 location_id,
 encounter_id,
 provider,
+pnc_register_no,
+pnc_visit_no,
+delivery_date
+(case mode_of_delivery when 1170 then "SVD" when 1171 then "C-Section" else "" end) as mode_of_delivery,
+(case place_of_delivery when 1589 then "Facility" when 1536 then "Home" when 5622 then "Other" else "" end) as place_of_delivery,
 temperature,
 pulse_rate,
 systolic_bp,
@@ -480,6 +530,8 @@ hemoglobin,
  when 162119 then "On exam, uterine fundus 38 weeks-term size" when 123427 then "Uterus Involuted"  else "" end) as gravid_uterus,
 (case episiotomy when 159842 then "repaired, episiotomy wound" when 159843 then "healed, episiotomy wound" when 159841 then "gap, episiotomy wound" when 113919 then "Postoperative Wound Infection" else "" end) as episiotomy,
 (case lochia when 159845 then "lochia excessive" when 159846 then "lochia foul smelling" when 159721 then "Lochia type" else "" end) as lochia,  -- recheck
+(case pallor when 1065 then "Yes" when 1066 then "No" when 1175 then "Not applicable" else "" end) as pallor,
+(case pph when 1065 then "Present" when 1066 then "Absent" else "" end) as pph,
 (case mother_hiv_status when 1067 then "Unknown" when 664 then "NEGATIVE" when 703 then "POSITIVE" else "" end) as mother_hiv_status,
 (case condition_of_baby when 1855 then "In good health" when 162132 then "Patient condition poor" when 1067 then "Unknown" when 162133 then "Patient condition fair/satisfactory" else "" end) as condition_of_baby,
 (case baby_feeding_method when 5526 then "BREASTFED EXCLUSIVELY" when 1595 then "REPLACEMENT FEEDING" when 6046 then "Mixed feeding" when 159418 then "Not at all sure" else "" end) as baby_feeding_method,
@@ -492,7 +544,38 @@ vaginal_examination,
 parametrial_examination,
 external_genitalia_examination,
 ovarian_examination,
-pelvic_lymph_node_exam
+pelvic_lymph_node_exam,
+test_1_kit_name,
+test_1_kit_lot_no,
+test_1_kit_expiry,
+test_1_result,
+test_2_kit_name,
+test_2_kit_lot_no,
+test_2_kit_expiry,
+test_2_result,
+final_test_result,
+patient_given_result,
+partner_hiv_tested,
+partner_hiv_status,
+(case prophylaxis_given when 105281 then "Cotrimoxazole" when 74250 then "Dapsone" when 1107 then "None" else "" end) as prophylaxis_given,
+(case haart_given_anc when 1 then "Yes" when 2 then "No" else "" end) as haart_given_anc,
+(case haart_given_mat when 1 then "Yes" when 2 then "No" else "" end) as haart_given_mat,
+haart_start_date,
+(case azt_dispensed when 160123 then "Yes" when 1066 then "No" when 1175 then "N/A" else "" end) as azt_dispensed,
+(case nvp_dispensed when 80586 then "Yes" when 1066 then "No" when 1175 then "N/A" else "" end) as nvp_dispensed,
+(case maternal_condition_coded when 130 then "Puerperal sepsis" when 114244 then "Perineal Laceration" when 1855 then "In good health" when 134612 then "Maternal Death" when 160429 then "Alive" when 162132 then "Patient condition poor" when 162133 then "Patient condition fair/satisfactory" else "" end) as maternal_condition_coded,
+(case iron_supplementation when 1065 then "Yes" when 1066 then "No" else "" end) as iron_supplementation,
+(case fistula_screening when 1107 then "None" when 49 then "Vesicovaginal Fistula" when 127847 then "Rectovaginal fistula" when 1118 then "Not done"  else "" end) as fistula_screening,
+(case cacx_screening when 703 then "POSITIVE" when 664 then "NEGATIVE" when 159393 then "Presumed" when 1118 then "Not Done" when 1175 then "N/A" else "" end) as cacx_screening,
+(case cacx_screening_method when 885 then "PAP Smear" when 162816 then "VIA" when 5622 then "Other" else "" end) as cacx_screening_method,
+(case family_planning_status when 965 then "On Family Planning" when 160652 then "Not using Family Planning"  else "" end) as family_planning_status,
+(case family_planning_method when 160570 then "Emergency contraceptive pills" when 780 then "Oral Contraceptives Pills" when 5279 then "Injectible" when 1359 then "Implant"
+   when 5275 then "Intrauterine Device" when 136163 then "Lactational Amenorhea Method" when 5278 then "Diaphram/Cervical Cap" when 5277 then "Fertility Awareness"
+   when 1472 then "Tubal Ligation" when 190 then "Condoms" when 1489 then "Vasectomy" when 162332 then "Undecided" else "" end) as family_planning_method,
+(case referred_from when 1537 then "Another Health Facility" when 163488 then "Community Unit" when 1175 then "N/A" else "" end) as referred_from,
+(case referred_to when 1537 then "Another Health Facility" when 163488 then "Community Unit" when 1175 then "N/A" else "" end) as referred_to,
+ clinical_notes
+
 from kenyaemr_etl.etl_mch_postnatal_visit;
 
 ALTER TABLE kenyaemr_datatools.mch_postnatal_visit ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
@@ -620,47 +703,56 @@ ALTER TABLE kenyaemr_datatools.tb_screening ADD INDEX(encounter_id);
  SELECT "Successfully created tb_screening";
 
 -- create table hei_enrollment
-create table kenyaemr_datatools.hei_enrollment as
-select 
-patient_id,
-uuid,
-provider,
-visit_id,
-visit_date,
-location_id,
-encounter_id,
-(case child_exposed when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as child_exposed,
-spd_number,
-birth_weight,
-gestation_at_birth,
-date_first_seen,
-birth_notification_number,
-birth_certificate_number,
-(case need_for_special_care when 161628 then "Yes" when 1066 then "No" else "" end) as need_for_special_care,
-(case reason_for_special_care when 116222 then "Birth weight less than 2.5 kg" when 162071 then "Birth less than 2 years after last birth" when 162072 then "Fifth or more child" when 162073 then "Teenage mother"
-  when 162074 then "Brother or sisters undernourished" when 162075 then "Multiple births(Twins,triplets)" when 162076 then "Child in family dead" when 1174 then "Orphan"
-  when 161599 then "Child has disability" when 1859 then "Parent HIV positive" when 123174 then "History/signs of child abuse/neglect" else "" end) as reason_for_special_care,
-(case referral_source when 160537 then "Paediatric" when 160542 then "OPD" when 160456 then "Maternity" when 162050 then "CCC"  when 160538 then "MCH/PMTCT" when 5622 then "Other" else "" end) as referral_source,
-(case transfer_in when 1065 then "Yes" when 1066 then "No" else "" end) as transfer_in,
-transfer_in_date,
-facility_transferred_from,
-district_transferred_from,
-date_first_enrolled_in_hei_care, 
-(case mother_breastfeeding when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as mother_breastfeeding,
-(case TB_contact_history_in_household when 1065 then "Yes" when 1066 then "No" else "" end) as TB_contact_history_in_household,
-(case mother_alive when 1 then "Yes" when 0 then "No" else "" end) as mother_alive,
-(case mother_on_pmtct_drugs when 1065 then "Yes" when 1066 then "No" else "" end) as mother_on_pmtct_drugs,
-(case mother_on_drug when 80586 then "Sd NVP Only" when 1652 then "AZT+NVP+3TC" when 1149 then "HAART" when 1107 then "None" else "" end) as mother_on_drug,
-(case mother_on_art_at_infant_enrollment when 1065 then "Yes" when 1066 then "No" else "" end) as mother_on_art_at_infant_enrollment,
-(case mother_drug_regimen when 792 then "D4T/3TC/NVP" when 160124 then "AZT/3TC/EFV" when 160104 then "D4T/3TC/EFV" when 1652 then "3TC/NVP/AZT" 
-  when 161361 then "EDF/3TC/EFV" when 104565 then "EFV/FTC/TDF" when 162201 then "3TC/LPV/TDF/r" when 817 then "ABC/3TC/AZT" 
-  when 162199 then "ABC/NVP/3TC" when 162200 then "3TC/ABC/LPV/r" when 162565 then "3TC/NVP/TDF" when 1652 then "3TC/NVP/AZT"
-  when 162561 then "3TC/AZT/LPV/r" when 164511 then "AZT-3TC-ATV/r" when 164512 then "TDF-3TC-ATV/r" when 162560 then "3TC/D4T/LPV/r"
-  when 162563 then "3TC/ABC/EFV" when 162562 then "ABC/LPV/R/TDF" when 162559 then "ABC/DDI/LPV/r"  else "" end) as mother_drug_regimen,
-parent_ccc_number,
-(case mode_of_delivery when 1170 then "SVD" when 1171 then "C-Section" else "" end) as mode_of_delivery,
-(case place_of_delivery when 1589 then "Facility" when 1536 then "Home" when 5622 then "Other" else "" end) as place_of_delivery
-from kenyaemr_etl.etl_hei_enrollment;
+  create table kenyaemr_datatools.hei_enrollment as
+    select
+      patient_id,
+      uuid,
+      provider,
+      visit_id,
+      visit_date,
+      location_id,
+      encounter_id,
+      (case child_exposed when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as child_exposed,
+      spd_number,
+      birth_weight,
+      gestation_at_birth,
+      date_first_seen,
+      birth_notification_number,
+      birth_certificate_number,
+      (case need_for_special_care when 161628 then "Yes" when 1066 then "No" else "" end) as need_for_special_care,
+      (case reason_for_special_care when 116222 then "Birth weight less than 2.5 kg" when 162071 then "Birth less than 2 years after last birth" when 162072 then "Fifth or more child" when 162073 then "Teenage mother"
+       when 162074 then "Brother or sisters undernourished" when 162075 then "Multiple births(Twins,triplets)" when 162076 then "Child in family dead" when 1174 then "Orphan"
+       when 161599 then "Child has disability" when 1859 then "Parent HIV positive" when 123174 then "History/signs of child abuse/neglect" else "" end) as reason_for_special_care,
+      (case referral_source when 160537 then "Paediatric" when 160542 then "OPD" when 160456 then "Maternity" when 162050 then "CCC"  when 160538 then "MCH/PMTCT" when 5622 then "Other" else "" end) as referral_source,
+      (case transfer_in when 1065 then "Yes" when 1066 then "No" else "" end) as transfer_in,
+      transfer_in_date,
+      facility_transferred_from,
+      district_transferred_from,
+      date_first_enrolled_in_hei_care,
+      (case mother_breastfeeding when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as mother_breastfeeding,
+      (case TB_contact_history_in_household when 1065 then "Yes" when 1066 then "No" else "" end) as TB_contact_history_in_household,
+      (case mother_alive when 1 then "Yes" when 0 then "No" else "" end) as mother_alive,
+      (case mother_on_pmtct_drugs when 1065 then "Yes" when 1066 then "No" else "" end) as mother_on_pmtct_drugs,
+      (case mother_on_drug when 80586 then "Sd NVP Only" when 1652 then "AZT+NVP+3TC" when 1149 then "HAART" when 1107 then "None" else "" end) as mother_on_drug,
+      (case mother_on_art_at_infant_enrollment when 1065 then "Yes" when 1066 then "No" else "" end) as mother_on_art_at_infant_enrollment,
+      (case mother_drug_regimen when 792 then "D4T/3TC/NVP" when 160124 then "AZT/3TC/EFV" when 160104 then "D4T/3TC/EFV" when 1652 then "3TC/NVP/AZT"
+       when 161361 then "EDF/3TC/EFV" when 104565 then "EFV/FTC/TDF" when 162201 then "3TC/LPV/TDF/r" when 817 then "ABC/3TC/AZT"
+       when 162199 then "ABC/NVP/3TC" when 162200 then "3TC/ABC/LPV/r" when 162565 then "3TC/NVP/TDF" when 1652 then "3TC/NVP/AZT"
+       when 162561 then "3TC/AZT/LPV/r" when 164511 then "AZT-3TC-ATV/r" when 164512 then "TDF-3TC-ATV/r" when 162560 then "3TC/D4T/LPV/r"
+       when 162563 then "3TC/ABC/EFV" when 162562 then "ABC/LPV/R/TDF" when 162559 then "ABC/DDI/LPV/r"  else "" end) as mother_drug_regimen,
+      parent_ccc_number,
+      (case mode_of_delivery when 1170 then "SVD" when 1171 then "C-Section" else "" end) as mode_of_delivery,
+      (case place_of_delivery when 1589 then "Facility" when 1536 then "Home" when 5622 then "Other" else "" end) as place_of_delivery,
+      birth_length,
+      birth_order,
+      health_facility_name,
+      date_of_birth_notification,
+      date_of_birth_registration,
+      birth_registration_place,
+      permanent_registration_serial,
+      mother_facility_registered
+
+    from kenyaemr_etl.etl_hei_enrollment;
   
 ALTER TABLE kenyaemr_datatools.hei_enrollment ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
   
@@ -717,45 +809,82 @@ ALTER TABLE kenyaemr_datatools.hei_follow_up_visit ADD INDEX(infant_feeding);
  SELECT "Successfully created hei_follow_up_visit";
 
 -- create table mch_delivery table
-create table kenyaemr_datatools.mch_delivery as
-select 
-patient_id,
-uuid,
-provider,
-visit_id,
-visit_date,
-location_id,
-encounter_id,
-data_entry_date,
-duration_of_pregnancy,
-(case mode_of_delivery when 1170 then "Spontaneous vaginal delivery" when 1171 then "Cesarean section" when 1172 then "Breech delivery" 
- when 118159 then "Forceps or Vacuum Extractor Delivery" when 159739 then "emergency caesarean section" when 159260 then "vacuum extractor delivery" 
- when 5622 then "Other" when 1067 then "Unknown" else "" end) as mode_of_delivery,
-date_of_delivery,
-(case blood_loss when 1499 then "Moderate" when 1107 then "None" when 1498 then "Mild" when 1500 then "Severe" else "" end) as blood_loss,
-condition_of_mother,
-apgar_score_1min,
-apgar_score_5min,
-apgar_score_10min,
-(case resuscitation_done when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as resuscitation_done,
-(case place_of_delivery when 1536 then "HOME" when 1588 then "HEALTH CLINIC/POST" when 1589 then "HOSPITAL" 
-  when 1601 then "EN ROUTE TO HEALTH FACILITY" when 159670 then "sub-district hospital" when 159671 then "Provincial hospital" 
-  when 159662 then "district hospital" when 159372 then "Primary Care Clinic" when 5622 then "Other" when 1067 then "Unknown" else "" end) as place_of_delivery,
-(case delivery_assistant when 1574 then "CLINICAL OFFICER/DOCTOR" when 1578 then "Midwife" when 1577 then "NURSE" 
-  when 1575 then "TRADITIONAL BIRTH ATTENDANT" when 1555 then "COMMUNITY HEALTH CARE WORKER" when 5622 then "Other" else "" end) as delivery_assistant, 
-(case counseling_on_infant_feeding when 161651 then "Counseling about infant feeding practices" else "" end) as counseling_on_infant_feeding, 
-(case counseling_on_exclusive_breastfeeding when 161096 then "Counseling for exclusive breastfeeding" else "" end) as counseling_on_exclusive_breastfeeding, 
-(case counseling_on_infant_feeding_for_hiv_infected when 162091 then "Counseling for infant feeding practices to prevent HIV" else "" end) as counseling_on_infant_feeding_for_hiv_infected, 
-(case mother_decision when 1173 then "EXPRESSED BREASTMILK" when 1152 then "WEANED" when 5254 then "Infant formula" when 1150 then "BREASTFED PREDOMINATELY" 
- when 6046 then "Mixed feeding" when 5526 then "BREASTFED EXCLUSIVELY" when 968 then "COW MILK" when 1595 then "REPLACEMENT FEEDING"  else "" end) as mother_decision
-from kenyaemr_etl.etl_mchs_delivery;
+  create table kenyaemr_datatools.mch_delivery as
+    select
+      patient_id,
+      uuid,
+      provider,
+      visit_id,
+      visit_date,
+      location_id,
+      encounter_id,
+      data_entry_date,
+      duration_of_pregnancy,
+      (case mode_of_delivery when 1170 then "Spontaneous vaginal delivery" when 1171 then "Cesarean section" when 1172 then "Breech delivery"
+       when 118159 then "Forceps or Vacuum Extractor Delivery" when 159739 then "emergency caesarean section" when 159260 then "vacuum extractor delivery"
+       when 5622 then "Other" when 1067 then "Unknown" else "" end) as mode_of_delivery,
+      date_of_delivery,
+      (case blood_loss when 1499 then "Moderate" when 1107 then "None" when 1498 then "Mild" when 1500 then "Severe" else "" end) as blood_loss,
+      condition_of_mother,
+      apgar_score_1min,
+      apgar_score_5min,
+      apgar_score_10min,
+      (case resuscitation_done when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as resuscitation_done,
+      (case place_of_delivery when 1536 then "HOME" when 1588 then "HEALTH CLINIC/POST" when 1589 then "HOSPITAL"
+       when 1601 then "EN ROUTE TO HEALTH FACILITY" when 159670 then "sub-district hospital" when 159671 then "Provincial hospital"
+       when 159662 then "district hospital" when 159372 then "Primary Care Clinic" when 5622 then "Other" when 1067 then "Unknown" else "" end) as place_of_delivery,
+      (case delivery_assistant when 1574 then "CLINICAL OFFICER/DOCTOR" when 1578 then "Midwife" when 1577 then "NURSE"
+       when 1575 then "TRADITIONAL BIRTH ATTENDANT" when 1555 then "COMMUNITY HEALTH CARE WORKER" when 5622 then "Other" else "" end) as delivery_assistant,
+      (case counseling_on_infant_feeding when 161651 then "Counseling about infant feeding practices" else "" end) as counseling_on_infant_feeding,
+      (case counseling_on_exclusive_breastfeeding when 161096 then "Counseling for exclusive breastfeeding" else "" end) as counseling_on_exclusive_breastfeeding,
+      (case counseling_on_infant_feeding_for_hiv_infected when 162091 then "Counseling for infant feeding practices to prevent HIV" else "" end) as counseling_on_infant_feeding_for_hiv_infected,
+      (case mother_decision when 1173 then "EXPRESSED BREASTMILK" when 1152 then "WEANED" when 5254 then "Infant formula" when 1150 then "BREASTFED PREDOMINATELY"
+       when 6046 then "Mixed feeding" when 5526 then "BREASTFED EXCLUSIVELY" when 968 then "COW MILK" when 1595 then "REPLACEMENT FEEDING"  else "" end) as mother_decision,
+      (case placenta_complete when 163455 then "Complete placenta at delivery" when 163456 then "Incomplete placenta at delivery" else "" end) as placenta_complete,
+      (case maternal_death_audited when 1065 then "Yes" when 1066 then "No" else "" end) as maternal_death_audited,
+      (case cadre when 1574 then "CLINICAL OFFICER/DOCTOR" when 1578 then "Midwife" when 1577 then "NURSE" when 1575 then "TRADITIONAL BIRTH ATTENDANT" when 1555 then " COMMUNITY HEALTH CARE WORKER" when 5622 then "Other" else "" end) as cadre,
+      other_delivery_complications,
+      duration_of_labor,
+      (case baby_sex when 1534 then "Male Gender" when 1535 then "Female gender" else "" end) as baby_sex,
+      (case baby_condition when 135436 then "Macerated Stillbirth" when 159916 then "Fresh stillbirth" when 151849 then "Liveborn, Unspecified Whether Single, Twin, or Multiple "
+       when 125872 then "STILLBIRTH" when 126127 then "Spontaneous abortion"
+       when 164815 then "Live birth, died before arrival at facility"
+       when 164816 then "Live birth, died after arrival or delivery in facility" else "" end) as baby_condition,
+      (case teo_given when 84893 then "TETRACYCLINE" when 1066 then "No" when 1175 then "Not applicable" else "" end) as teo_given,
+      birth_weight,
+      (case bf_after_one_hour when 1065 then "Yes" when 1066 then "No" else "" end) as bf_after_one_hour,
+      (case birth_with_deformity when 155871 then "deformity" when 1066 then "No"  when 1175 then "Not applicable" else "" end) as birth_with_deformity,
+      test_1_kit_name,
+      test_1_kit_lot_no,
+      test_1_kit_expiry,
+      test_1_result,
+      test_2_kit_name,
+      test_2_kit_lot_no,
+      test_2_kit_expiry,
+      test_2_result,
+      final_test_result,
+      patient_given_result,
+      partner_hiv_tested,
+      partner_hiv_status,
+      (case prophylaxis_given when 105281 then "SULFAMETHOXAZOLE / TRIMETHOPRIM" when 74250 then "DAPSONE"  when 1107 then "None" else "" end) as prophylaxis_given,
+      (case haart_given_at_anc when 1 then "Yes" when 2 then "No" else "" end) as haart_given_at_anc,
+      (case haart_given_at_delivery when 1 then "Yes" when 2 then "No" else "" end) as haart_given_at_delivery,
+      haart_start_date,
+      (case baby_azt_dispensed when 160123 then "Zidovudine for PMTCT" when 1066 then "No" when 1175 then "Not Applicable" else "" end) as baby_azt_dispensed,
+      (case baby_nvp_dispensed when 80586 then "NEVIRAPINE" when 1066 then "No" when 1175 then "Not Applicable" else "" end) as baby_nvp_dispensed,
+      clinical_notes
 
-ALTER TABLE kenyaemr_datatools.mch_delivery ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
+    from kenyaemr_etl.etl_mchs_delivery;
 
-ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(visit_date);
-ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(encounter_id);
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD FOREIGN KEY (patient_id) REFERENCES kenyaemr_datatools.patient_demographics(patient_id);
 
-SELECT "Successfully created mch_delivey table";
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(visit_date);
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(encounter_id);
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(final_test_result);
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(test_1_kit_name);
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(test_2_kit_name);
+  ALTER TABLE kenyaemr_datatools.mch_delivery ADD INDEX(baby_sex);
+
 
 SELECT "Creating HTS tables";
 
