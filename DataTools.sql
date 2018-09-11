@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS kenyaemr_datatools.tb_screening;
 DROP TABLE IF EXISTS kenyaemr_datatools.hei_enrollment;
 DROP TABLE IF EXISTS kenyaemr_datatools.hei_follow_up_visit;
 DROP TABLE IF EXISTS kenyaemr_datatools.mch_delivery;
+DROP TABLE IF EXISTS kenyaemr_datatools.mch_discharge;
 DROP TABLE IF EXISTS kenyaemr_datatools.hts_test;
 DROP TABLE IF EXISTS kenyaemr_datatools.hts_referral_and_linkage;
 DROP TABLE IF EXISTS kenyaemr_datatools.current_in_care;
@@ -464,7 +465,7 @@ ALTER TABLE kenyaemr_datatools.mch_antenatal_visit ADD INDEX(next_appointment_da
 SELECT "Successfully created mch_antenatal_visit table";
 
   -- create table mch_discharge table
-create table kenyaemr_datatools.mch_delivery as
+create table kenyaemr_datatools.mch_discharge as
 select
 patient_id,
 uuid,
@@ -508,7 +509,7 @@ encounter_id,
 provider,
 pnc_register_no,
 pnc_visit_no,
-delivery_date
+delivery_date,
 (case mode_of_delivery when 1170 then "SVD" when 1171 then "C-Section" else "" end) as mode_of_delivery,
 (case place_of_delivery when 1589 then "Facility" when 1536 then "Home" when 5622 then "Other" else "" end) as place_of_delivery,
 temperature,
@@ -712,7 +713,7 @@ ALTER TABLE kenyaemr_datatools.tb_screening ADD INDEX(encounter_id);
       visit_date,
       location_id,
       encounter_id,
-      (case child_exposed when 1065 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as child_exposed,
+      (case child_exposed when 822 then "Yes" when 1066 then "No" when 1067 then "Unknown" else "" end) as child_exposed,
       spd_number,
       birth_weight,
       gestation_at_birth,

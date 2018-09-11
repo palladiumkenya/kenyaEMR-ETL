@@ -744,6 +744,7 @@ SELECT "Successfully created etl_mch_postnatal_visit table";
         INDEX(transfer_in)
     );
 SELECT "Successfully created etl_hei_enrollment table";
+
 -- ------------ create table etl_hei_follow_up_visit-----------------------
 
 CREATE TABLE kenyaemr_etl.etl_hei_follow_up_visit (

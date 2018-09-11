@@ -823,7 +823,7 @@ CREATE PROCEDURE sp_populate_etl_mch_discharge()
 				max(if(o.concept_id=159395,o.value_text,null)) as clinical_notes
 			from encounter e
 				inner join obs o on e.encounter_id = o.encounter_id and o.voided =0
-														and o.concept_id in(161651,159926,161534,162051,162093,1641,160481,163145,159395)
+				and o.concept_id in(161651,159926,161534,162051,162093,1641,160481,163145,159395)
 				inner join
 				(
 					select encounter_type, uuid,name from form where
@@ -1336,7 +1336,7 @@ BEGIN
 			-- max(if(o.concept_id=5087,o.value_numeric,null)) as hei_id_number,
 			max(if(o.concept_id=162054,o.value_text,null)) as spd_number,
 			max(if(o.concept_id=5916,o.value_numeric,null)) as birth_weight,
-			max(if(o.concept_id=1409,o.value_text,null)) as gestation_at_birth,
+			max(if(o.concept_id=1409,o.value_numeric,null)) as gestation_at_birth,
 			max(if(o.concept_id=162140,o.value_datetime,null)) as date_first_seen,
 			max(if(o.concept_id=162051,o.value_text,null)) as birth_notification_number,
 			max(if(o.concept_id=162052,o.value_text,null)) as birth_certificate_number,
@@ -1358,7 +1358,7 @@ BEGIN
 			max(if(o.concept_id=1086,o.value_coded,null)) as mother_on_drug,
 			max(if(o.concept_id=162055,o.value_coded,null)) as mother_on_art_at_infant_enrollment,
 			max(if(o.concept_id=1088,o.value_coded,null)) as mother_drug_regimen,
-			max(if(o.concept_id=162053,o.value_text,null)) as parent_ccc_number,
+			max(if(o.concept_id=162053,o.value_numeric,null)) as parent_ccc_number,
 			max(if(o.concept_id=5630,o.value_coded,null)) as mode_of_delivery,
 			max(if(o.concept_id=1572,o.value_coded,null)) as place_of_delivery,
 			max(if(o.concept_id=1503,o.value_numeric,null)) as birth_length,
