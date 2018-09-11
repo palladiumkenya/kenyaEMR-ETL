@@ -68,8 +68,8 @@
       <file leaf-file-name="DDL.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DDL.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="720" column="24" lean-forward="false" selection-start-line="720" selection-start-column="8" selection-end-line="720" selection-end-column="24" />
+            <state relative-caret-position="192">
+              <caret line="453" column="20" lean-forward="false" selection-start-line="453" selection-start-column="20" selection-end-line="453" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -78,19 +78,28 @@
       <file leaf-file-name="DML.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DML.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="1369" column="45" lean-forward="false" selection-start-line="1369" selection-start-column="45" selection-end-line="1369" selection-end-column="45" />
+            <state relative-caret-position="204">
+              <caret line="798" column="63" lean-forward="false" selection-start-line="798" selection-start-column="63" selection-end-line="798" selection-end-column="63" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Scheduled_Updates.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scheduled_Updates.sql">
+      <file leaf-file-name="console_5.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_5.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="1360" column="48" lean-forward="false" selection-start-line="1360" selection-start-column="48" selection-end-line="1360" selection-end-column="48" />
+            <state relative-caret-position="165">
+              <caret line="203" column="62" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="261" selection-end-column="77" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="etl_mch_antenatal_visit" pinned="false" current-in-tab="false">
+        <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_antenatal_visit">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
             </state>
           </provider>
         </entry>
@@ -98,8 +107,8 @@
       <file leaf-file-name="DataTools.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DataTools.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="733" column="63" lean-forward="false" selection-start-line="733" selection-start-column="63" selection-end-line="733" selection-end-column="63" />
+            <state relative-caret-position="118">
+              <caret line="448" column="11" lean-forward="false" selection-start-line="447" selection-start-column="0" selection-end-line="448" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -108,18 +117,19 @@
       <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="2469" column="84" lean-forward="true" selection-start-line="2469" selection-start-column="84" selection-end-line="2469" selection-end-column="84" />
+            <state relative-caret-position="85">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hei_enrollment" pinned="false" current-in-tab="true">
-        <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_datatools.hei_enrollment">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
+      <file leaf-file-name="console_3.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_3.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="23" column="83" lean-forward="true" selection-start-line="23" selection-start-column="83" selection-end-line="23" selection-end-column="83" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -128,17 +138,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mch_dis</find>
-      <find>mch_delivery</find>
-      <find>mch_discha</find>
-      <find>mch_antenatal_visit</find>
-      <find>DROP TABLE IF EXISTS kenyaemr_datatools.mch_discharge</find>
-      <find>create_datatools_tables()</find>
-      <find>DML</find>
-      <find>create_datatools_tables</find>
-      <find>discharge</find>
-      <find>openmrs</find>
-      <find>mch_postnatal_visit</find>
       <find>etl_mch_postnatal_visit</find>
       <find>datatools</find>
       <find>sp_first_time_setup</find>
@@ -149,15 +148,26 @@
       <find>scheduled</find>
       <find>delivery_date</find>
       <find>sp_update_etl_mch_postnatal_visit</find>
-      <find>gestation_at_birth</find>
       <find>exposed</find>
       <find>sp_populate_etl_hei_enrolment</find>
       <find>etl_hei_enrollment</find>
-      <find>TB_contact_history_in_household</find>
       <find>parent_ccc_number</find>
       <find>mode_of_delivery</find>
       <find>hei</find>
       <find>hei_</find>
+      <find>TB_contact_history_in_household</find>
+      <find>gesta</find>
+      <find>gestation_at_birth</find>
+      <find>etl_mch_enrollment</find>
+      <find>anc</find>
+      <find>gestat</find>
+      <find>case</find>
+      <find>kenyaemr_etl</find>
+      <find>mch_antenatal_visit</find>
+      <find>sp_populate_etl_mch_antenatal_visit</find>
+      <find>etl_mch_antenatal_visit</find>
+      <find>prophy</find>
+      <find>tb</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -171,12 +181,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DDL.sql" />
-        <option value="$PROJECT_DIR$/DataTools.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_1.sql" />
-        <option value="$PROJECT_DIR$/DML.sql" />
-        <option value="$PROJECT_DIR$/Scheduled_Updates.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console.sql" />
+        <option value="$PROJECT_DIR$/Scheduled_Updates.sql" />
+        <option value="$PROJECT_DIR$/DataTools.sql" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_4.sql" />
+        <option value="src:table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_antenatal_visit" />
+        <option value="$PROJECT_DIR$/DDL.sql" />
+        <option value="$PROJECT_DIR$/DML.sql" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_5.sql" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_3.sql" />
       </list>
     </option>
   </component>
@@ -186,7 +200,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
@@ -338,12 +352,12 @@
       <option name="presentableId" value="Default" />
       <updated>1536060407093</updated>
       <workItem from="1536060408997" duration="67932000" />
-      <workItem from="1536575123864" duration="16755000" />
+      <workItem from="1536575123864" duration="35650000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84687000" />
+    <option name="totallyTimeSpent" value="103582000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -355,36 +369,36 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1376" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19879062" sideWeight="0.5079491" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.49682036" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.79133546" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.49682036" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.79133546" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4680851" sideWeight="0.4920509" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.098024316" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20592706" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5090016" sideWeight="0.4920509" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18768997" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20592706" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.49841017" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.49841017" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -401,19 +415,19 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.49682036" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.79133546" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4680851" sideWeight="0.4920509" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.098024316" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.49682036" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.79133546" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5090016" sideWeight="0.4920509" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18768997" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.49841017" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,69 +467,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -748,15 +699,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DataTools.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="733" column="63" lean-forward="false" selection-start-line="733" selection-start-column="63" selection-end-line="733" selection-end-column="63" />
-          <folding />
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_datatools.hiv_enrollment">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_datatools.hiv_enrollment">
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_datatools.hei_enrollment">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_hei_enrollment">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
@@ -771,49 +728,111 @@
         </state>
       </provider>
     </entry>
+    <entry file="das://src:table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_enrollment">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" column="50" lean-forward="true" selection-start-line="36" selection-start-column="50" selection-end-line="36" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_patient_hiv_followup">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_enrollment">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_4.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="132" column="16" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="258" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Scheduled_Updates.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="1360" column="48" lean-forward="false" selection-start-line="1360" selection-start-column="48" selection-end-line="1360" selection-end-column="48" />
+        <state relative-caret-position="83">
+          <caret line="711" column="0" lean-forward="false" selection-start-line="711" selection-start-column="0" selection-end-line="711" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DDL.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="720" column="24" lean-forward="false" selection-start-line="720" selection-start-column="8" selection-end-line="720" selection-end-column="24" />
+        <state relative-caret-position="192">
+          <caret line="453" column="20" lean-forward="false" selection-start-line="453" selection-start-column="20" selection-end-line="453" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DML.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="1369" column="45" lean-forward="false" selection-start-line="1369" selection-start-column="45" selection-end-line="1369" selection-end-column="45" />
+        <state relative-caret-position="204">
+          <caret line="798" column="63" lean-forward="false" selection-start-line="798" selection-start-column="63" selection-end-line="798" selection-end-column="63" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_hei_enrollment">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2469" column="84" lean-forward="true" selection-start-line="2469" selection-start-column="84" selection-end-line="2469" selection-end-column="84" />
+        <state relative-caret-position="85">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_datatools.hei_enrollment">
+    <entry file="das://src:table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_antenatal_visit">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="13" lean-forward="false" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_5.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="203" column="62" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="261" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_antenatal_visit">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataTools.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="448" column="11" lean-forward="false" selection-start-line="447" selection-start-column="0" selection-end-line="448" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/console_3.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="23" column="83" lean-forward="true" selection-start-line="23" selection-start-column="83" selection-end-line="23" selection-end-column="83" />
+          <folding />
         </state>
       </provider>
     </entry>

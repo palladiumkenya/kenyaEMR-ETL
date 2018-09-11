@@ -722,6 +722,9 @@ final_test_result,
 patient_given_result,
 partner_hiv_tested,
 partner_hiv_status,
+prophylaxis_given,
+azt_dispensed,
+nvp_dispensed,
 urine_microscopy,
 urinary_albumin,
 glucose_measurement,
@@ -791,6 +794,9 @@ max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664
 max(if(o.concept_id=164848,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as patient_given_result,
 max(if(o.concept_id=161557,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as partner_hiv_tested,
 max(if(o.concept_id=1436,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1067 then "Unknown" else "" end),null)) as partner_hiv_status,
+max(if(o.concept_id=1109,o.value_coded,null)) as prophylaxis_given,
+max(if(o.concept_id=1282,o.value_coded,null)) as azt_dispensed,
+max(if(o.concept_id=1282,o.value_coded,null)) as nvp_dispensed,
 max(if(o.concept_id=56,o.value_text,null)) as urine_microscopy,
 max(if(o.concept_id=1875,o.value_coded,null)) as urinary_albumin,
 max(if(o.concept_id=159734,o.value_coded,null)) as glucose_measurement,
@@ -820,7 +826,7 @@ max(if(o.concept_id=159395,o.value_text,null)) as clinical_notes
 
 from encounter e
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,159427,164848,161557,1436,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
+and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,159427,164848,161557,1436,1109,128256,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
 inner join 
 (
 	select encounter_type, uuid,name from form where 
