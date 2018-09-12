@@ -708,16 +708,10 @@ lie,
 fetal_heart_rate,
 fetal_movement,
 who_stage,
+viral_load,
+ldl,
 cd4,
 arv_status,
-test_1_kit_name,
-test_1_kit_lot_no,
-test_1_kit_expiry,
-test_1_result,
-test_2_kit_name,
-test_2_kit_lot_no,
-test_2_kit_expiry,
-test_2_result,
 final_test_result,
 patient_given_result,
 partner_hiv_tested,
@@ -780,16 +774,10 @@ max(if(o.concept_id=162089,o.value_coded,null)) as lie,
 max(if(o.concept_id=1440,o.value_numeric,null)) as fetal_heart_rate,
 max(if(o.concept_id=162107,o.value_coded,null)) as fetal_movement,
 max(if(o.concept_id=5356,o.value_coded,null)) as who_stage,
+max(if(o.concept_id=856,o.value_numeric,null)) as viral_load,
+max(if(o.concept_id=1305,o.value_coded,null)) as ldl,
 max(if(o.concept_id=5497,o.value_numeric,null)) as cd4,
 max(if(o.concept_id=1147,o.value_coded,null)) as arv_status,
-max(if(t.test_1_result is not null, t.kit_name, "")) as test_1_kit_name,
-max(if(t.test_1_result is not null, t.lot_no, "")) as test_1_kit_lot_no,
-max(if(t.test_1_result is not null, t.expiry_date, "")) as test_1_kit_expiry,
-max(if(t.test_1_result is not null, t.test_1_result, "")) as test_1_result,
-max(if(t.test_2_result is not null, t.kit_name, "")) as test_2_kit_name,
-max(if(t.test_2_result is not null, t.lot_no, "")) as test_2_kit_lot_no,
-max(if(t.test_2_result is not null, t.expiry_date, "")) as test_2_kit_expiry,
-max(if(t.test_2_result is not null, t.test_2_result, "")) as test_2_result,
 max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1138 then "Inconclusive" else "" end),null)) as final_test_result,
 max(if(o.concept_id=164848,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as patient_given_result,
 max(if(o.concept_id=161557,(case o.value_coded when 1065 then "Yes" when 1066 then "No" else "" end),null)) as partner_hiv_tested,
@@ -826,29 +814,12 @@ max(if(o.concept_id=159395,o.value_text,null)) as clinical_notes
 
 from encounter e
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,159427,164848,161557,1436,1109,128256,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
+and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,856,1305,5497,1147,159427,164848,161557,1436,1109,128256,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
 inner join 
 (
 	select encounter_type, uuid,name from form where 
 	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843')
 ) f on f.encounter_type=e.encounter_type
-inner join (
-							 select
-								 o.person_id,
-								 o.encounter_id,
-								 o.obs_group_id,
-								 max(if(o.concept_id=1040, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 163611 then "Invalid"  else "" end),null)) as test_1_result ,
-								 max(if(o.concept_id=1326, (case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1175 then "N/A"  else "" end),null)) as test_2_result ,
-								 max(if(o.concept_id=164962, (case o.value_coded when 164960 then "Determine" when 164961 then "First Response" else "" end),null)) as kit_name ,
-								 max(if(o.concept_id=164964,o.value_text,null)) as lot_no,
-								 max(if(o.concept_id=162502,date(o.value_datetime),null)) as expiry_date
-							 from obs o
-								 inner join encounter e on e.encounter_id = o.encounter_id
-								 inner join form f on f.form_id=e.form_id and f.uuid in ("e8f98494-af35-4bb8-9fc7-c409c8fed843")
-							 where o.concept_id in (1040, 1326, 164962, 164964, 162502)
-							 group by e.encounter_id, o.obs_group_id
-						 ) t on e.encounter_id = t.encounter_id
-
 group by e.encounter_id;
 SELECT "Completed processing MCH antenatal visits ", CONCAT("Time: ", NOW());
 END$$
