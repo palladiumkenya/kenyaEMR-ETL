@@ -708,8 +708,8 @@ lie,
 fetal_heart_rate,
 fetal_movement,
 who_stage,
-viral_load,
-ldl,
+lab_test,
+test_result,
 cd4,
 arv_status,
 final_test_result,
@@ -719,6 +719,7 @@ partner_hiv_status,
 prophylaxis_given,
 azt_dispensed,
 nvp_dispensed,
+deworming,
 urine_microscopy,
 urinary_albumin,
 glucose_measurement,
@@ -774,8 +775,8 @@ max(if(o.concept_id=162089,o.value_coded,null)) as lie,
 max(if(o.concept_id=1440,o.value_numeric,null)) as fetal_heart_rate,
 max(if(o.concept_id=162107,o.value_coded,null)) as fetal_movement,
 max(if(o.concept_id=5356,o.value_coded,null)) as who_stage,
-max(if(o.concept_id=856,o.value_numeric,null)) as viral_load,
-max(if(o.concept_id=1305,o.value_coded,null)) as ldl,
+lab_test,
+test_result,
 max(if(o.concept_id=5497,o.value_numeric,null)) as cd4,
 max(if(o.concept_id=1147,o.value_coded,null)) as arv_status,
 max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1138 then "Inconclusive" else "" end),null)) as final_test_result,
@@ -785,6 +786,7 @@ max(if(o.concept_id=1436,(case o.value_coded when 703 then "Positive" when 664 t
 max(if(o.concept_id=1109,o.value_coded,null)) as prophylaxis_given,
 max(if(o.concept_id=1282,o.value_coded,null)) as azt_dispensed,
 max(if(o.concept_id=1282,o.value_coded,null)) as nvp_dispensed,
+max(if(o.concept_id=984,o.value_coded,null)) as deworming,
 max(if(o.concept_id=56,o.value_text,null)) as urine_microscopy,
 max(if(o.concept_id=1875,o.value_coded,null)) as urinary_albumin,
 max(if(o.concept_id=159734,o.value_coded,null)) as glucose_measurement,
@@ -818,8 +820,15 @@ and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,
 inner join 
 (
 	select encounter_type, uuid,name from form where 
-	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843')
+	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843','7e603909-9ed5-4d0c-a688-26ecb05d8b6e','d3ea25c7-a3e8-4f57-a6a9-e802c3565a30')
 ) f on f.encounter_type=e.encounter_type
+	inner join
+	(
+		select v.encounter_id,l.lab_test,l.test_result from  kenyaemr_etl.etl_mch_antenatal_visit v
+			left join
+			kenyaemr_etl.etl_laboratory_extract l ON
+																							v.encounter_id = l.encounter_id and v.visit_date = l.visit_date GROUP BY v.encounter_id
+	) r on r.encounter_id = e.encounter_id
 group by e.encounter_id;
 SELECT "Completed processing MCH antenatal visits ", CONCAT("Time: ", NOW());
 END$$
