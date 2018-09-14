@@ -246,6 +246,7 @@ if(lab_test=302, (case test_result when 1115 then "Normal" when 1116 then "Abnor
 if(lab_test=32, (case test_result when 664 then "NEGATIVE" when 703 then "POSITIVE" when 1138 then "INDETERMINATE" end),
 if(lab_test=1305, (case test_result when 1306 then "BEYOND DETECTABLE LIMIT" when 1301 then "DETECTED" when 1302 then "NOT DETECTED" when 1304 then "POOR SAMPLE QUALITY" end),
 test_result ))))) AS test_result,
+
 date_created,
 created_by
 from kenyaemr_etl.etl_laboratory_extract;
@@ -702,6 +703,7 @@ ALTER TABLE kenyaemr_datatools.tb_screening ADD INDEX(encounter_id);
 -- create table hei_enrollment
   create table kenyaemr_datatools.hei_enrollment as
     select
+      serial_no,
       patient_id,
       uuid,
       provider,
@@ -783,8 +785,11 @@ height,
 (case standing_milestone when 162062 then "Standing" else "" end) as standing_milestone,
 (case talking_milestone when 162060 then "Talking" else "" end) as talking_milestone,
 (case review_of_systems_developmental when 1115 then "Normal(N)" when 6022 then "Delayed(D)" when 6025 then "Regressed(R)" else "" end) as review_of_systems_developmental,
+dna_pcr_sample_date,
 (case dna_pcr_contextual_status when 162081 then "Repeat" when 162083 then "Final test (end of pediatric window)" when 162082 then "Confirmation" when 162080 then "Initial" else "" end) as dna_pcr_contextual_status,
 (case dna_pcr_result when 1301 then "DETECTED" when 1302 then "NOT DETECTED" when 1300 then "EQUIVOCAL" when 1303 then "INHIBITORY" when 1304 then "POOR SAMPLE QUALITY" else "" end) as dna_pcr_result,
+(case nvp_given when 80586 then "Yes" else "No" end) as nvp_given,
+(case ctx_given when 105281 then "Yes" else "No" end) as ctx_given,
 (case first_antibody_result when 664 then "NEGATIVE" when 703 then "POSITIVE" when 1304 then "POOR SAMPLE QUALITY" else "" end) as first_antibody_result,
 (case final_antibody_result when 664 then "NEGATIVE" when 703 then "POSITIVE" when 1304 then "POOR SAMPLE QUALITY" else "" end) as final_antibody_result,
 (case tetracycline_ointment_given  when 1065 then "Yes" when 1066 then "No" else "" end) as tetracycline_ointment_given,

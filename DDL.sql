@@ -438,8 +438,6 @@ lie INT(11),
 fetal_heart_rate INT(11),
 fetal_movement INT(11),
 who_stage INT(11),
-lab_test INT(11),
-test_result INT(11),
 cd4 INT(11),
 arv_status INT(11),
 final_test_result VARCHAR(50) DEFAULT NULL,
@@ -682,6 +680,7 @@ SELECT "Successfully created etl_mch_postnatal_visit table";
 -- ------------ create table etl_hei_enrollment-----------------------
 
     CREATE TABLE kenyaemr_etl.etl_hei_enrollment (
+        serial_no INT(11)NOT NULL AUTO_INCREMENT,
         uuid char(38),
         patient_id INT(11) NOT NULL ,
         visit_id INT(11),
@@ -739,7 +738,8 @@ SELECT "Successfully created etl_mch_postnatal_visit table";
         INDEX(need_for_special_care),
         INDEX(reason_for_special_care),
         INDEX(referral_source),
-        INDEX(transfer_in)
+        INDEX(transfer_in),
+        INDEX(serial_no)
     );
 SELECT "Successfully created etl_hei_enrollment table";
 
@@ -771,6 +771,8 @@ dna_pcr_contextual_status INT(11),
 dna_pcr_result INT(11),
 dna_pcr_dbs_sample_code VARCHAR(100),
 dna_pcr_results_date DATE,
+nvp_given INT(11),
+ctx_given INT(11),
 first_antibody_sample_date DATE,
 first_antibody_result INT(11),
 first_antibody_dbs_sample_code VARCHAR(100),

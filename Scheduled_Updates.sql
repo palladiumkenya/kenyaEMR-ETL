@@ -620,8 +620,6 @@ lie,
 fetal_heart_rate,
 fetal_movement,
 who_stage,
-lab_test,
-test_result,
 cd4,
 arv_status,
 final_test_result,
@@ -687,8 +685,6 @@ max(if(o.concept_id=162089,o.value_coded,null)) as lie,
 max(if(o.concept_id=1440,o.value_numeric,null)) as fetal_heart_rate,
 max(if(o.concept_id=162107,o.value_coded,null)) as fetal_movement,
 max(if(o.concept_id=5356,o.value_coded,null)) as who_stage,
-lab_test,
-test_result,
 max(if(o.concept_id=5497,o.value_numeric,null)) as cd4,
 max(if(o.concept_id=1147,o.value_coded,null)) as arv_status,
 max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1138 then "Inconclusive" else "" end),null)) as final_test_result,
@@ -728,11 +724,11 @@ max(if(o.concept_id=159395,o.value_text,null)) as clinical_notes
 
 from encounter e
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0
-and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,856,1305,5497,1147,159427,164848,161557,1436,1109,1282,984,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
+and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,159427,164848,161557,1436,1109,1282,984,56,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
 inner join
 (
 	select encounter_type, uuid,name from form where
-	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843','7e603909-9ed5-4d0c-a688-26ecb05d8b6e','d3ea25c7-a3e8-4f57-a6a9-e802c3565a30')
+	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843','d3ea25c7-a3e8-4f57-a6a9-e802c3565a30')
 ) f on f.encounter_type=e.encounter_type
 
 	inner join
@@ -754,7 +750,7 @@ ON DUPLICATE KEY UPDATE visit_date=VALUES(visit_date),provider=VALUES(provider),
 		oxygen_saturation=VALUES(oxygen_saturation),
 weight=VALUES(weight),height=VALUES(height),muac=VALUES(muac),hemoglobin=VALUES(hemoglobin),breast_exam_done=VALUES(breast_exam_done),pallor=VALUES(pallor),maturity=VALUES(maturity),fundal_height=VALUES(fundal_height),fetal_presentation=VALUES(fetal_presentation),lie=VALUES(lie),
 		fetal_heart_rate=VALUES(fetal_heart_rate),fetal_movement=VALUES(fetal_movement),
-		who_stage=VALUES(who_stage),viral_load=VALUES(viral_load),ldl=VALUES(ldl),cd4=VALUES(cd4),arv_status=VALUES(arv_status),test_1_kit_name=VALUES(test_1_kit_name),test_1_kit_lot_no=VALUES(test_1_kit_lot_no),
+		who_stage=VALUES(who_stage),cd4=VALUES(cd4),arv_status=VALUES(arv_status),test_1_kit_name=VALUES(test_1_kit_name),test_1_kit_lot_no=VALUES(test_1_kit_lot_no),
 test_1_kit_expiry=VALUES(test_1_kit_expiry),test_1_result=VALUES(test_1_result),test_2_kit_name=VALUES(test_2_kit_name),test_2_kit_lot_no=VALUES(test_2_kit_lot_no),test_2_kit_expiry=VALUES(test_2_kit_expiry),test_2_result=VALUES(test_2_result),final_test_result=VALUES(final_test_result),
 		patient_given_result=VALUES(patient_given_result),
 		partner_hiv_tested=VALUES(partner_hiv_tested),partner_hiv_status=VALUES(partner_hiv_status),urine_microscopy=VALUES(urine_microscopy),urinary_albumin=VALUES(urinary_albumin),glucose_measurement=VALUES(glucose_measurement),urine_ph=VALUES(urine_ph),urine_gravity=VALUES(urine_gravity),
@@ -1414,9 +1410,11 @@ walking_milestone,
 standing_milestone,
 talking_milestone,
 review_of_systems_developmental,
--- dna_pcr_sample_date,
+dna_pcr_sample_date,
 dna_pcr_contextual_status,
 dna_pcr_result,
+nvp_given,
+ctx_given,
 -- dna_pcr_dbs_sample_code,
 -- dna_pcr_results_date,
 -- first_antibody_sample_date,
@@ -1457,9 +1455,11 @@ max(if(o.concept_id=162069 and o.value_coded=162063,o.value_coded,null)) as walk
 max(if(o.concept_id=162069 and o.value_coded=162062,o.value_coded,null)) as standing_milestone,
 max(if(o.concept_id=162069 and o.value_coded=162060,o.value_coded,null)) as talking_milestone,
 max(if(o.concept_id=1189,o.value_coded,null)) as review_of_systems_developmental,
--- max(if(o.concept_id=159951,o.value_datetime,null)) as dna_pcr_sample_date,
+max(if(o.concept_id=159951,o.value_datetime,null)) as dna_pcr_sample_date,
 max(if(o.concept_id=162084,o.value_coded,null)) as dna_pcr_contextual_status,
 max(if(o.concept_id=844,o.value_coded,null)) as dna_pcr_result,
+max(if(o.concept_id=966,o.value_coded,null)) as nvp_given,
+max(if(o.concept_id=1109,o.value_coded,null)) as ctx_given,
 -- max(if(o.concept_id=162086,o.value_text,null)) as dna_pcr_dbs_sample_code,
 -- max(if(o.concept_id=160082,o.value_datetime,null)) as dna_pcr_results_date,
 -- max(if(o.concept_id=159951,o.value_datetime,null)) as first_antibody_sample_date,
@@ -1480,7 +1480,7 @@ max(if(o.concept_id=1621,o.value_text,null)) as unit,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
+and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,966,1109,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
@@ -1496,6 +1496,7 @@ ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visi
 response_to_sound_milestone=VALUES(response_to_sound_milestone),hand_extension_milestone=VALUES(hand_extension_milestone),sitting_milestone=VALUES(sitting_milestone),walking_milestone=VALUES(walking_milestone),standing_milestone=VALUES(standing_milestone),talking_milestone=VALUES(talking_milestone),review_of_systems_developmental=VALUES(review_of_systems_developmental),
 dna_pcr_result=VALUES(dna_pcr_result),first_antibody_result=VALUES(first_antibody_result),final_antibody_result=VALUES(final_antibody_result),
 tetracycline_ointment_given=VALUES(tetracycline_ointment_given),pupil_examination=VALUES(pupil_examination),sight_examination=VALUES(sight_examination),squint=VALUES(squint),deworming_drug=VALUES(deworming_drug),dosage=VALUES(dosage),unit=VALUES(unit),next_appointment_date=VALUES(next_appointment_date)
+,nvp_given=VALUES(nvp_given),ctx_given=VALUES(ctx_given)
 ; 
 
 END$$

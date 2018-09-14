@@ -708,8 +708,6 @@ lie,
 fetal_heart_rate,
 fetal_movement,
 who_stage,
-lab_test,
-test_result,
 cd4,
 arv_status,
 final_test_result,
@@ -775,8 +773,6 @@ max(if(o.concept_id=162089,o.value_coded,null)) as lie,
 max(if(o.concept_id=1440,o.value_numeric,null)) as fetal_heart_rate,
 max(if(o.concept_id=162107,o.value_coded,null)) as fetal_movement,
 max(if(o.concept_id=5356,o.value_coded,null)) as who_stage,
-lab_test,
-test_result,
 max(if(o.concept_id=5497,o.value_numeric,null)) as cd4,
 max(if(o.concept_id=1147,o.value_coded,null)) as arv_status,
 max(if(o.concept_id=159427,(case o.value_coded when 703 then "Positive" when 664 then "Negative" when 1138 then "Inconclusive" else "" end),null)) as final_test_result,
@@ -816,19 +812,12 @@ max(if(o.concept_id=159395,o.value_text,null)) as clinical_notes
 
 from encounter e
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,856,1305,5497,1147,159427,164848,161557,1436,1109,128256,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
+and o.concept_id in(1590,5088,5087,5085,5086,5242,5092,5089,5090,1343,21,163590,5245,1438,1439,160090,162089,1440,162107,5356,5497,1147,159427,164848,161557,1436,1109,128256,1875,159734,161438,161439,161440,161441,161442,161444,161443,162106,162101,162096,299,160733,32,161074,1659,164934,163589,162747,1912,160481,163145,5096,159395)
 inner join 
 (
 	select encounter_type, uuid,name from form where 
-	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843','7e603909-9ed5-4d0c-a688-26ecb05d8b6e','d3ea25c7-a3e8-4f57-a6a9-e802c3565a30')
+	uuid in('e8f98494-af35-4bb8-9fc7-c409c8fed843','d3ea25c7-a3e8-4f57-a6a9-e802c3565a30')
 ) f on f.encounter_type=e.encounter_type
-	inner join
-	(
-		select v.encounter_id,l.lab_test,l.test_result from  kenyaemr_etl.etl_mch_antenatal_visit v
-			left join
-			kenyaemr_etl.etl_laboratory_extract l ON
-																							v.encounter_id = l.encounter_id and v.visit_date = l.visit_date GROUP BY v.encounter_id
-	) r on r.encounter_id = e.encounter_id
 group by e.encounter_id;
 SELECT "Completed processing MCH antenatal visits ", CONCAT("Time: ", NOW());
 END$$
@@ -1414,9 +1403,11 @@ walking_milestone,
 standing_milestone,
 talking_milestone,
 review_of_systems_developmental,
--- dna_pcr_sample_date,
+dna_pcr_sample_date,
 dna_pcr_contextual_status,
 dna_pcr_result,
+nvp_given,
+ctx_given,
 -- dna_pcr_dbs_sample_code,
 -- dna_pcr_results_date,
 -- first_antibody_sample_date,
@@ -1457,9 +1448,11 @@ max(if(o.concept_id=162069 and o.value_coded=162063,o.value_coded,null)) as walk
 max(if(o.concept_id=162069 and o.value_coded=162062,o.value_coded,null)) as standing_milestone,
 max(if(o.concept_id=162069 and o.value_coded=162060,o.value_coded,null)) as talking_milestone,
 max(if(o.concept_id=1189,o.value_coded,null)) as review_of_systems_developmental,
--- max(if(o.concept_id=159951,o.value_datetime,null)) as dna_pcr_sample_date,
+max(if(o.concept_id=159951,o.value_datetime,null)) as dna_pcr_sample_date,
 max(if(o.concept_id=162084,o.value_coded,null)) as dna_pcr_contextual_status,
 max(if(o.concept_id=844,o.value_coded,null)) as dna_pcr_result,
+max(if(o.concept_id=966,o.value_coded,null)) as nvp_given,
+max(if(o.concept_id=1109,o.value_coded,null)) as ctx_given,
 -- max(if(o.concept_id=162086,o.value_text,null)) as dna_pcr_dbs_sample_code,
 -- max(if(o.concept_id=160082,o.value_datetime,null)) as dna_pcr_results_date,
 -- max(if(o.concept_id=159951,o.value_datetime,null)) as first_antibody_sample_date,
@@ -1480,7 +1473,7 @@ max(if(o.concept_id=1621,o.value_text,null)) as unit,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
+and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,966,1109,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
