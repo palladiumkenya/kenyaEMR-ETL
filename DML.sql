@@ -1299,6 +1299,7 @@ insert into kenyaemr_etl.etl_hei_enrollment(
 		mother_on_drug,
 		mother_on_art_at_infant_enrollment,
 		mother_drug_regimen,
+		infant_prophylaxis,
 		parent_ccc_number,
 		mode_of_delivery,
 		place_of_delivery,
@@ -1348,6 +1349,7 @@ insert into kenyaemr_etl.etl_hei_enrollment(
 			max(if(o.concept_id=1086,o.value_coded,null)) as mother_on_drug,
 			max(if(o.concept_id=162055,o.value_coded,null)) as mother_on_art_at_infant_enrollment,
 			max(if(o.concept_id=1088,o.value_coded,null)) as mother_drug_regimen,
+			max(if(o.concept_id=1282,o.value_coded,null)) as infant_prophylaxis,
 			max(if(o.concept_id=162053,o.value_numeric,null)) as parent_ccc_number,
 			max(if(o.concept_id=5630,o.value_coded,null)) as mode_of_delivery,
 			max(if(o.concept_id=1572,o.value_coded,null)) as place_of_delivery,
@@ -1365,7 +1367,7 @@ insert into kenyaemr_etl.etl_hei_enrollment(
 		-- max(if(o.concept_id=159427,o.value_coded,null)) as hiv_status_at_exit
 		from encounter e
 			inner join obs o on e.encounter_id = o.encounter_id and o.voided =0
-													and o.concept_id in(5303,162054,5916,1409,162140,162051,162052,161630,161601,160540,160563,160534,160535,161551,160555,1282,159941,1282,152460,160429,1148,1086,162055,1088,162053,5630,1572,161555,159427,1503,163460,162724,164130,164129,164140,1646)
+													and o.concept_id in(5303,162054,5916,1409,162140,162051,162052,161630,161601,160540,160563,160534,160535,161551,160555,1282,159941,1282,152460,160429,1148,1086,162055,1088,1282,162053,5630,1572,161555,159427,1503,163460,162724,164130,164129,164140,1646)
 			inner join
 			(
 				select encounter_type_id, uuid, name from encounter_type where
@@ -1392,6 +1394,7 @@ location_id,
 encounter_id,
 weight,
 height,
+primary_caregiver,
 infant_feeding,
 tb_assessment_outcome,
 social_smile_milestone,
@@ -1437,6 +1440,7 @@ e.location_id,
 e.encounter_id,
 max(if(o.concept_id=5089,o.value_numeric,null)) as weight,
 max(if(o.concept_id=5090,o.value_numeric,null)) as height,
+max(if(o.concept_id=160640,o.value_coded,null)) as primary_caregiver,
 max(if(o.concept_id=1151,o.value_coded,null)) as infant_feeding,
 max(if(o.concept_id=1659,o.value_coded,null)) as tb_assessment_outcome,
 max(if(o.concept_id=162069 and o.value_coded=162056,o.value_coded,null)) as social_smile_milestone,
@@ -1473,7 +1477,7 @@ max(if(o.concept_id=1621,o.value_text,null)) as unit,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,966,1109,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
+and o.concept_id in(844,5089,5090,160640,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,966,1109,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 

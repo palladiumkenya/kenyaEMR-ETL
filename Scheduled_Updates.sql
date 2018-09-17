@@ -1293,6 +1293,7 @@ BEGIN
 		mother_on_drug,
 		mother_on_art_at_infant_enrollment,
 		mother_drug_regimen,
+		infant_prophylaxis,
 		parent_ccc_number,
 		mode_of_delivery,
 		place_of_delivery,
@@ -1343,6 +1344,7 @@ BEGIN
 			max(if(o.concept_id=1086,o.value_coded,null)) as mother_on_drug,
 			max(if(o.concept_id=162055,o.value_coded,null)) as mother_on_art_at_infant_enrollment,
 			max(if(o.concept_id=1088,o.value_coded,null)) as mother_drug_regimen,
+			max(if(o.concept_id=1282,o.value_coded,null)) as infant_prophylaxis,
 			max(if(o.concept_id=162053,o.value_numeric,null)) as parent_ccc_number,
 			max(if(o.concept_id=5630,o.value_coded,null)) as mode_of_delivery,
 			max(if(o.concept_id=1572,o.value_coded,null)) as place_of_delivery,
@@ -1360,7 +1362,7 @@ BEGIN
 		-- max(if(o.concept_id=159427,o.value_coded,null)) as hiv_status_at_exit
 		from encounter e
 			inner join obs o on e.encounter_id = o.encounter_id and o.voided =0
-													and o.concept_id in(5303,162054,5916,1409,162140,162051,162052,161630,161601,160540,160563,160534,160535,161551,160555,1282,159941,1282,152460,160429,1148,1086,162055,1088,162053,5630,1572,161555,159427,1503,163460,162724,164130,164129,164140,1646)
+													and o.concept_id in(5303,162054,5916,1409,162140,162051,162052,161630,161601,160540,160563,160534,160535,161551,160555,1282,159941,1282,152460,160429,1148,1086,162055,1088,1282,162053,5630,1572,161555,159427,1503,163460,162724,164130,164129,164140,1646)
 			inner join (
 									 select encounter_type_id, uuid, name from encounter_type where
 										 uuid in('415f5136-ca4a-49a8-8db3-f994187c3af6')
@@ -1374,7 +1376,7 @@ BEGIN
 	ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),child_exposed=VALUES(child_exposed),spd_number=VALUES(spd_number),birth_weight=VALUES(birth_weight),gestation_at_birth=VALUES(gestation_at_birth),date_first_seen=VALUES(date_first_seen),
 		birth_notification_number=VALUES(birth_notification_number),birth_certificate_number=VALUES(birth_certificate_number),need_for_special_care=VALUES(need_for_special_care),reason_for_special_care=VALUES(reason_for_special_care),referral_source=VALUES(referral_source),transfer_in=VALUES(transfer_in),transfer_in_date=VALUES(transfer_in_date),facility_transferred_from=VALUES(facility_transferred_from),
 		district_transferred_from=VALUES(district_transferred_from),date_first_enrolled_in_hei_care=VALUES(date_first_enrolled_in_hei_care),mother_breastfeeding=VALUES(mother_breastfeeding),TB_contact_history_in_household=VALUES(TB_contact_history_in_household),mother_alive=VALUES(mother_alive),mother_on_pmtct_drugs=VALUES(mother_on_pmtct_drugs),
-		mother_on_drug=VALUES(mother_on_drug),mother_on_art_at_infant_enrollment=VALUES(mother_on_art_at_infant_enrollment),mother_drug_regimen=VALUES(mother_drug_regimen),parent_ccc_number=VALUES(parent_ccc_number),mode_of_delivery=VALUES(mode_of_delivery),place_of_delivery=VALUES(place_of_delivery),birth_length=VALUES(birth_length),birth_order=VALUES(birth_order),health_facility_name=VALUES(health_facility_name),
+		mother_on_drug=VALUES(mother_on_drug),mother_on_art_at_infant_enrollment=VALUES(mother_on_art_at_infant_enrollment),mother_drug_regimen=VALUES(mother_drug_regimen),infant_prophylaxis=VALUES(infant_prophylaxis),parent_ccc_number=VALUES(parent_ccc_number),mode_of_delivery=VALUES(mode_of_delivery),place_of_delivery=VALUES(place_of_delivery),birth_length=VALUES(birth_length),birth_order=VALUES(birth_order),health_facility_name=VALUES(health_facility_name),
 		date_of_birth_notification=VALUES(date_of_birth_notification),date_of_birth_registration=VALUES(date_of_birth_registration),birth_registration_place=VALUES(birth_registration_place),permanent_registration_serial=VALUES(permanent_registration_serial),mother_facility_registered=VALUES(mother_facility_registered)
 	;
 
@@ -1399,6 +1401,7 @@ location_id,
 encounter_id,
 weight,
 height,
+primary_caregiver,
 infant_feeding,
 tb_assessment_outcome,
 social_smile_milestone,
@@ -1444,6 +1447,7 @@ e.location_id,
 e.encounter_id,
 max(if(o.concept_id=5089,o.value_numeric,null)) as weight,
 max(if(o.concept_id=5090,o.value_numeric,null)) as height,
+max(if(o.concept_id=160640,o.value_coded,null)) as primary_caregiver,
 max(if(o.concept_id=1151,o.value_coded,null)) as infant_feeding,
 max(if(o.concept_id=1659,o.value_coded,null)) as tb_assessment_outcome,
 max(if(o.concept_id=162069 and o.value_coded=162056,o.value_coded,null)) as social_smile_milestone,
@@ -1480,7 +1484,7 @@ max(if(o.concept_id=1621,o.value_text,null)) as unit,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(844,5089,5090,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,966,1109,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
+and o.concept_id in(844,5089,5090,1151,1659,5096,160640,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,966,1109,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
@@ -1492,7 +1496,7 @@ or e.date_voided >= last_update_time
 or o.date_created >= last_update_time
 or o.date_voided >= last_update_time
 group by e.encounter_id 
-ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),weight=VALUES(weight),height=VALUES(height),infant_feeding=VALUES(infant_feeding),tb_assessment_outcome=VALUES(tb_assessment_outcome),social_smile_milestone=VALUES(social_smile_milestone),head_control_milestone=VALUES(head_control_milestone),
+ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),weight=VALUES(weight),height=VALUES(height),primary_caregiver=VALUES(primary_caregiver),infant_feeding=VALUES(infant_feeding),tb_assessment_outcome=VALUES(tb_assessment_outcome),social_smile_milestone=VALUES(social_smile_milestone),head_control_milestone=VALUES(head_control_milestone),
 response_to_sound_milestone=VALUES(response_to_sound_milestone),hand_extension_milestone=VALUES(hand_extension_milestone),sitting_milestone=VALUES(sitting_milestone),walking_milestone=VALUES(walking_milestone),standing_milestone=VALUES(standing_milestone),talking_milestone=VALUES(talking_milestone),review_of_systems_developmental=VALUES(review_of_systems_developmental),
 dna_pcr_result=VALUES(dna_pcr_result),first_antibody_result=VALUES(first_antibody_result),final_antibody_result=VALUES(final_antibody_result),
 tetracycline_ointment_given=VALUES(tetracycline_ointment_given),pupil_examination=VALUES(pupil_examination),sight_examination=VALUES(sight_examination),squint=VALUES(squint),deworming_drug=VALUES(deworming_drug),dosage=VALUES(dosage),unit=VALUES(unit),next_appointment_date=VALUES(next_appointment_date)
