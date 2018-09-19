@@ -1428,6 +1428,7 @@ squint,
 deworming_drug,
 dosage,
 unit,
+comments,
 next_appointment_date
 )
 select
@@ -1474,10 +1475,11 @@ max(if(o.concept_id=162066,o.value_coded,null)) as squint,
 max(if(o.concept_id=1282,o.value_coded,null)) as deworming_drug,
 max(if(o.concept_id=1443,o.value_numeric,null)) as dosage,
 max(if(o.concept_id=1621,o.value_text,null)) as unit,
+max(if(o.concept_id=159395,o.value_text,null)) as comments,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(844,5089,5090,160640,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,966,1109,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
+and o.concept_id in(844,5089,5090,160640,1151,1659,5096,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,966,1109,162084,1030,162086,160082,159951,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621,159395,5096)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 

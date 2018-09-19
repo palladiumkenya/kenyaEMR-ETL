@@ -1435,6 +1435,7 @@ squint,
 deworming_drug,
 dosage,
 unit,
+comments,
 next_appointment_date
 )
 select
@@ -1481,10 +1482,11 @@ max(if(o.concept_id=162066,o.value_coded,null)) as squint,
 max(if(o.concept_id=1282,o.value_coded,null)) as deworming_drug,
 max(if(o.concept_id=1443,o.value_numeric,null)) as dosage,
 max(if(o.concept_id=1621,o.value_text,null)) as unit,
+max(if(o.concept_id=159395,o.value_text,null)) as comments,
 max(if(o.concept_id=5096,o.value_datetime,null)) as next_appointment_date
 from encounter e 
 inner join obs o on e.encounter_id = o.encounter_id and o.voided =0 
-and o.concept_id in(844,5089,5090,1151,1659,5096,160640,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,966,1109,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621)
+and o.concept_id in(844,5089,5090,1151,1659,5096,160640,162069,162069,162069,162069,162069,162069,162069,162069,1189,159951,162084,1030,162086,160082,159951,966,1109,1040,162086,160082,159951,1326,162086,160082,162077,162064,162067,162066,1282,1443,1621,159395,5096)
 inner join 
 (
 	select encounter_type_id, uuid, name from encounter_type where 
@@ -1499,7 +1501,7 @@ group by e.encounter_id
 ON DUPLICATE KEY UPDATE provider=VALUES(provider),visit_id=VALUES(visit_id),visit_date=VALUES(visit_date),weight=VALUES(weight),height=VALUES(height),primary_caregiver=VALUES(primary_caregiver),infant_feeding=VALUES(infant_feeding),tb_assessment_outcome=VALUES(tb_assessment_outcome),social_smile_milestone=VALUES(social_smile_milestone),head_control_milestone=VALUES(head_control_milestone),
 response_to_sound_milestone=VALUES(response_to_sound_milestone),hand_extension_milestone=VALUES(hand_extension_milestone),sitting_milestone=VALUES(sitting_milestone),walking_milestone=VALUES(walking_milestone),standing_milestone=VALUES(standing_milestone),talking_milestone=VALUES(talking_milestone),review_of_systems_developmental=VALUES(review_of_systems_developmental),
 dna_pcr_result=VALUES(dna_pcr_result),first_antibody_result=VALUES(first_antibody_result),final_antibody_result=VALUES(final_antibody_result),
-tetracycline_ointment_given=VALUES(tetracycline_ointment_given),pupil_examination=VALUES(pupil_examination),sight_examination=VALUES(sight_examination),squint=VALUES(squint),deworming_drug=VALUES(deworming_drug),dosage=VALUES(dosage),unit=VALUES(unit),next_appointment_date=VALUES(next_appointment_date)
+tetracycline_ointment_given=VALUES(tetracycline_ointment_given),pupil_examination=VALUES(pupil_examination),sight_examination=VALUES(sight_examination),squint=VALUES(squint),deworming_drug=VALUES(deworming_drug),dosage=VALUES(dosage),unit=VALUES(unit),comments=VALUES(comments),next_appointment_date=VALUES(next_appointment_date)
 ,nvp_given=VALUES(nvp_given),ctx_given=VALUES(ctx_given)
 ; 
 

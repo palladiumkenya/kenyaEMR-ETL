@@ -50,13 +50,6 @@
         <item name="openmrs" type="e3449647:DbNodeDescriptor" />
         <item name="" type="fce03ad6:DatabaseStructure$GroupNode" />
       </path>
-      <path>
-        <item name="" type="eadb38e5:DatabaseStructure$Root" />
-        <item name="openmrs@localhost" type="e3449647:DbNodeDescriptor" />
-        <item name="openmrs" type="e3449647:DbNodeDescriptor" />
-        <item name="" type="fce03ad6:DatabaseStructure$GroupNode" />
-        <item name="encounter" type="e3449647:DbNodeDescriptor" />
-      </path>
     </expand>
     <select />
   </component>
@@ -65,18 +58,8 @@
       <file leaf-file-name="DDL.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DDL.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="738" column="37" lean-forward="false" selection-start-line="681" selection-start-column="2" selection-end-line="743" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="hei_fol.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/hei_fol.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="186" column="190" lean-forward="false" selection-start-line="186" selection-start-column="8" selection-end-line="186" selection-end-column="208" />
+            <state relative-caret-position="231">
+              <caret line="793" column="0" lean-forward="false" selection-start-line="793" selection-start-column="0" selection-end-line="793" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -85,8 +68,8 @@
       <file leaf-file-name="DML.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DML.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="1368" column="73" lean-forward="false" selection-start-line="1267" selection-start-column="0" selection-end-line="1376" selection-end-column="71" />
+            <state relative-caret-position="265">
+              <caret line="1481" column="253" lean-forward="false" selection-start-line="1481" selection-start-column="253" selection-end-line="1481" selection-end-column="265" />
               <folding />
             </state>
           </provider>
@@ -95,28 +78,18 @@
       <file leaf-file-name="Scheduled_Updates.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scheduled_Updates.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="542">
-              <caret line="1378" column="174" lean-forward="false" selection-start-line="1378" selection-start-column="168" selection-end-line="1378" selection-end-column="186" />
+            <state relative-caret-position="1239">
+              <caret line="1503" column="260" lean-forward="false" selection-start-line="1503" selection-start-column="260" selection-end-line="1503" selection-end-column="260" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataTools.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DataTools.sql">
+      <file leaf-file-name="hei_fol.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/hei_fol.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="741" column="200" lean-forward="true" selection-start-line="741" selection-start-column="6" selection-end-line="741" selection-end-column="200" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="split.sql" pinned="false" current-in-tab="true">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/split.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
+            <state relative-caret-position="231">
+              <caret line="301" column="1" lean-forward="false" selection-start-line="246" selection-start-column="0" selection-end-line="459" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -131,11 +104,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="etl_laboratory_extract" pinned="false" current-in-tab="false">
-        <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_laboratory_extract">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
+      <file leaf-file-name="DataTools.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DataTools.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="784" column="77" lean-forward="false" selection-start-line="784" selection-start-column="77" selection-end-line="784" selection-end-column="78" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="split.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/split.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="523" column="22" lean-forward="true" selection-start-line="523" selection-start-column="22" selection-end-line="523" selection-end-column="22" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -149,14 +133,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="etl_current_in_care" pinned="false" current-in-tab="false">
+        <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_current_in_care">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tb</find>
-      <find>hemo</find>
-      <find>azt_dispensed</find>
-      <find>gest</find>
       <find>who_</find>
       <find>final_test_result</find>
       <find>viral_load</find>
@@ -167,7 +156,6 @@
       <find>sp_populate_etl_mch_antenatal_visit</find>
       <find>856</find>
       <find>identifier</find>
-      <find>hei</find>
       <find>hei_</find>
       <find>etl_hei_enrollment</find>
       <find>HAART</find>
@@ -180,9 +168,14 @@
       <find>parent_ccc_number</find>
       <find>ccc_number</find>
       <find>hei_follo</find>
-      <find>1088</find>
-      <find>1282</find>
       <find>etl_patient_demographics</find>
+      <find>1088</find>
+      <find>etl_current</find>
+      <find>deworming</find>
+      <find>hei</find>
+      <find>1282</find>
+      <find>comm</find>
+      <find>hei</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -379,12 +372,12 @@
       <workItem from="1536060408997" duration="67932000" />
       <workItem from="1536575123864" duration="99056000" />
       <workItem from="1536936506645" duration="1176000" />
-      <workItem from="1537169054528" duration="16201000" />
+      <workItem from="1537169054528" duration="37697000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184365000" />
+    <option name="totallyTimeSpent" value="205861000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -408,12 +401,12 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3288364" sideWeight="0.49682036" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29554045" sideWeight="0.79133546" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11262283" sideWeight="0.79133546" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35525322" sideWeight="0.4920509" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.44444445" sideWeight="0.4920509" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14864865" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25437203" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.021860095" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="7.949126E-4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -437,7 +430,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25437203" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21462639" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -449,9 +442,9 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3288364" sideWeight="0.49682036" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29554045" sideWeight="0.79133546" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35525322" sideWeight="0.4920509" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14864865" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11262283" sideWeight="0.79133546" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16250944" sideWeight="0.4920509" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10691574" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.49841017" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -494,13 +487,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mchs_delivery">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -718,13 +704,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_antenatal_visit">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/anc.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1022">
@@ -767,67 +746,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scheduled_Updates.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="542">
-          <caret line="1378" column="174" lean-forward="false" selection-start-line="1378" selection-start-column="168" selection-end-line="1378" selection-end-column="186" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DDL.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="738" column="37" lean-forward="false" selection-start-line="681" selection-start-column="2" selection-end-line="743" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DML.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="1368" column="73" lean-forward="false" selection-start-line="1267" selection-start-column="0" selection-end-line="1376" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_hei_enrollment">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_datatools.hei_enrollment">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataTools.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="741" column="200" lean-forward="true" selection-start-line="741" selection-start-column="6" selection-end-line="741" selection-end-column="200" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_patient_demographics">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_laboratory_extract">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_hei_follow_up_visit">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
@@ -841,18 +760,92 @@
         </state>
       </provider>
     </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_laboratory_extract">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_hei_enrollment">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_mch_antenatal_visit">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_current_in_care">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_patient_demographics">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/6c9ba81e/a7df260b-f263-4eb5-a4b1-db3da14e3921/kenyaemr_etl.etl_hei_follow_up_visit">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scheduled_Updates.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1239">
+          <caret line="1503" column="260" lean-forward="false" selection-start-line="1503" selection-start-column="260" selection-end-line="1503" selection-end-column="260" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataTools.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="784" column="77" lean-forward="false" selection-start-line="784" selection-start-column="77" selection-end-line="784" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DDL.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="793" column="0" lean-forward="false" selection-start-line="793" selection-start-column="0" selection-end-line="793" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DML.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="1481" column="253" lean-forward="false" selection-start-line="1481" selection-start-column="253" selection-end-line="1481" selection-end-column="265" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/hei_fol.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="186" column="190" lean-forward="false" selection-start-line="186" selection-start-column="8" selection-end-line="186" selection-end-column="208" />
+        <state relative-caret-position="231">
+          <caret line="301" column="1" lean-forward="false" selection-start-line="246" selection-start-column="0" selection-end-line="459" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a7df260b-f263-4eb5-a4b1-db3da14e3921/split.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
+        <state relative-caret-position="244">
+          <caret line="523" column="22" lean-forward="true" selection-start-line="523" selection-start-column="22" selection-end-line="523" selection-end-column="22" />
           <folding />
         </state>
       </provider>

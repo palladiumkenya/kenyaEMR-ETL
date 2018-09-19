@@ -801,6 +801,7 @@ dna_pcr_sample_date,
 (case deworming_drug when 79413 then "Mebendazole" when 70439 then "Albendazole" else "" end) as deworming_drug,
 dosage,
 unit,
+comments,
 next_appointment_date
 from kenyaemr_etl.etl_hei_follow_up_visit;
 
