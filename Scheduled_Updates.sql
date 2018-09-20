@@ -1462,7 +1462,7 @@ max(if(o.concept_id=162069 and o.value_coded=162060,o.value_coded,null)) as talk
 max(if(o.concept_id=1189,o.value_coded,null)) as review_of_systems_developmental,
 max(if(o.concept_id=159951,o.value_datetime,null)) as dna_pcr_sample_date,
 max(if(o.concept_id=162084,o.value_coded,null)) as dna_pcr_contextual_status,
-max(if(o.concept_id=844,o.value_coded,null)) as dna_pcr_result,
+max(if(o.concept_id=1030,o.value_coded,null)) as dna_pcr_result,
 max(if(o.concept_id=966,o.value_coded,null)) as nvp_given,
 max(if(o.concept_id=1109,o.value_coded,null)) as ctx_given,
 -- max(if(o.concept_id=162086,o.value_text,null)) as dna_pcr_dbs_sample_code,
